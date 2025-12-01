@@ -1,0 +1,278 @@
+---
+// Registration form component
+const shoeSizes = Array.from({ length: 13 }, (_, i) => (i + 5).toString());
+---
+
+<div class="bg-white p-8 rounded-lg shadow-lg">
+  <form id="registration-form" class="space-y-10">
+    <div>
+      <label for="name" class="block text-sm font-medium text-gray-700 mb-2">
+        Name (First and Last) *
+      </label>
+      <input 
+        type="text" 
+        id="name" 
+        name="name" 
+        required 
+        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+        placeholder="Enter your full name"
+      />
+    </div>
+    
+    <div>
+      <label for="phone" class="block text-sm font-medium text-gray-700 mb-2">
+        Phone Number *
+      </label>
+      <input 
+        type="tel" 
+        id="phone" 
+        name="phone" 
+        required 
+        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+        placeholder="Enter your phone number"
+      />
+    </div>
+    
+    <div>
+      <label for="email" class="block text-sm font-medium text-gray-700 mb-2">
+        Email *
+      </label>
+      <input 
+        type="email" 
+        id="email" 
+        name="email" 
+        required 
+        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+        placeholder="Enter your email"
+      />
+    </div>
+    
+    <div>
+      <label for="alternative_contact_name" class="block text-sm font-medium text-gray-700 mb-2">
+        Alternative Contact and Full Name *
+      </label>
+      <input 
+        type="text" 
+        id="alternative_contact_name" 
+        name="alternative_contact_name" 
+        required 
+        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+        placeholder="Enter alternative contact full name"
+      />
+    </div>
+    
+    <div>
+      <label for="address" class="block text-sm font-medium text-gray-700 mb-2">
+        Address *
+      </label>
+      <textarea 
+        id="address" 
+        name="address" 
+        rows="3"
+        required
+        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+        placeholder="Enter your address"
+      ></textarea>
+    </div>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div>
+        <label for="top_size" class="block text-sm font-medium text-gray-700 mb-2">
+          Top Size (XS-XXL) *
+        </label>
+        <select 
+          id="top_size" 
+          name="top_size" 
+          required 
+          class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+        >
+          <option value="">Select size</option>
+          <option value="XS">XS</option>
+          <option value="S">S</option>
+          <option value="M">M</option>
+          <option value="L">L</option>
+          <option value="XL">XL</option>
+          <option value="XXL">XXL</option>
+        </select>
+      </div>
+      
+      <div>
+        <label for="bottom_size" class="block text-sm font-medium text-gray-700 mb-2">
+          Bottom Size (XS-XXL) *
+        </label>
+        <select 
+          id="bottom_size" 
+          name="bottom_size" 
+          required 
+          class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+        >
+          <option value="">Select size</option>
+          <option value="XS">XS</option>
+          <option value="S">S</option>
+          <option value="M">M</option>
+          <option value="L">L</option>
+          <option value="XL">XL</option>
+          <option value="XXL">XXL</option>
+        </select>
+      </div>
+      
+      <div>
+        <label for="jacket_size" class="block text-sm font-medium text-gray-700 mb-2">
+          Jacket/Hoodie Size (XS-XXL) *
+        </label>
+        <select 
+          id="jacket_size" 
+          name="jacket_size" 
+          required 
+          class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+        >
+          <option value="">Select size</option>
+          <option value="XS">XS</option>
+          <option value="S">S</option>
+          <option value="M">M</option>
+          <option value="L">L</option>
+          <option value="XL">XL</option>
+          <option value="XXL">XXL</option>
+        </select>
+      </div>
+      
+      <div>
+        <label for="tight_size" class="block text-sm font-medium text-gray-700 mb-2">
+          Tight Size (XS-XXL) *
+        </label>
+        <select 
+          id="tight_size" 
+          name="tight_size" 
+          required 
+          class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+        >
+          <option value="">Select size</option>
+          <option value="XS">XS</option>
+          <option value="S">S</option>
+          <option value="M">M</option>
+          <option value="L">L</option>
+          <option value="XL">XL</option>
+          <option value="XXL">XXL</option>
+        </select>
+      </div>
+    </div>
+    
+    <div>
+      <label for="shoe_size" class="block text-sm font-medium text-gray-700 mb-2">
+        Shoe Size (5-17) *
+      </label>
+      <select 
+        id="shoe_size" 
+        name="shoe_size" 
+        required 
+        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+      >
+        <option value="">Select size</option>
+        {shoeSizes.map(size => (
+          <option value={size}>{size}</option>
+        ))}
+      </select>
+    </div>
+
+    <!-- Submit Button / Inline Confirmation Area -->
+    <div id="registration-action" class="text-center pt-10" aria-live="polite">
+      <button
+        id="register-button"
+        type="submit"
+        class="bg-[#D7000F] text-white px-12 py-6 rounded-lg text-[24px] font-semibold uppercase hover:bg-[#b8323d] transition-colors"
+      >
+        Register Now
+      </button>
+    </div>
+
+    <!-- Inline error box (hidden by default) -->
+    <div
+      id="registration-error"
+      class="hidden mt-6 p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg text-[18px] text-center"
+      aria-live="polite"
+    ></div>
+  </form>
+</div>
+
+<script>
+  document.getElementById('registration-form')?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const form = e.target as HTMLFormElement;
+    const formData = new FormData(form);
+    const data = Object.fromEntries(formData.entries());
+
+    const actionContainer = document.getElementById('registration-action');
+    const errorContainer = document.getElementById('registration-error');
+    const registerButton = document.getElementById('register-button');
+
+    // Clear previous error
+    if (errorContainer) {
+      errorContainer.textContent = '';
+      errorContainer.classList.add('hidden');
+    }
+
+    // Loading state
+    let originalButtonHTML = null;
+    if (registerButton) {
+      originalButtonHTML = registerButton.innerHTML;
+      registerButton.disabled = true;
+      registerButton.classList.add('opacity-60', 'cursor-not-allowed');
+      registerButton.setAttribute('aria-busy', 'true');
+      registerButton.innerHTML = `
+        <span class="inline-flex items-center gap-3">
+          <svg class="animate-spin h-6 w-6 text-white" viewBox="0 0 24 24" fill="none">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+          </svg>
+          Submitting...
+        </span>
+      `;
+    }
+
+    try {
+      const response = await fetch('/api/signup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+
+      if (response.ok) {
+        if (actionContainer) {
+          actionContainer.setAttribute('aria-live', 'polite');
+          actionContainer.innerHTML = `
+            <div class="inline-block mt-2 p-4 bg-green-100 border border-green-400 text-green-700 rounded-lg text-[20px] font-semibold">
+              🎉 You're in! We'll be in touch soon with details about the run.
+            </div>
+          `;
+        }
+        form.reset();
+      } else {
+        const errorData = await response.json().catch(() => ({}));
+        console.error('Server error:', errorData);
+        if (errorContainer) {
+          errorContainer.textContent = 'Something went wrong. Please try again.';
+          errorContainer.classList.remove('hidden');
+        }
+        if (registerButton && originalButtonHTML !== null) {
+          registerButton.disabled = false;
+          registerButton.classList.remove('opacity-60', 'cursor-not-allowed');
+          registerButton.removeAttribute('aria-busy');
+          registerButton.innerHTML = originalButtonHTML;
+        }
+      }
+    } catch (error) {
+      console.error('Form submission error:', error);
+      if (errorContainer) {
+        errorContainer.textContent = 'Something went wrong. Please try again.';
+        errorContainer.classList.remove('hidden');
+      }
+      if (registerButton && originalButtonHTML !== null) {
+        registerButton.disabled = false;
+        registerButton.classList.remove('opacity-60', 'cursor-not-allowed');
+        registerButton.removeAttribute('aria-busy');
+        registerButton.innerHTML = originalButtonHTML;
+      }
+    }
+  });
+</script>
