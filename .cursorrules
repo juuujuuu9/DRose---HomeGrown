@@ -507,6 +507,99 @@ src/
 └── styles/       # Global styles
 ```
 
+## Project Structure
+
+Current project structure as of initial setup. This section documents the actual file and directory layout for reference when adding new rules.
+
+### Root Directory
+```
+/
+├── .cursorrules              # Cursor AI rules and conventions
+├── astro.config.mjs         # Astro configuration (serverless output, Vercel adapter, Tailwind)
+├── env.example              # Environment variables template
+├── package.json             # Dependencies and scripts
+├── package-lock.json        # Locked dependency versions
+├── README.md                # Project documentation
+├── STREAMLINING_RECOMMENDATIONS.md  # Project-specific recommendations
+├── tailwind.config.mjs      # Tailwind CSS configuration
+├── tsconfig.json            # TypeScript configuration (strict mode, path aliases)
+├── vercel.json              # Vercel deployment configuration
+├── node_modules/           # Dependencies (gitignored)
+├── public/                  # Static assets served at root
+│   ├── assets/             # Images, icons, etc.
+│   └── fonts/              # Web fonts
+├── scripts/                 # Utility scripts
+│   ├── create-project.js    # Project creation script
+│   └── setup.js            # Setup/initialization script
+└── src/                     # Source code
+```
+
+### Source Directory (`src/`)
+```
+src/
+├── components/              # Reusable Astro components
+│   └── ContactForm.astro   # Contact/registration form component
+├── layouts/                 # Page layout templates
+│   └── Layout.astro        # Base layout wrapper
+├── lib/                     # Shared utilities and services
+│   ├── database.ts         # PostgreSQL connection and queries
+│   └── email.ts            # Resend email service integration
+├── pages/                   # Astro pages (file-based routing)
+│   ├── api/                # API endpoints (serverless functions)
+│   │   └── signup.ts       # Registration/signup API endpoint
+│   └── index.astro         # Home/landing page
+└── styles/                  # Global styles (currently empty)
+```
+
+### Key Configuration Files
+
+- **`astro.config.mjs`**: Astro configuration
+  - Output mode: `server` (serverless)
+  - Adapter: `@astrojs/vercel/serverless`
+  - Integrations: `@astrojs/tailwind`
+
+- **`tsconfig.json`**: TypeScript configuration
+  - Extends: `astro/tsconfigs/strict`
+  - Path alias: `@/*` → `./src/*`
+
+- **`tailwind.config.mjs`**: Tailwind CSS configuration
+  - Standard Tailwind setup via Astro integration
+
+- **`vercel.json`**: Vercel deployment settings
+  - Serverless function configuration
+
+### Dependencies
+
+**Runtime:**
+- `astro` - Framework
+- `@astrojs/tailwind` - Tailwind integration
+- `@astrojs/vercel` - Vercel adapter
+- `pg` - PostgreSQL client
+- `resend` - Email service
+- `tailwindcss` - CSS framework
+- `lucide-astro` - Icon library
+- `dotenv` - Environment variable loading
+
+**Development:**
+- `@types/pg` - PostgreSQL types
+- `@types/node` - Node.js types
+
+### Scripts
+
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run preview` - Preview production build
+- `npm run setup` - Initialize project structure
+
+### Notes
+
+- All API routes are in `src/pages/api/` (Astro file-based routing)
+- Components use `.astro` extension (Astro component format)
+- TypeScript strict mode enabled
+- Path aliases configured: `@/` maps to `src/`
+- Static assets go in `public/` directory
+- Environment variables template in `env.example`
+
 ## Environment Variables
 Required environment variables:
 - `DATABASE_URL`: PostgreSQL connection string

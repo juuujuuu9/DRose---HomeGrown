@@ -12,8 +12,10 @@
   "dependencies": {
     "@astrojs/tailwind": "^6.0.2",
     "@astrojs/vercel": "^8.2.8",
+    "@types/bcryptjs": "^2.4.6",
     "@types/pg": "^8.15.5",
     "astro": "^5.14.0",
+    "bcryptjs": "^3.0.3",
     "dotenv": "^17.2.2",
     "lucide-astro": "^0.544.0",
     "pg": "^8.16.3",
