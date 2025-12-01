@@ -1,5 +1,6 @@
 import { Resend } from 'resend';
-import type { Submission } from './database';
+import type { Submission, NonPlayerSubmission } from './database';
+import { getTotalEntriesCount } from './database';
 
 // Get API key with better error handling
 const getApiKey = () => {
@@ -43,7 +44,7 @@ const getAdminEmails = () => {
 const ADMIN_EMAILS = getAdminEmails();
 
 // Email template for admin notifications
-function createAdminEmailTemplate(submission: Submission): string {
+function createAdminEmailTemplate(submission: Submission, totalEntries: number): string {
   return `
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
       <h2 style="color: #333; border-bottom: 2px solid #007bff; padding-bottom: 10px;">
@@ -102,7 +103,7 @@ function createAdminEmailTemplate(submission: Submission): string {
       
       <div style="background-color: #e9ecef; padding: 15px; border-radius: 8px; margin-top: 20px;">
         <p style="margin: 0; color: #666; font-size: 12px;">
-          <strong>Submission ID:</strong> ${submission.id}<br>
+          <strong>Total Entries:</strong> ${totalEntries}<br>
           <strong>Submitted:</strong> ${new Date(submission.created_at).toLocaleString()}
         </p>
       </div>
@@ -125,7 +126,8 @@ export async function sendAdminNotification(submission: Submission): Promise<voi
     
     console.log(`Attempting to send admin notifications for submission ${submission.id} to ${ADMIN_EMAILS.length} admins`);
     
-    const emailHtml = createAdminEmailTemplate(submission);
+    const totalEntries = await getTotalEntriesCount();
+    const emailHtml = createAdminEmailTemplate(submission, totalEntries);
     
     // Send email to all admin addresses with rate limiting
     for (let i = 0; i < ADMIN_EMAILS.length; i++) {
@@ -148,6 +150,107 @@ export async function sendAdminNotification(submission: Submission): Promise<voi
       }
     }
     console.log(`✅ Admin notification sent successfully to ${ADMIN_EMAILS.length} admins for submission ${submission.id}`);
+    
+  } catch (error) {
+    console.error('❌ Error sending admin notification:', error);
+  }
+}
+
+// Email template for non-player admin notifications
+function createNonPlayerAdminEmailTemplate(submission: NonPlayerSubmission, totalEntries: number): string {
+  const additionalTicketsList = submission.additional_tickets.length > 0
+    ? submission.additional_tickets.map((name, index) => `<li>${name}</li>`).join('')
+    : '<li>None</li>';
+  
+  return `
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+      <h2 style="color: #333; border-bottom: 2px solid #007bff; padding-bottom: 10px;">
+        New Non-Player RSVP
+      </h2>
+      
+      <p style="color: #666; font-size: 14px; margin-bottom: 20px;">
+        A new RSVP has been received from a non-player.
+      </p>
+      
+      <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+        <h3 style="color: #333; margin-top: 0;">RSVP Details</h3>
+        <table style="width: 100%; border-collapse: collapse;">
+          <tr>
+            <td style="padding: 8px 0; border-bottom: 1px solid #eee;"><strong>Name:</strong></td>
+            <td style="padding: 8px 0; border-bottom: 1px solid #eee;">${submission.name}</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px 0; border-bottom: 1px solid #eee;"><strong>Email:</strong></td>
+            <td style="padding: 8px 0; border-bottom: 1px solid #eee;">${submission.email}</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px 0; border-bottom: 1px solid #eee;"><strong>Phone:</strong></td>
+            <td style="padding: 8px 0; border-bottom: 1px solid #eee;">${submission.phone}</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px 0; border-bottom: 1px solid #eee;"><strong>Number of Tickets:</strong></td>
+            <td style="padding: 8px 0; border-bottom: 1px solid #eee;">${submission.ticket_count}</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px 0; border-bottom: 1px solid #eee; vertical-align: top;"><strong>Additional Tickets:</strong></td>
+            <td style="padding: 8px 0; border-bottom: 1px solid #eee;">
+              <ul style="margin: 0; padding-left: 20px;">
+                ${additionalTicketsList}
+              </ul>
+            </td>
+          </tr>
+        </table>
+      </div>
+      
+      <div style="background-color: #e9ecef; padding: 15px; border-radius: 8px; margin-top: 20px;">
+        <p style="margin: 0; color: #666; font-size: 12px;">
+          <strong>Total Entries:</strong> ${totalEntries}<br>
+          <strong>Submitted:</strong> ${new Date(submission.created_at).toLocaleString()}
+        </p>
+      </div>
+    </div>
+  `;
+}
+
+// Send email notification to all admins for non-player submissions
+export async function sendNonPlayerAdminNotification(submission: NonPlayerSubmission): Promise<void> {
+  try {
+    if (!resend) {
+      console.error('Resend is not properly configured. Check RESEND_API_KEY environment variable.');
+      return;
+    }
+    
+    if (ADMIN_EMAILS.length === 0) {
+      console.error('No admin emails configured. Check ADMIN_EMAIL_1, ADMIN_EMAIL_2, ADMIN_EMAIL_3, ADMIN_EMAIL_4 environment variables.');
+      return;
+    }
+    
+    console.log(`Attempting to send admin notifications for non-player submission ${submission.id} to ${ADMIN_EMAILS.length} admins`);
+    
+    const totalEntries = await getTotalEntriesCount();
+    const emailHtml = createNonPlayerAdminEmailTemplate(submission, totalEntries);
+    
+    // Send email to all admin addresses with rate limiting
+    for (let i = 0; i < ADMIN_EMAILS.length; i++) {
+      const adminEmail = ADMIN_EMAILS[i];
+      try {
+        const result = await resend.emails.send({
+          from: `${import.meta.env.FROM_NAME || 'Your Company'} <${import.meta.env.FROM_EMAIL || 'noreply@yourdomain.com'}>`,
+          to: [adminEmail],
+          subject: `New Non-Player RSVP - ${submission.name} (${submission.ticket_count} ticket${submission.ticket_count > 1 ? 's' : ''})`,
+          html: emailHtml,
+        });
+        console.log(`Admin notification sent successfully to ${adminEmail}:`, result);
+        
+        // Add delay between emails to respect rate limits
+        if (i < ADMIN_EMAILS.length - 1) {
+          await new Promise(resolve => setTimeout(resolve, 600)); // 600ms delay
+        }
+      } catch (emailError) {
+        console.error(`Failed to send admin notification to ${adminEmail}:`, emailError);
+      }
+    }
+    console.log(`✅ Admin notification sent successfully to ${ADMIN_EMAILS.length} admins for non-player submission ${submission.id}`);
     
   } catch (error) {
     console.error('❌ Error sending admin notification:', error);
