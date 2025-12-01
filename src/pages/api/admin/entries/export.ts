@@ -1,6 +1,6 @@
 import type { APIRoute } from 'astro';
 import { requireAuth } from '../../../../lib/auth';
-import { getAllSubmissions } from '../../../../lib/database';
+import { getAllSubmissions, initializeDatabase } from '../../../../lib/database';
 
 export const GET: APIRoute = async ({ cookies }) => {
   try {
@@ -14,6 +14,9 @@ export const GET: APIRoute = async ({ cookies }) => {
       );
     }
 
+    // Initialize database schema (ensures migrations run)
+    await initializeDatabase();
+
     const submissions = await getAllSubmissions();
 
     // Convert to CSV
@@ -22,7 +25,9 @@ export const GET: APIRoute = async ({ cookies }) => {
       'Name',
       'Email',
       'Phone',
-      'Alternative Contact',
+      'Alternative Contact Name',
+      'Alternative Contact Phone',
+      'Alternative Contact Email',
       'Address',
       'Top Size',
       'Bottom Size',
@@ -39,6 +44,8 @@ export const GET: APIRoute = async ({ cookies }) => {
       sub.email,
       sub.phone,
       sub.alternative_contact_name,
+      sub.alternative_contact_phone,
+      sub.alternative_contact_email,
       sub.address,
       sub.top_size,
       sub.bottom_size,

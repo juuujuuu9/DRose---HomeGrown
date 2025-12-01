@@ -1,6 +1,6 @@
 import type { APIRoute } from 'astro';
 import { requireAuth } from '../../../lib/auth';
-import { getAllSubmissions } from '../../../lib/database';
+import { getAllSubmissions, initializeDatabase } from '../../../lib/database';
 
 export const GET: APIRoute = async ({ cookies }) => {
   try {
@@ -14,6 +14,9 @@ export const GET: APIRoute = async ({ cookies }) => {
         }
       );
     }
+
+    // Initialize database schema (ensures migrations run)
+    await initializeDatabase();
 
     // Fetch all submissions
     const submissions = await getAllSubmissions();

@@ -48,8 +48,22 @@ const shoeSizes = Array.from({ length: 13 }, (_, i) => (i + 5).toString());
     </div>
     
     <div>
+      <label for="address" class="block text-sm font-medium text-gray-700 mb-2">
+        Address *
+      </label>
+      <textarea 
+        id="address" 
+        name="address" 
+        rows="3"
+        required
+        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+        placeholder="Enter your address"
+      ></textarea>
+    </div>
+    
+    <div>
       <label for="alternative_contact_name" class="block text-sm font-medium text-gray-700 mb-2">
-        Alternative Contact and Full Name *
+        Alternative Contact Full Name *
       </label>
       <input 
         type="text" 
@@ -62,17 +76,31 @@ const shoeSizes = Array.from({ length: 13 }, (_, i) => (i + 5).toString());
     </div>
     
     <div>
-      <label for="address" class="block text-sm font-medium text-gray-700 mb-2">
-        Address *
+      <label for="alternative_contact_phone" class="block text-sm font-medium text-gray-700 mb-2">
+        Alternative Contact Phone Number *
       </label>
-      <textarea 
-        id="address" 
-        name="address" 
-        rows="3"
-        required
+      <input 
+        type="tel" 
+        id="alternative_contact_phone" 
+        name="alternative_contact_phone" 
+        required 
         class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-        placeholder="Enter your address"
-      ></textarea>
+        placeholder="Enter alternative contact phone number"
+      />
+    </div>
+    
+    <div>
+      <label for="alternative_contact_email" class="block text-sm font-medium text-gray-700 mb-2">
+        Alternative Contact Email *
+      </label>
+      <input 
+        type="email" 
+        id="alternative_contact_email" 
+        name="alternative_contact_email" 
+        required 
+        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+        placeholder="Enter alternative contact email"
+      />
     </div>
     
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -204,7 +232,8 @@ const shoeSizes = Array.from({ length: 13 }, (_, i) => (i + 5).toString());
 
     const actionContainer = document.getElementById('registration-action');
     const errorContainer = document.getElementById('registration-error');
-    const registerButton = document.getElementById('register-button');
+    const registerButtonElement = document.getElementById('register-button');
+    const registerButton = registerButtonElement instanceof HTMLButtonElement ? registerButtonElement : null;
 
     // Clear previous error
     if (errorContainer) {

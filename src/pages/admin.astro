@@ -1,12 +1,15 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import { isAuthenticated } from '../lib/auth';
-import { getAllSubmissions, getAllNonPlayerSubmissions } from '../lib/database';
+import { getAllSubmissions, getAllNonPlayerSubmissions, initializeDatabase } from '../lib/database';
 
 // Check authentication
 if (!isAuthenticated(Astro.cookies)) {
   return Astro.redirect('/login', 302);
 }
+
+// Initialize database schema (ensures migrations run)
+await initializeDatabase();
 
 // Fetch entries server-side
 const entries = await getAllSubmissions();
@@ -199,7 +202,9 @@ const imgBackground = '/assets/background.jpg'; // Update with your actual image
                   <th class="px-2 py-2 text-left text-sm font-bold text-gray-600 uppercase tracking-wide no-wrap whitespace-nowrap border-b-2 border-gray-300 border-l border-gray-200">Name</th>
                   <th class="px-2 py-2 text-left text-sm font-bold text-gray-600 uppercase tracking-wide no-wrap whitespace-nowrap border-b-2 border-gray-300 border-l border-gray-200">Email</th>
                   <th class="px-2 py-2 text-left text-sm font-bold text-gray-600 uppercase tracking-wide no-wrap whitespace-nowrap border-b-2 border-gray-300 border-l border-gray-200">Phone</th>
-                  <th class="px-2 py-2 text-left text-sm font-bold text-gray-600 uppercase tracking-wide no-wrap whitespace-nowrap border-b-2 border-gray-300 border-l border-gray-200">Alternative Contact</th>
+                  <th class="px-2 py-2 text-left text-sm font-bold text-gray-600 uppercase tracking-wide no-wrap whitespace-nowrap border-b-2 border-gray-300 border-l border-gray-200">Alt. Contact Name</th>
+                  <th class="px-2 py-2 text-left text-sm font-bold text-gray-600 uppercase tracking-wide no-wrap whitespace-nowrap border-b-2 border-gray-300 border-l border-gray-200">Alt. Contact Phone</th>
+                  <th class="px-2 py-2 text-left text-sm font-bold text-gray-600 uppercase tracking-wide no-wrap whitespace-nowrap border-b-2 border-gray-300 border-l border-gray-200">Alt. Contact Email</th>
                   <th class="px-2 py-2 text-left text-sm font-bold text-gray-600 uppercase tracking-wide no-wrap whitespace-nowrap border-b-2 border-gray-300 border-l border-gray-200">Address</th>
                   <th class="px-2 py-2 text-left text-sm font-bold text-gray-600 uppercase tracking-wide no-wrap whitespace-nowrap border-b-2 border-gray-300 border-l border-gray-200">Sizes</th>
                   <th class="px-2 py-2 text-center text-sm font-bold text-gray-600 uppercase tracking-wide no-wrap whitespace-nowrap border-b-2 border-gray-300 border-l border-gray-200">Actions</th>
@@ -255,6 +260,8 @@ const imgBackground = '/assets/background.jpg'; // Update with your actual image
                     <td class="px-2 py-2 text-md font-semibold text-gray-800 border-l border-gray-100 whitespace-nowrap">{entry.email}</td>
                     <td class="px-2 py-2 text-md font-semibold text-gray-800 border-l border-gray-100 whitespace-nowrap">{entry.phone || '—'}</td>
                     <td class="px-2 py-2 text-md font-semibold text-gray-800 border-l border-gray-100 whitespace-nowrap">{entry.alternative_contact_name || '—'}</td>
+                    <td class="px-2 py-2 text-md font-semibold text-gray-800 border-l border-gray-100 whitespace-nowrap">{entry.alternative_contact_phone || '—'}</td>
+                    <td class="px-2 py-2 text-md font-semibold text-gray-800 border-l border-gray-100 whitespace-nowrap">{entry.alternative_contact_email || '—'}</td>
                     <td class="px-2 py-2 text-md font-semibold text-gray-800 border-l border-gray-100 whitespace-nowrap">{entry.address || '—'}</td>
                     <td class="px-2 py-2 text-md font-semibold text-gray-800 border-l border-gray-100 whitespace-nowrap">{sizes}</td>
                     <td class="px-2 py-2 text-center border-l border-gray-100 whitespace-nowrap">

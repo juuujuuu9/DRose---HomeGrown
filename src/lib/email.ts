@@ -71,8 +71,16 @@ function createAdminEmailTemplate(submission: Submission, totalEntries: number):
             <td style="padding: 8px 0; border-bottom: 1px solid #eee;">${submission.phone}</td>
           </tr>
           <tr>
-            <td style="padding: 8px 0; border-bottom: 1px solid #eee;"><strong>Alternative Contact:</strong></td>
+            <td style="padding: 8px 0; border-bottom: 1px solid #eee;"><strong>Alternative Contact Name:</strong></td>
             <td style="padding: 8px 0; border-bottom: 1px solid #eee;">${submission.alternative_contact_name}</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px 0; border-bottom: 1px solid #eee;"><strong>Alternative Contact Phone:</strong></td>
+            <td style="padding: 8px 0; border-bottom: 1px solid #eee;">${submission.alternative_contact_phone}</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px 0; border-bottom: 1px solid #eee;"><strong>Alternative Contact Email:</strong></td>
+            <td style="padding: 8px 0; border-bottom: 1px solid #eee;">${submission.alternative_contact_email}</td>
           </tr>
           <tr>
             <td style="padding: 8px 0; border-bottom: 1px solid #eee;"><strong>Address:</strong></td>

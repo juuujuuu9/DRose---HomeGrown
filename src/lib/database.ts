@@ -27,6 +27,8 @@ export interface Submission {
   email: string;
   phone: string;
   alternative_contact_name: string;
+  alternative_contact_phone: string;
+  alternative_contact_email: string;
   address: string;
   top_size: string;
   bottom_size: string;
@@ -59,6 +61,8 @@ export async function initializeDatabase(): Promise<void> {
         email VARCHAR(255) NOT NULL,
         phone VARCHAR(50) NOT NULL,
         alternative_contact_name VARCHAR(255) NOT NULL,
+        alternative_contact_phone VARCHAR(50) NOT NULL,
+        alternative_contact_email VARCHAR(255) NOT NULL,
         address TEXT NOT NULL,
         top_size VARCHAR(10) NOT NULL,
         bottom_size VARCHAR(10) NOT NULL,
@@ -75,6 +79,65 @@ export async function initializeDatabase(): Promise<void> {
       ADD COLUMN IF NOT EXISTS checked_in BOOLEAN DEFAULT FALSE
     `);
     
+    // Add new alternative contact columns if they don't exist (for existing databases)
+    try {
+      await client.query(`
+        ALTER TABLE submissions 
+        ADD COLUMN IF NOT EXISTS alternative_contact_phone VARCHAR(50)
+      `);
+    } catch (error) {
+      console.log('Column alternative_contact_phone may already exist or error:', error);
+    }
+    
+    try {
+      await client.query(`
+        ALTER TABLE submissions 
+        ADD COLUMN IF NOT EXISTS alternative_contact_email VARCHAR(255)
+      `);
+    } catch (error) {
+      console.log('Column alternative_contact_email may already exist or error:', error);
+    }
+    
+    // Update existing rows to have default values for any NULL values
+    try {
+      await client.query(`
+        UPDATE submissions 
+        SET alternative_contact_phone = '' 
+        WHERE alternative_contact_phone IS NULL
+      `);
+    } catch (error) {
+      console.log('Error updating alternative_contact_phone:', error);
+    }
+    
+    try {
+      await client.query(`
+        UPDATE submissions 
+        SET alternative_contact_email = '' 
+        WHERE alternative_contact_email IS NULL
+      `);
+    } catch (error) {
+      console.log('Error updating alternative_contact_email:', error);
+    }
+    
+    // Then add NOT NULL constraint (only if columns exist)
+    try {
+      await client.query(`
+        ALTER TABLE submissions 
+        ALTER COLUMN alternative_contact_phone SET NOT NULL
+      `);
+    } catch (error) {
+      console.log('Could not set NOT NULL on alternative_contact_phone (may already be set):', error);
+    }
+    
+    try {
+      await client.query(`
+        ALTER TABLE submissions 
+        ALTER COLUMN alternative_contact_email SET NOT NULL
+      `);
+    } catch (error) {
+      console.log('Could not set NOT NULL on alternative_contact_email (may already be set):', error);
+    }
+    
     console.log('Database schema initialized successfully');
   } catch (error) {
     console.error('Error initializing database:', error);
@@ -90,6 +153,8 @@ export async function createSubmission(data: {
   email: string;
   phone: string;
   alternative_contact_name: string;
+  alternative_contact_phone: string;
+  alternative_contact_email: string;
   address: string;
   top_size: string;
   bottom_size: string;
@@ -101,19 +166,21 @@ export async function createSubmission(data: {
   try {
     const result = await client.query(`
       INSERT INTO submissions (
-        name, email, phone, alternative_contact_name, address,
+        name, email, phone, alternative_contact_name, alternative_contact_phone, alternative_contact_email, address,
         top_size, bottom_size, jacket_size, tight_size, shoe_size
       )
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
       RETURNING 
         id::text, created_at::text, name, email, phone,
-        alternative_contact_name, address, top_size, bottom_size,
+        alternative_contact_name, alternative_contact_phone, alternative_contact_email, address, top_size, bottom_size,
         jacket_size, tight_size, shoe_size
     `, [
       data.name,
       data.email,
       data.phone,
       data.alternative_contact_name,
+      data.alternative_contact_phone,
+      data.alternative_contact_email,
       data.address,
       data.top_size,
       data.bottom_size,
@@ -138,7 +205,7 @@ export async function getAllSubmissions(): Promise<Submission[]> {
     const result = await client.query(`
       SELECT 
         id::text, created_at::text, name, email, phone,
-        alternative_contact_name, address, top_size, bottom_size,
+        alternative_contact_name, alternative_contact_phone, alternative_contact_email, address, top_size, bottom_size,
         jacket_size, tight_size, shoe_size,
         COALESCE(checked_in, false) as checked_in
       FROM submissions 
