@@ -12,12 +12,15 @@ export function generateSessionToken(): string {
 
 // Set session cookie
 export function setSessionCookie(cookies: Cookies, token: string): void {
+  const isProd = import.meta.env.PROD;
+  
   cookies.set(SESSION_COOKIE_NAME, token, {
     httpOnly: true,
-    secure: import.meta.env.PROD,
-    sameSite: 'strict',
+    secure: isProd, // Only use secure cookies in production (HTTPS required)
+    sameSite: isProd ? 'lax' : 'strict', // 'lax' works better for cross-origin scenarios in production
     maxAge: 60 * 60 * 24 * 7, // 7 days
     path: '/',
+    // Don't set domain - let browser use default (current domain)
   });
 }
 
@@ -28,8 +31,12 @@ export function getSessionToken(cookies: Cookies): string | null {
 
 // Clear session cookie
 export function clearSessionCookie(cookies: Cookies): void {
+  const isProd = import.meta.env.PROD;
+  
   cookies.delete(SESSION_COOKIE_NAME, {
     path: '/',
+    secure: isProd,
+    sameSite: isProd ? 'lax' : 'strict',
   });
 }
 
@@ -42,17 +49,32 @@ export async function verifyAdminCredentials(
   const adminPassword = import.meta.env.ADMIN_PASSWORD || process.env.ADMIN_PASSWORD;
 
   if (!adminUsername || !adminPassword) {
-    console.error('Admin credentials not configured');
+    console.error('[AUTH] Admin credentials not configured:', {
+      hasUsername: !!adminUsername,
+      hasPassword: !!adminPassword,
+      envSource: import.meta.env.ADMIN_USERNAME ? 'import.meta.env' : 'process.env',
+    });
     return false;
   }
 
   if (username !== adminUsername) {
+    console.log('[AUTH] Username mismatch:', {
+      provided: username,
+      expected: adminUsername,
+      match: false,
+    });
     return false;
   }
 
   // Simple direct comparison since password is stored in environment variable
   // In production with a database, you'd hash passwords and use bcrypt.compare()
-  return password === adminPassword;
+  const passwordMatch = password === adminPassword;
+  
+  if (!passwordMatch) {
+    console.log('[AUTH] Password mismatch');
+  }
+  
+  return passwordMatch;
 }
 
 // Check if user is authenticated
