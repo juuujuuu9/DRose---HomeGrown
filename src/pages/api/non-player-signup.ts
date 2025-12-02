@@ -39,13 +39,39 @@ export const POST: APIRoute = async ({ request }) => {
     
     // Validate additional tickets if ticket count > 1
     const additionalTickets = data.additional_tickets || [];
-    if (ticketCount > 1 && additionalTickets.length !== ticketCount - 1) {
-      return new Response(JSON.stringify({ 
-        error: `Please provide names for all ${ticketCount - 1} additional ticket(s).` 
-      }), {
-        status: 400,
-        headers: { 'Content-Type': 'application/json' }
-      });
+    if (ticketCount > 1) {
+      if (additionalTickets.length !== ticketCount - 1) {
+        return new Response(JSON.stringify({ 
+          error: `Please provide information for all ${ticketCount - 1} additional ticket(s).` 
+        }), {
+          status: 400,
+          headers: { 'Content-Type': 'application/json' }
+        });
+      }
+      
+      // Validate each additional ticket has required fields
+      for (let i = 0; i < additionalTickets.length; i++) {
+        const ticket = additionalTickets[i];
+        if (!ticket.name || !ticket.email || !ticket.phone) {
+          return new Response(JSON.stringify({ 
+            error: `Please provide name, email, and phone for additional ticket ${i + 1}.` 
+          }), {
+            status: 400,
+            headers: { 'Content-Type': 'application/json' }
+          });
+        }
+        
+        // Basic email validation
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(ticket.email)) {
+          return new Response(JSON.stringify({ 
+            error: `Please provide a valid email address for additional ticket ${i + 1}.` 
+          }), {
+            status: 400,
+            headers: { 'Content-Type': 'application/json' }
+          });
+        }
+      }
     }
     
     // Create submission

@@ -115,7 +115,7 @@
       // Create fields for additional tickets (count - 1 because first ticket is the main person)
       for (let i = 2; i <= count; i++) {
         const ticketGroup = document.createElement('div');
-        ticketGroup.className = 'border border-gray-200 rounded-lg p-4 bg-gray-50';
+        ticketGroup.className = 'border border-gray-200 rounded-lg p-4 bg-gray-50 space-y-4';
         ticketGroup.innerHTML = `
           <h3 class="text-lg font-semibold text-gray-700 mb-4">Additional Ticket ${i - 1}</h3>
           <div>
@@ -129,6 +129,32 @@
               required 
               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               placeholder="Enter full name"
+            />
+          </div>
+          <div>
+            <label for="ticket_${i}_email" class="block text-sm font-medium text-gray-700 mb-2">
+              Email *
+            </label>
+            <input 
+              type="email" 
+              id="ticket_${i}_email" 
+              name="ticket_${i}_email" 
+              required 
+              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              placeholder="Enter email"
+            />
+          </div>
+          <div>
+            <label for="ticket_${i}_phone" class="block text-sm font-medium text-gray-700 mb-2">
+              Phone Number *
+            </label>
+            <input 
+              type="tel" 
+              id="ticket_${i}_phone" 
+              name="ticket_${i}_phone" 
+              required 
+              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              placeholder="Enter phone number"
             />
           </div>
         `;
@@ -150,15 +176,21 @@
     const formData = new FormData(form);
     const data = Object.fromEntries(formData.entries());
 
-    // Collect additional ticket names
+    // Collect additional ticket information
     const ticketCount = parseInt(data.ticket_count as string);
-    const additionalTickets: string[] = [];
+    const additionalTickets: Array<{ name: string; email: string; phone: string }> = [];
     
     if (ticketCount > 1) {
       for (let i = 2; i <= ticketCount; i++) {
         const ticketName = data[`ticket_${i}_name`] as string;
-        if (ticketName) {
-          additionalTickets.push(ticketName);
+        const ticketEmail = data[`ticket_${i}_email`] as string;
+        const ticketPhone = data[`ticket_${i}_phone`] as string;
+        if (ticketName && ticketEmail && ticketPhone) {
+          additionalTickets.push({
+            name: ticketName,
+            email: ticketEmail,
+            phone: ticketPhone
+          });
         }
       }
     }

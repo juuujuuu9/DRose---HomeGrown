@@ -312,7 +312,11 @@ const imgBackground = '/assets/background.jpg'; // Update with your actual image
                   ? new Date(entry.created_at).toISOString()
                   : (entry.created_at as Date).toISOString();
                 const additionalTickets = entry.additional_tickets && entry.additional_tickets.length > 0
-                  ? entry.additional_tickets.join(', ')
+                  ? entry.additional_tickets.map(ticket => 
+                      typeof ticket === 'string' 
+                        ? ticket 
+                        : `${ticket.name} (${ticket.email}, ${ticket.phone})`
+                    ).join(', ')
                   : '—';
                 
                 return (

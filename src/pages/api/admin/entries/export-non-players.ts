@@ -27,15 +27,25 @@ export const GET: APIRoute = async ({ cookies }) => {
       'Created At'
     ];
 
-    const rows = submissions.map(sub => [
-      sub.id,
-      sub.name,
-      sub.email,
-      sub.phone,
-      sub.ticket_count,
-      Array.isArray(sub.additional_tickets) ? sub.additional_tickets.join('; ') : '',
-      sub.created_at
-    ]);
+    const rows = submissions.map(sub => {
+      const additionalTicketsStr = Array.isArray(sub.additional_tickets) && sub.additional_tickets.length > 0
+        ? sub.additional_tickets.map(ticket => 
+            typeof ticket === 'string' 
+              ? ticket 
+              : `${ticket.name} (${ticket.email}, ${ticket.phone})`
+          ).join('; ')
+        : '';
+      
+      return [
+        sub.id,
+        sub.name,
+        sub.email,
+        sub.phone,
+        sub.ticket_count,
+        additionalTicketsStr,
+        sub.created_at
+      ];
+    });
 
     const csvContent = [
       headers.join(','),

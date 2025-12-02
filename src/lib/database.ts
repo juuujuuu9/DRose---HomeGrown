@@ -46,7 +46,7 @@ export interface NonPlayerSubmission {
   email: string;
   phone: string;
   ticket_count: number;
-  additional_tickets: string[];
+  additional_tickets: Array<{ name: string; email: string; phone: string }>;
 }
 
 // Initialize database schema
@@ -291,7 +291,7 @@ export async function createNonPlayerSubmission(data: {
   email: string;
   phone: string;
   ticket_count: number;
-  additional_tickets: string[];
+  additional_tickets: Array<{ name: string; email: string; phone: string }>;
 }): Promise<NonPlayerSubmission> {
   const client = await pool.connect();
   try {
@@ -375,6 +375,33 @@ export async function getTotalEntriesCount(): Promise<number> {
     return submissionsCount + nonPlayerCount;
   } catch (error) {
     console.error('Error counting total entries:', error);
+    throw error;
+  } finally {
+    client.release();
+  }
+}
+
+// Get separate counts for players and non-players
+export async function getEntryCounts(): Promise<{ player: number; nonPlayer: number; total: number }> {
+  const client = await pool.connect();
+  try {
+    const submissionsResult = await client.query(`
+      SELECT COUNT(*) as count FROM submissions
+    `);
+    const nonPlayerResult = await client.query(`
+      SELECT COUNT(*) as count FROM non_player_submissions
+    `);
+    
+    const playerCount = parseInt(submissionsResult.rows[0].count, 10);
+    const nonPlayerCount = parseInt(nonPlayerResult.rows[0].count, 10);
+    
+    return {
+      player: playerCount,
+      nonPlayer: nonPlayerCount,
+      total: playerCount + nonPlayerCount
+    };
+  } catch (error) {
+    console.error('Error counting entries:', error);
     throw error;
   } finally {
     client.release();

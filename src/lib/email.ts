@@ -1,6 +1,6 @@
 import { Resend } from 'resend';
 import type { Submission, NonPlayerSubmission } from './database';
-import { getTotalEntriesCount } from './database';
+import { getTotalEntriesCount, getEntryCounts } from './database';
 
 // Get API key with better error handling
 const getApiKey = () => {
@@ -44,7 +44,7 @@ const getAdminEmails = () => {
 const ADMIN_EMAILS = getAdminEmails();
 
 // Email template for admin notifications
-function createAdminEmailTemplate(submission: Submission, totalEntries: number): string {
+function createAdminEmailTemplate(submission: Submission, totalEntries: number, playerCount: number, nonPlayerCount: number): string {
   return `
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
       <h2 style="color: #333; border-bottom: 2px solid #007bff; padding-bottom: 10px;">
@@ -111,13 +111,24 @@ function createAdminEmailTemplate(submission: Submission, totalEntries: number):
       
       <div style="background-color: #e9ecef; padding: 15px; border-radius: 8px; margin-top: 20px;">
         <p style="margin: 0; color: #666; font-size: 12px;">
-          <strong>Total Entries:</strong> ${totalEntries}<br>
+          <strong>Total Entries:</strong> ${totalEntries} ( Player: ${playerCount} Non-Player: ${nonPlayerCount} )<br>
           <strong>Submitted:</strong> ${new Date(submission.created_at).toLocaleString()}
         </p>
       </div>
     </div>
   `;
 }
+
+// Get sender email address, using Resend test domain if placeholder is used
+const getSenderEmail = (): string => {
+  const fromEmail = import.meta.env.FROM_EMAIL || process.env.FROM_EMAIL || 'noreply@yourdomain.com';
+  // Use Resend's test domain if placeholder domain is detected
+  if (fromEmail.includes('yourdomain.com') || fromEmail.includes('example.com')) {
+    console.warn('⚠️  Using Resend test domain (onboarding@resend.dev) because FROM_EMAIL uses placeholder domain');
+    return 'onboarding@resend.dev';
+  }
+  return fromEmail;
+};
 
 // Send email notification to all admins
 export async function sendAdminNotification(submission: Submission): Promise<void> {
@@ -134,30 +145,59 @@ export async function sendAdminNotification(submission: Submission): Promise<voi
     
     console.log(`Attempting to send admin notifications for submission ${submission.id} to ${ADMIN_EMAILS.length} admins`);
     
-    const totalEntries = await getTotalEntriesCount();
-    const emailHtml = createAdminEmailTemplate(submission, totalEntries);
+    const entryCounts = await getEntryCounts();
+    const emailHtml = createAdminEmailTemplate(submission, entryCounts.total, entryCounts.player, entryCounts.nonPlayer);
+    const senderEmail = getSenderEmail();
+    const senderName = import.meta.env.FROM_NAME || process.env.FROM_NAME || 'Your Company';
+    
+    let successCount = 0;
+    let failureCount = 0;
     
     // Send email to all admin addresses with rate limiting
     for (let i = 0; i < ADMIN_EMAILS.length; i++) {
       const adminEmail = ADMIN_EMAILS[i];
       try {
         const result = await resend.emails.send({
-          from: `${import.meta.env.FROM_NAME || 'Your Company'} <${import.meta.env.FROM_EMAIL || 'noreply@yourdomain.com'}>`,
+          from: `${senderName} <${senderEmail}>`,
           to: [adminEmail],
-          subject: `New Form Submission - ${submission.name}`,
+          subject: `New Player Submission - ${submission.name}`,
           html: emailHtml,
         });
-        console.log(`Admin notification sent successfully to ${adminEmail}:`, result);
+        
+        // Check if Resend returned an error (even if no exception was thrown)
+        if (result.error) {
+          console.error(`❌ Failed to send admin notification to ${adminEmail}:`, {
+            statusCode: result.error.statusCode,
+            message: result.error.message,
+            name: result.error.name
+          });
+          failureCount++;
+        } else if (result.data) {
+          console.log(`✅ Admin notification sent successfully to ${adminEmail} (ID: ${result.data.id})`);
+          successCount++;
+        } else {
+          console.warn(`⚠️  Unexpected response format from Resend for ${adminEmail}:`, result);
+          failureCount++;
+        }
         
         // Add delay between emails to respect rate limits
         if (i < ADMIN_EMAILS.length - 1) {
           await new Promise(resolve => setTimeout(resolve, 600)); // 600ms delay
         }
       } catch (emailError) {
-        console.error(`Failed to send admin notification to ${adminEmail}:`, emailError);
+        console.error(`❌ Exception sending admin notification to ${adminEmail}:`, emailError);
+        failureCount++;
       }
     }
-    console.log(`✅ Admin notification sent successfully to ${ADMIN_EMAILS.length} admins for submission ${submission.id}`);
+    
+    // Log summary
+    if (successCount > 0 && failureCount === 0) {
+      console.log(`✅ Admin notification sent successfully to all ${successCount} admins for submission ${submission.id}`);
+    } else if (successCount > 0 && failureCount > 0) {
+      console.warn(`⚠️  Admin notification sent to ${successCount} admins, but ${failureCount} failed for submission ${submission.id}`);
+    } else {
+      console.error(`❌ Failed to send admin notification to any admins for submission ${submission.id}`);
+    }
     
   } catch (error) {
     console.error('❌ Error sending admin notification:', error);
@@ -165,9 +205,15 @@ export async function sendAdminNotification(submission: Submission): Promise<voi
 }
 
 // Email template for non-player admin notifications
-function createNonPlayerAdminEmailTemplate(submission: NonPlayerSubmission, totalEntries: number): string {
+function createNonPlayerAdminEmailTemplate(submission: NonPlayerSubmission, totalEntries: number, playerCount: number, nonPlayerCount: number): string {
   const additionalTicketsList = submission.additional_tickets.length > 0
-    ? submission.additional_tickets.map((name, index) => `<li>${name}</li>`).join('')
+    ? submission.additional_tickets.map((ticket, index) => 
+        `<li style="margin-bottom: 10px;">
+          <strong>${ticket.name}</strong><br>
+          Email: ${ticket.email}<br>
+          Phone: ${ticket.phone}
+        </li>`
+      ).join('')
     : '<li>None</li>';
   
   return `
@@ -212,7 +258,7 @@ function createNonPlayerAdminEmailTemplate(submission: NonPlayerSubmission, tota
       
       <div style="background-color: #e9ecef; padding: 15px; border-radius: 8px; margin-top: 20px;">
         <p style="margin: 0; color: #666; font-size: 12px;">
-          <strong>Total Entries:</strong> ${totalEntries}<br>
+          <strong>Total Entries:</strong> ${totalEntries} ( Player: ${playerCount} Non-Player: ${nonPlayerCount} )<br>
           <strong>Submitted:</strong> ${new Date(submission.created_at).toLocaleString()}
         </p>
       </div>
@@ -235,30 +281,59 @@ export async function sendNonPlayerAdminNotification(submission: NonPlayerSubmis
     
     console.log(`Attempting to send admin notifications for non-player submission ${submission.id} to ${ADMIN_EMAILS.length} admins`);
     
-    const totalEntries = await getTotalEntriesCount();
-    const emailHtml = createNonPlayerAdminEmailTemplate(submission, totalEntries);
+    const entryCounts = await getEntryCounts();
+    const emailHtml = createNonPlayerAdminEmailTemplate(submission, entryCounts.total, entryCounts.player, entryCounts.nonPlayer);
+    const senderEmail = getSenderEmail();
+    const senderName = import.meta.env.FROM_NAME || process.env.FROM_NAME || 'Your Company';
+    
+    let successCount = 0;
+    let failureCount = 0;
     
     // Send email to all admin addresses with rate limiting
     for (let i = 0; i < ADMIN_EMAILS.length; i++) {
       const adminEmail = ADMIN_EMAILS[i];
       try {
         const result = await resend.emails.send({
-          from: `${import.meta.env.FROM_NAME || 'Your Company'} <${import.meta.env.FROM_EMAIL || 'noreply@yourdomain.com'}>`,
+          from: `${senderName} <${senderEmail}>`,
           to: [adminEmail],
           subject: `New Non-Player RSVP - ${submission.name} (${submission.ticket_count} ticket${submission.ticket_count > 1 ? 's' : ''})`,
           html: emailHtml,
         });
-        console.log(`Admin notification sent successfully to ${adminEmail}:`, result);
+        
+        // Check if Resend returned an error (even if no exception was thrown)
+        if (result.error) {
+          console.error(`❌ Failed to send admin notification to ${adminEmail}:`, {
+            statusCode: result.error.statusCode,
+            message: result.error.message,
+            name: result.error.name
+          });
+          failureCount++;
+        } else if (result.data) {
+          console.log(`✅ Admin notification sent successfully to ${adminEmail} (ID: ${result.data.id})`);
+          successCount++;
+        } else {
+          console.warn(`⚠️  Unexpected response format from Resend for ${adminEmail}:`, result);
+          failureCount++;
+        }
         
         // Add delay between emails to respect rate limits
         if (i < ADMIN_EMAILS.length - 1) {
           await new Promise(resolve => setTimeout(resolve, 600)); // 600ms delay
         }
       } catch (emailError) {
-        console.error(`Failed to send admin notification to ${adminEmail}:`, emailError);
+        console.error(`❌ Exception sending admin notification to ${adminEmail}:`, emailError);
+        failureCount++;
       }
     }
-    console.log(`✅ Admin notification sent successfully to ${ADMIN_EMAILS.length} admins for non-player submission ${submission.id}`);
+    
+    // Log summary
+    if (successCount > 0 && failureCount === 0) {
+      console.log(`✅ Admin notification sent successfully to all ${successCount} admins for non-player submission ${submission.id}`);
+    } else if (successCount > 0 && failureCount > 0) {
+      console.warn(`⚠️  Admin notification sent to ${successCount} admins, but ${failureCount} failed for non-player submission ${submission.id}`);
+    } else {
+      console.error(`❌ Failed to send admin notification to any admins for non-player submission ${submission.id}`);
+    }
     
   } catch (error) {
     console.error('❌ Error sending admin notification:', error);
