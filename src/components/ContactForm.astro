@@ -571,12 +571,36 @@ const sizeOptions = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
     // Get UI elements
     const errorContainer = document.getElementById('registration-error');
     const submitButtonWrapper = document.getElementById('submit-button-wrapper') as HTMLButtonElement;
-    const submitButton = submitButtonWrapper?.querySelector('p') as HTMLParagraphElement;
+    const submitButtonText = submitButtonWrapper?.querySelector('span') as HTMLSpanElement;
     
     // Clear previous error
     if (errorContainer) {
       errorContainer.textContent = '';
       errorContainer.classList.add('hidden');
+    }
+    
+    // Set loading state IMMEDIATELY to prevent multiple clicks
+    let originalButtonHTML = null;
+    let isSubmitting = false;
+    
+    if (submitButtonWrapper) {
+      // Check if already submitting to prevent double-clicks
+      if (submitButtonWrapper.disabled || submitButtonWrapper.getAttribute('aria-busy') === 'true') {
+        return; // Already submitting, ignore this click
+      }
+      
+      // Disable button immediately (synchronous)
+      submitButtonWrapper.disabled = true;
+      submitButtonWrapper.setAttribute('aria-busy', 'true');
+      submitButtonWrapper.style.opacity = '0.6';
+      submitButtonWrapper.style.cursor = 'not-allowed';
+      isSubmitting = true;
+      
+      // Update button text
+      if (submitButtonText) {
+        originalButtonHTML = submitButtonText.innerHTML;
+        submitButtonText.innerHTML = 'SUBMITTING...';
+      }
     }
     
     // Validate required fields before submission
@@ -599,23 +623,21 @@ const sizeOptions = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
     
     if (missingFields.length > 0) {
       console.error('Missing required fields:', missingFields);
+      // Reset button state if validation fails
+      if (submitButtonWrapper && isSubmitting) {
+        submitButtonWrapper.disabled = false;
+        submitButtonWrapper.removeAttribute('aria-busy');
+        submitButtonWrapper.style.opacity = '1';
+        submitButtonWrapper.style.cursor = 'pointer';
+        if (submitButtonText && originalButtonHTML !== null) {
+          submitButtonText.innerHTML = originalButtonHTML;
+        }
+      }
       if (errorContainer) {
         errorContainer.textContent = `Please fill in all required fields. Missing: ${missingFields.join(', ')}`;
         errorContainer.classList.remove('hidden');
       }
       return;
-    }
-
-    // Loading state
-    let originalButtonHTML = null;
-    if (submitButton) {
-      originalButtonHTML = submitButton.innerHTML;
-      submitButton.innerHTML = 'SUBMITTING...';
-      if (submitButtonWrapper) {
-        submitButtonWrapper.style.opacity = '0.6';
-        submitButtonWrapper.style.cursor = 'not-allowed';
-        submitButtonWrapper.setAttribute('aria-busy', 'true');
-      }
     }
 
     try {
@@ -641,12 +663,13 @@ const sizeOptions = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
           errorContainer.textContent = errorMessage;
           errorContainer.classList.remove('hidden');
         }
-        if (submitButton && originalButtonHTML !== null) {
-          submitButton.innerHTML = originalButtonHTML;
-          if (submitButtonWrapper) {
-            submitButtonWrapper.style.opacity = '1';
-            submitButtonWrapper.style.cursor = 'pointer';
-            submitButtonWrapper.removeAttribute('aria-busy');
+        if (submitButtonWrapper && isSubmitting) {
+          submitButtonWrapper.disabled = false;
+          submitButtonWrapper.removeAttribute('aria-busy');
+          submitButtonWrapper.style.opacity = '1';
+          submitButtonWrapper.style.cursor = 'pointer';
+          if (submitButtonText && originalButtonHTML !== null) {
+            submitButtonText.innerHTML = originalButtonHTML;
           }
         }
       }
@@ -656,12 +679,13 @@ const sizeOptions = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
         errorContainer.textContent = 'Something went wrong. Please try again.';
         errorContainer.classList.remove('hidden');
       }
-      if (submitButton && originalButtonHTML !== null) {
-        submitButton.innerHTML = originalButtonHTML;
-        if (submitButtonWrapper) {
-          submitButtonWrapper.style.opacity = '1';
-          submitButtonWrapper.style.cursor = 'pointer';
-          submitButtonWrapper.removeAttribute('aria-busy');
+      if (submitButtonWrapper && isSubmitting) {
+        submitButtonWrapper.disabled = false;
+        submitButtonWrapper.removeAttribute('aria-busy');
+        submitButtonWrapper.style.opacity = '1';
+        submitButtonWrapper.style.cursor = 'pointer';
+        if (submitButtonText && originalButtonHTML !== null) {
+          submitButtonText.innerHTML = originalButtonHTML;
         }
       }
     }
