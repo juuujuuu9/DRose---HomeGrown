@@ -103,16 +103,19 @@ const shoeSizes = Array.from({ length: 13 }, (_, i) => (i + 5).toString());
       />
     </div>
     
+    <!-- Size Selection Fields -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <!-- Top Size -->
       <div>
-        <label for="top_size" class="block text-sm font-medium text-gray-700 mb-2">
+        <label for="top_size" class="hidden md:block text-sm font-medium text-gray-700 mb-2">
           Top Size (XS-XXL) *
         </label>
+        <!-- Desktop Dropdown -->
         <select 
           id="top_size" 
           name="top_size" 
           required 
-          class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          class="hidden md:block w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
         >
           <option value="">Select size</option>
           <option value="XS">XS</option>
@@ -122,17 +125,36 @@ const shoeSizes = Array.from({ length: 13 }, (_, i) => (i + 5).toString());
           <option value="XL">XL</option>
           <option value="XXL">XXL</option>
         </select>
+        <!-- Mobile Button Selector -->
+        <div class="md:hidden bg-gray-900/80 backdrop-blur-sm p-4 rounded-lg">
+          <label class="block text-white uppercase text-sm font-medium mb-3">TOP SIZE</label>
+          <div class="grid grid-cols-6 gap-2">
+            {['XS', 'S', 'M', 'L', 'XL', 'XXL'].map(size => (
+              <button
+                type="button"
+                data-size-field="top_size"
+                data-size-value={size}
+                class="size-button px-3 py-2 text-sm font-medium rounded border border-gray-500 bg-gray-800 text-white hover:bg-gray-700 transition-colors"
+                data-selected="false"
+              >
+                {size}
+              </button>
+            ))}
+          </div>
+        </div>
       </div>
       
+      <!-- Bottom Size -->
       <div>
-        <label for="bottom_size" class="block text-sm font-medium text-gray-700 mb-2">
+        <label for="bottom_size" class="hidden md:block text-sm font-medium text-gray-700 mb-2">
           Bottom Size (XS-XXL) *
         </label>
+        <!-- Desktop Dropdown -->
         <select 
           id="bottom_size" 
           name="bottom_size" 
           required 
-          class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          class="hidden md:block w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
         >
           <option value="">Select size</option>
           <option value="XS">XS</option>
@@ -142,17 +164,36 @@ const shoeSizes = Array.from({ length: 13 }, (_, i) => (i + 5).toString());
           <option value="XL">XL</option>
           <option value="XXL">XXL</option>
         </select>
+        <!-- Mobile Button Selector -->
+        <div class="md:hidden bg-gray-900/80 backdrop-blur-sm p-4 rounded-lg">
+          <label class="block text-white uppercase text-sm font-medium mb-3">BOTTOM SIZE</label>
+          <div class="grid grid-cols-6 gap-2">
+            {['XS', 'S', 'M', 'L', 'XL', 'XXL'].map(size => (
+              <button
+                type="button"
+                data-size-field="bottom_size"
+                data-size-value={size}
+                class="size-button px-3 py-2 text-sm font-medium rounded border border-gray-500 bg-gray-800 text-white hover:bg-gray-700 transition-colors"
+                data-selected="false"
+              >
+                {size}
+              </button>
+            ))}
+          </div>
+        </div>
       </div>
       
+      <!-- Jacket/Hoodie Size -->
       <div>
-        <label for="jacket_size" class="block text-sm font-medium text-gray-700 mb-2">
+        <label for="jacket_size" class="hidden md:block text-sm font-medium text-gray-700 mb-2">
           Jacket/Hoodie Size (XS-XXL) *
         </label>
+        <!-- Desktop Dropdown -->
         <select 
           id="jacket_size" 
           name="jacket_size" 
           required 
-          class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          class="hidden md:block w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
         >
           <option value="">Select size</option>
           <option value="XS">XS</option>
@@ -162,17 +203,36 @@ const shoeSizes = Array.from({ length: 13 }, (_, i) => (i + 5).toString());
           <option value="XL">XL</option>
           <option value="XXL">XXL</option>
         </select>
+        <!-- Mobile Button Selector -->
+        <div class="md:hidden bg-gray-900/80 backdrop-blur-sm p-4 rounded-lg">
+          <label class="block text-white uppercase text-sm font-medium mb-3">JACKET/HOODIE SIZE</label>
+          <div class="grid grid-cols-6 gap-2">
+            {['XS', 'S', 'M', 'L', 'XL', 'XXL'].map(size => (
+              <button
+                type="button"
+                data-size-field="jacket_size"
+                data-size-value={size}
+                class="size-button px-3 py-2 text-sm font-medium rounded border border-gray-500 bg-gray-800 text-white hover:bg-gray-700 transition-colors"
+                data-selected="false"
+              >
+                {size}
+              </button>
+            ))}
+          </div>
+        </div>
       </div>
       
+      <!-- Tight Size -->
       <div>
-        <label for="tight_size" class="block text-sm font-medium text-gray-700 mb-2">
+        <label for="tight_size" class="hidden md:block text-sm font-medium text-gray-700 mb-2">
           Tight Size (XS-XXL) *
         </label>
+        <!-- Desktop Dropdown -->
         <select 
           id="tight_size" 
           name="tight_size" 
           required 
-          class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          class="hidden md:block w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
         >
           <option value="">Select size</option>
           <option value="XS">XS</option>
@@ -182,24 +242,73 @@ const shoeSizes = Array.from({ length: 13 }, (_, i) => (i + 5).toString());
           <option value="XL">XL</option>
           <option value="XXL">XXL</option>
         </select>
+        <!-- Mobile Button Selector -->
+        <div class="md:hidden bg-gray-900/80 backdrop-blur-sm p-4 rounded-lg">
+          <label class="block text-white uppercase text-sm font-medium mb-3">TIGHT SIZE</label>
+          <div class="grid grid-cols-6 gap-2">
+            {['XS', 'S', 'M', 'L', 'XL', 'XXL'].map(size => (
+              <button
+                type="button"
+                data-size-field="tight_size"
+                data-size-value={size}
+                class="size-button px-3 py-2 text-sm font-medium rounded border border-gray-500 bg-gray-800 text-white hover:bg-gray-700 transition-colors"
+                data-selected="false"
+              >
+                {size}
+              </button>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
     
+    <!-- Shoe Size -->
     <div>
-      <label for="shoe_size" class="block text-sm font-medium text-gray-700 mb-2">
+      <label for="shoe_size" class="hidden md:block text-sm font-medium text-gray-700 mb-2">
         Shoe Size (5-17) *
       </label>
+      <!-- Desktop Dropdown -->
       <select 
         id="shoe_size" 
         name="shoe_size" 
         required 
-        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+        class="hidden md:block w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
       >
         <option value="">Select size</option>
         {shoeSizes.map(size => (
           <option value={size}>{size}</option>
         ))}
       </select>
+      <!-- Mobile Button Selector -->
+      <div class="md:hidden bg-gray-900/80 backdrop-blur-sm p-4 rounded-lg">
+        <label class="block text-white uppercase text-sm font-medium mb-3">SHOE SIZE</label>
+        <div class="grid grid-cols-[repeat(7,minmax(0,1fr))] gap-2">
+          {shoeSizes.slice(0, 7).map(size => (
+            <button
+              type="button"
+              data-size-field="shoe_size"
+              data-size-value={size}
+              class="size-button px-2 py-2 text-sm font-medium rounded border border-gray-500 bg-gray-800 text-white hover:bg-gray-700 transition-colors"
+              data-selected="false"
+            >
+              {size}
+            </button>
+          ))}
+        </div>
+        <div class="grid grid-cols-4 gap-2 mt-2">
+          {shoeSizes.slice(7).map(size => (
+            <button
+              type="button"
+              data-size-field="shoe_size"
+              data-size-value={size}
+              class="size-button px-3 py-2 text-sm font-medium rounded border border-gray-500 bg-gray-800 text-white hover:bg-gray-700 transition-colors"
+              data-selected="false"
+            >
+              {size}
+            </button>
+          ))}
+        </div>
+      </div>
     </div>
 
     <!-- Submit Button / Inline Confirmation Area -->
@@ -223,6 +332,37 @@ const shoeSizes = Array.from({ length: 13 }, (_, i) => (i + 5).toString());
 </div>
 
 <script>
+  // Mobile size button handler
+  document.querySelectorAll('.size-button').forEach(button => {
+    button.addEventListener('click', function() {
+      const fieldName = this.getAttribute('data-size-field');
+      const sizeValue = this.getAttribute('data-size-value');
+      const selectElement = document.getElementById(fieldName) as HTMLSelectElement;
+      
+      if (!selectElement) return;
+      
+      // Update select value
+      selectElement.value = sizeValue;
+      
+      // Update all buttons in this group
+      const allButtons = document.querySelectorAll(`[data-size-field="${fieldName}"]`);
+      allButtons.forEach(btn => {
+        const isSelected = btn === this;
+        btn.setAttribute('data-selected', isSelected.toString());
+        
+        if (isSelected) {
+          // Selected: white background, dark text
+          btn.classList.remove('bg-gray-800', 'text-white', 'border-gray-500');
+          btn.classList.add('bg-white', 'text-gray-900', 'border-white');
+        } else {
+          // Unselected: dark background, white text
+          btn.classList.remove('bg-white', 'text-gray-900', 'border-white');
+          btn.classList.add('bg-gray-800', 'text-white', 'border-gray-500');
+        }
+      });
+    });
+  });
+
   document.getElementById('registration-form')?.addEventListener('submit', async (e) => {
     e.preventDefault();
 
@@ -276,6 +416,12 @@ const shoeSizes = Array.from({ length: 13 }, (_, i) => (i + 5).toString());
           `;
         }
         form.reset();
+        // Reset mobile size buttons
+        document.querySelectorAll('.size-button').forEach(btn => {
+          btn.setAttribute('data-selected', 'false');
+          btn.classList.remove('bg-white', 'text-gray-900', 'border-white');
+          btn.classList.add('bg-gray-800', 'text-white', 'border-gray-500');
+        });
       } else {
         const errorData = await response.json().catch(() => ({}));
         console.error('Server error:', errorData);
