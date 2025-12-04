@@ -24,47 +24,64 @@ function splitName(name: string): { firstName: string; lastName: string } {
   };
 }
 
-// Background image - update this path to your actual background image
-const imgBackground = '/assets/background.jpg'; // Update with your actual image path
+// Desktop background images from Figma (updated URLs)
+const imgRsvpPagePlayersOnlyFormOpt2 = "https://www.figma.com/api/mcp/asset/5b27b049-97da-418a-9e48-90dccbb0d4e4";
+const imgRsvpPagePlayersOnlyFormOpt3 = "https://www.figma.com/api/mcp/asset/b61944d2-0df1-4e37-95e1-42b45a13e9fa";
+// Mobile background images from Figma
+const imgRsvpPagePlayersOnlyFormMobile = "https://www.figma.com/api/mcp/asset/b53e319b-a7bb-4131-b717-1b5005bc5e65";
+const imgRsvpPagePlayersOnlyFormMobile1 = "https://www.figma.com/api/mcp/asset/cec3d09d-efa4-48f2-b208-83b3f6fb2210";
+// Desktop logos
+const imgDerrickRoseDesktop = "https://www.figma.com/api/mcp/asset/1e346d4c-6df8-425d-8567-97003bcfbbe1";
+const imgHomegrownCursiveDesktop = "https://www.figma.com/api/mcp/asset/ee0ae443-0dba-4ebc-994c-4d92329058d6";
+// Mobile logos
+const imgDerrickRoseMobile = "https://www.figma.com/api/mcp/asset/44ae098a-0d6e-40ab-9e62-e928bac7c3f6";
+const imgHomegrownCursiveMobile = "https://www.figma.com/api/mcp/asset/aaa531a4-5a7c-4c3f-b36d-e045c6f12dd5";
 ---
 
 <Layout title="Admin Dashboard">
-  <div class="relative min-h-screen py-4 px-2 bg-black">
-
-    <div 
-      aria-hidden="true" 
-      class="fixed-bg-mobile inset-0 pointer-events-none bg-no-repeat bg-center bg-cover"
-      style={`background-image: url('${imgBackground}');`}
-    ></div>
-
-    <div 
-      aria-hidden="true" 
-      class="fixed inset-0 pointer-events-none bg-gradient-to-b from-transparent to-black/60 z-0"
-    ></div>
+  <div class="relative min-h-screen py-4 px-2 bg-black overflow-hidden">
+    <!-- Background Images - Desktop -->
+    <div aria-hidden="true" class="hidden lg:block fixed inset-0 pointer-events-none z-0">
+      <div class="absolute bg-black inset-0"></div>
+      <img 
+        alt="" 
+        class="absolute max-w-none object-cover size-full opacity-50" 
+        src={imgRsvpPagePlayersOnlyFormOpt2} 
+      />
+      <img 
+        alt="" 
+        class="absolute max-w-none object-cover size-full opacity-50" 
+        src={imgRsvpPagePlayersOnlyFormOpt3} 
+      />
+    </div>
+    
+    <!-- Background Images - Mobile -->
+    <div aria-hidden="true" class="lg:hidden fixed inset-0 pointer-events-none z-0">
+      <div class="absolute bg-black inset-0"></div>
+      <img 
+        alt="" 
+        class="absolute max-w-none object-cover size-full opacity-50" 
+        src={imgRsvpPagePlayersOnlyFormMobile} 
+      />
+      <img 
+        alt="" 
+        class="absolute max-w-none object-cover size-full opacity-50" 
+        src={imgRsvpPagePlayersOnlyFormMobile1} 
+      />
+    </div>
 
     <!-- Header -->
-    <div class="relative z-10 flex justify-between items-center mb-4 pb-4 border-b border-gray-200 max-w-7xl mx-auto">
+    <div class="relative z-10 flex justify-between items-center mb-4 pb-2 border-b border-[rgba(255,255,255,0.3)] max-w-7xl mx-auto animate-fade-in">
         <div class="flex flex-row gap-4">
-            <a href="/" class="h-[60px] overflow-clip relative shrink-0 w-[95px] ml-3">
-              <!-- <svg id="Layer_2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 375.06 152.68" class="block max-w-none size-full">
-                <defs>
-                  <style>.cls-1{fill-rule:evenodd;}.cls-1,.cls-2{fill:#fff;}</style>
-                </defs>
-                <g id="Layer_2-2">
-                  <g id="Artwork_201">
-                    <path class="cls-2" d="M49.2,47.9c-5.1-3.6-11.3-5.7-18-5.7C13.9,42.2,0,56.2,0,73.5s14,31.2,31.2,31.2,12.9-2.1,17.9-5.7v.2l14.6,4.2v-59.8l-14.6,4.2.1.1ZM31.7,90.8c-9.6,0-17.3-7.8-17.3-17.3s7.8-17.3,17.3-17.3,17.3,7.8,17.3,17.3-7.8,17.3-17.3,17.3M306.4,47.9c-5.1-3.6-11.3-5.7-18-5.7-17.3,0-31.3,14-31.3,31.3s14,31.2,31.3,31.2,12.9-2.1,17.9-5.7v.2l14.6,4.2v-59.8l-14.6,4.2.1.1ZM288.9,90.8c-9.6,0-17.3-7.8-17.3-17.3s7.8-17.3,17.3-17.3,17.3,7.8,17.3,17.3-7.8,17.3-17.3,17.3M125.7,73.5v.6-1.2.6M125.7,73.5v.6-1.2.6M125.7,73.5v.6-1.2.6M125.7,0v47.8c-5-3.5-11.2-5.5-17.8-5.5-17.3,0-31.3,14-31.3,31.3s14,31.2,31.3,31.2,12.7-2,17.8-5.5h0l14.8,4.3V.1h-14.8v-.1ZM125.7,74.1c-.3,9.3-7.9,16.7-17.3,16.7s-17.3-7.8-17.3-17.3,7.8-17.3,17.3-17.3,17,7.4,17.3,16.7v1.2M229.9,73.5v.9-1.8.9M229.9,73.5v.9-1.8.9M229.8,0v47.8c-5-3.5-11.2-5.5-17.8-5.5-17.3,0-31.3,14-31.3,31.3s14,31.2,31.3,31.2,12.7-2,17.8-5.5h0l14.8,4.3V.1h-14.8v-.1ZM229.8,74.4c-.5,9.1-8,16.4-17.3,16.4s-17.3-7.8-17.3-17.3,7.8-17.3,17.3-17.3,16.8,7.3,17.3,16.4v1.8M229.9,73.5v.9-1.8.9M153.4,43.7h14.8v59.8h-14.8v-59.8h0ZM168.3,28.5c0,4.1-3.3,7.4-7.4,7.4s-7.4-3.3-7.4-7.4,3.3-7.4,7.4-7.4,7.4,3.3,7.4,7.4M369.5,58.8c-7.4-4.7-14.5-5.7-17.4-2.7-1.2,1.2-2.1,3.3-1.6,5.2.7,2.7,4,3.7,7.9,5.4,5.6,2.5,12,5.5,14.9,10.6,3.8,6.7.3,14.9,0,15.4-2.2,4.8-5.8,7.3-7,8.1-12.4,8.4-31.2-1.1-32.2-1.6l4.1-12c1,.6,12.2,7.3,18.6,4.9.9-.4,2.8-1.1,3.8-2.9,1.1-2.1.4-4.5.2-4.8-1.2-3.5-5-3.7-11.3-7-4.9-2.6-9.6-5.1-12-10-2-4.4-1.3-8.6-1-9.9,1.3-6.5,6-10.1,7.5-11.2,6.5-4.7,13.8-4,16.9-3.7,6,.6,10.4,2.9,12.8,4.4l-4.2,11.9v-.1Z"/>
-                    <path class="cls-1" d="M287,140.8c0-2.5,0-5.1-.2-7.6-.1-3.2-2.8-5.8-6-5.7-2.3-.1-7.2,0-7.4,0v25c.2,0,5.1.1,7.4,0,3.2,0,5.9-2.5,6-5.7.2-2,.2-4,.2-6M282.9,145.4c0,1.9-1.5,3.5-3.4,3.6h-2.2v-18c1,0,2.1.1,3.1.3,1.5.3,2.5,1.7,2.4,3.2v10.9h.1Z"/>
-                    <path class="cls-1" d="M266.2,131c-1.1-2.7-3.5-3.6-6.4-3.5-3.7,0-6.4,2.3-6.5,5.9-.2,4.4-.1,8.8,0,13.2.1,3.4,2.2,5.5,5.6,6,4.4.5,7.6-1.5,8-5.9.2-2.1.1-9.8,0-11.5,0-1.4-.2-2.8-.7-4.1M262.9,146.3c0,1.5-1.2,2.7-2.7,2.7h-.3c-1.5,0-2.8-1.1-2.8-2.6v-12.5c0-1.6,1.1-2.9,2.7-3h.9c1.3.2,2.3,1.3,2.2,2.6v12.7h0v.1Z"/>
-                    <path class="cls-1" d="M192.3,129.5c-1.5-1.5-3.6-2.3-5.8-2-3.2,0-5.9,2.6-6,5.9-.1,4.4,0,8.9,0,13.3,0,1.6.7,3.2,1.9,4.3,1.4,1.2,3.2,1.8,5,1.6,3.3.2,6.2-2.3,6.4-5.6v-.2c.1-2.2.2-10.2.2-12,0-1.9-.5-3.8-1.7-5.3M190.1,146.2c0,1.5-1.1,2.8-2.6,2.9-.3,0-.6,0-.9-.1-1.3-.2-2.3-1.4-2.2-2.7v-12.5c0-1.5,1.1-2.7,2.6-2.8h.3c1.5,0,2.7,1.1,2.8,2.5v12.6h0v.1Z"/>
-                    <path class="cls-1" d="M200.6,127.5v25c0,.2,0,0,0,0h3.9v-10.1h5.6v-3.9h-5.6v-7.7h7.6v-3.5h-11.6l.1.2Z"/>
-                    <path class="cls-1" d="M246.6,138.9h-7v3.2h3.3c.1,1,0,5.7,0,6.7-1.2.8-2.7,1.1-4,.7-2-.6-2-2.4-2.1-4.5-.1-2.5-.2-3.9-.2-6.4v-4.6c0-1.3.9-2.5,2.3-2.7,1.5-.3,2.9.6,3.2,2.1v.3c.2.8.2,1.7.3,2.5h4.1c0-.9-.2-1.8-.4-2.6-.3-2.4-1.3-4.4-3.6-5.4-2.5-1.2-5.5-.8-7.7.9-.6.5-1,1-1.3,1.7-.5,1.3-.9,2.6-.9,4-.1,3-.1,6,0,9.1,0,1.4.2,2.8.5,4.1.5,2.5,2.7,4.4,5.3,4.5,6,.7,8.1-2.5,8.1-2.5v-11.1h.1Z"/>
-                    <path class="cls-1" d="M129.1,127.5c-1.3,7.1-2.8,14.8-4.2,21.9-.2,1.1-.4,2.1-.6,3.2h3.8c.3-1.8.7-3.6,1-5.4h5.4c.4,1.8.7,3.6,1.1,5.4h4.1c-1.7-8.4-3.4-16.7-5.1-25.1h-5.5M129.8,143.5l2-10.8h.1l2,10.8h-4.1Z"/>
-                    <path class="cls-1" d="M106.3,152.6h11.4v-3.6h-7.5v-6.5h5.5v-3.9h-5.6v-7.7h7.5v-3.5h-11.4v25.1l.1.1Z"/>
-                    <polygon class="cls-1" points="88.2 152.6 92.1 152.6 92.1 142.5 97.8 142.5 97.7 138.7 92.2 138.7 92.2 131 99.8 131 99.8 127.5 88.2 127.5 88.2 152.6"/>
-                    <path class="cls-1" d="M156.2,141.2c2-.8,3.3-2.7,3.4-4.8.2-1.2.2-2.5,0-3.7-.3-3.2-2.6-5.2-6-5.2h-7.4v25.1h3.9v-10.2h2.3c1,3,2.4,7.2,3.4,10.2h4.2c-1.2-3.6-2.7-8.1-3.8-11.4h0ZM155.8,135.7c0,1.8-1.5,2.6-3.4,2.7h-2.2v-7.8c1,0,2.1,0,3.1.1,1.5.3,2.4.8,2.4,2.5v2.4h0l.1.1Z"/>
-                  </g>
-                </g>
-              </svg> -->
+            <a href="/" class="overflow-clip py-[10px] ml-3">
+              <!-- Mobile: Derrick Rose Logo -->
+              <div class="lg:hidden h-[60px] relative shrink-0 w-[61.535px]">
+                <img alt="Derrick Rose" class="block max-w-none size-full" src={imgDerrickRoseMobile} />
+              </div>
+              <!-- Desktop: Derrick Rose Logo -->
+              <div class="hidden lg:block h-[79px] relative shrink-0 w-[81px]">
+                <img alt="Derrick Rose" class="block max-w-none size-full" src={imgDerrickRoseDesktop} />
+              </div>
             </a>
         </div>
 
@@ -72,7 +89,7 @@ const imgBackground = '/assets/background.jpg'; // Update with your actual image
           <!-- Export CSVs Button -->
             <button
             id="export-csv-btn"
-            class="px-3 py-2 border border-gray-200 rounded-lg text-gray-700 bg-white hover:bg-gray-50 transition-colors flex items-center gap-2.5 font-semibold uppercase text-sm shadow-sm"
+            class="px-3 py-2 border border-[rgba(255,255,255,0.5)] rounded-[4px] text-white bg-[#212121] hover:bg-[#2a2a2a] transition-colors flex items-center gap-2.5 font-roboto-condensed font-semibold uppercase text-sm"
             >
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
@@ -81,7 +98,7 @@ const imgBackground = '/assets/background.jpg'; // Update with your actual image
             </button>
             <button
             id="logout-btn"
-            class="px-3 py-2 border border-gray-200 rounded-lg text-gray-700 bg-white hover:bg-gray-50 transition-colors flex items-center gap-2.5 font-semibold uppercase text-sm shadow-sm"
+            class="px-3 py-2 border border-[rgba(255,255,255,0.5)] rounded-[4px] text-white bg-[#212121] hover:bg-[#2a2a2a] transition-colors flex items-center gap-2.5 font-roboto-condensed font-semibold uppercase text-sm"
             >
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
@@ -91,12 +108,12 @@ const imgBackground = '/assets/background.jpg'; // Update with your actual image
         </div>
     </div>
 
-    <div class="relative z-10 max-w-7xl mx-auto bg-white/90 rounded-xl shadow-md p-2">
+    <div class="relative z-10 max-w-7xl mx-auto bg-[#212121]/25 backdrop-blur-sm rounded-xl border border-[rgba(255,255,255,0.2)] shadow-md p-2 animate-fade-in">
       <!-- Search and Filter Section -->
       <div class="flex flex-col sm:flex-row gap-2 mb-3 sm:items-center">
         <div class="flex-1 relative w-full">
           <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-            <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="w-5 h-5 text-[rgba(255,255,255,0.5)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
           </div>
@@ -104,13 +121,13 @@ const imgBackground = '/assets/background.jpg'; // Update with your actual image
             type="text"
             id="search-input"
             placeholder="SEARCH ENTRIES"
-            class="w-full pl-12 pr-5 py-3.5 border border-gray-200 rounded-lg bg-gray-50/50 text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-300 focus:border-transparent font-semibold uppercase text-sm"
+            class="w-full pl-12 pr-5 py-3.5 border border-[rgba(255,255,255,0.5)] rounded-[4px] bg-[#1a1a1a] text-white placeholder:text-[rgba(255,255,255,0.5)] focus:outline-none focus:ring-2 focus:ring-[#ce1141] focus:border-[#ce1141] font-roboto-condensed font-semibold uppercase text-sm"
           />
         </div>
         <div class="relative w-full sm:w-auto">
           <button
             id="sort-btn"
-            class="w-full sm:w-auto px-3 py-3.5 border border-gray-200 rounded-lg text-gray-700 bg-white hover:bg-gray-50 transition-colors flex items-center gap-2 font-semibold uppercase text-sm shadow-sm sm:min-w-[140px] justify-between"
+            class="w-full sm:w-auto px-3 py-3.5 border border-[rgba(255,255,255,0.5)] rounded-[4px] text-white bg-[#212121] hover:bg-[#2a2a2a] transition-colors flex items-center gap-2 font-roboto-condensed font-semibold uppercase text-sm sm:min-w-[140px] justify-between"
             aria-expanded="false"
             aria-haspopup="true"
           >
@@ -126,10 +143,10 @@ const imgBackground = '/assets/background.jpg'; // Update with your actual image
           </button>
           <div
             id="sort-dropdown"
-            class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 z-50"
+            class="hidden absolute right-0 mt-2 w-48 bg-[#212121] rounded-[4px] shadow-lg border border-[rgba(255,255,255,0.3)] z-50"
           >
             <button
-              class="sort-option w-full text-left px-4 py-3 text-sm font-semibold uppercase text-gray-700 hover:bg-gray-50 transition-colors flex items-center justify-between"
+              class="sort-option w-full text-left px-4 py-3 text-sm font-roboto-condensed font-semibold uppercase text-white hover:bg-[#2a2a2a] transition-colors flex items-center justify-between"
               data-sort="name-asc"
             >
               <span>Name (A-Z)</span>
@@ -138,7 +155,7 @@ const imgBackground = '/assets/background.jpg'; // Update with your actual image
               </svg>
             </button>
             <button
-              class="sort-option w-full text-left px-4 py-3 text-sm font-semibold uppercase text-gray-700 hover:bg-gray-50 transition-colors flex items-center justify-between border-t border-gray-100"
+              class="sort-option w-full text-left px-4 py-3 text-sm font-roboto-condensed font-semibold uppercase text-white hover:bg-[#2a2a2a] transition-colors flex items-center justify-between border-t border-[rgba(255,255,255,0.2)]"
               data-sort="name-desc"
             >
               <span>Name (Z-A)</span>
@@ -147,7 +164,7 @@ const imgBackground = '/assets/background.jpg'; // Update with your actual image
               </svg>
             </button>
             <button
-              class="sort-option w-full text-left px-4 py-3 text-sm font-semibold uppercase text-gray-700 hover:bg-gray-50 transition-colors flex items-center justify-between border-t border-gray-100"
+              class="sort-option w-full text-left px-4 py-3 text-sm font-roboto-condensed font-semibold uppercase text-white hover:bg-[#2a2a2a] transition-colors flex items-center justify-between border-t border-[rgba(255,255,255,0.2)]"
               data-sort="date"
             >
               <span>Date</span>
@@ -157,26 +174,26 @@ const imgBackground = '/assets/background.jpg'; // Update with your actual image
             </button>
           </div>
         </div>
-        <p class="text-sm font-semibold text-gray-500 uppercase tracking-wide text-center sm:text-left pr-3">
-            Total <span id="entry-count" class="font-bold text-gray-700">{entries.length + nonPlayerEntries.length}</span> Entries
+        <p class="text-sm font-roboto-condensed font-semibold text-[rgba(255,255,255,0.7)] uppercase tracking-wide text-center sm:text-left pr-3">
+            Total <span id="entry-count" class="font-bold text-white">{entries.length + nonPlayerEntries.length}</span> Entries
         </p>
       </div>
 
       <!-- Title and Tabs Section -->
-      <div class="mb-4 border-b border-gray-200 pb-2">
-        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pl-3 md:pt-6 md:pb-0">
-          <h2 id="section-title" class="text-2xl font-bold text-gray-800 uppercase tracking-tight text-center sm:text-left">Player Entries</h2>
-          <div class="inline-flex bg-gray-100 rounded-lg p-1 shadow-inner" style="box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.25);">
+      <div class="mb-4 border-b border-[rgba(255,255,255,0.3)] pb-2">
+        <div class="flex flex-col sm:flex-row justify-center sm:justify-between items-center gap-4 pl-3 md:pt-6 md:pb-0">
+          <h2 id="section-title" class="text-2xl font-prohibition text-[#ce1141] uppercase tracking-wider text-center sm:text-left">Player Entries</h2>
+          <div class="inline-flex bg-[#1a1a1a] rounded-lg p-1 border border-[rgba(255,255,255,0.2)]">
             <button
               id="tab-players"
-              class="tab-btn px-6 py-2.5 text-sm font-semibold uppercase tracking-wide rounded-md bg-gray-600 text-white transition-all duration-100 shadow-sm"
+              class="tab-btn px-6 py-2.5 text-sm font-roboto-condensed font-semibold uppercase tracking-wide rounded-md bg-[#ce1141] text-white transition-all duration-100"
               data-tab="players"
             >
               Players (<span id="players-count">{entries.length}</span>)
             </button>
             <button
               id="tab-non-players"
-              class="tab-btn px-6 py-2.5 text-sm font-semibold uppercase tracking-wide rounded-md bg-transparent text-gray-600 transition-all duration-100"
+              class="tab-btn px-6 py-2.5 text-sm font-roboto-condensed font-semibold uppercase tracking-wide rounded-md bg-transparent text-[rgba(255,255,255,0.7)] transition-all duration-100"
               data-tab="non-players"
             >
               Non-Players (<span id="non-players-count">{nonPlayerEntries.length}</span>)
@@ -188,34 +205,34 @@ const imgBackground = '/assets/background.jpg'; // Update with your actual image
       <!-- Players Table Section -->
       <div id="players-table-section" class="tab-content">
 
-        <div class="overflow-x-auto rounded-xl shadow-md border bg-white border-gray-200">
+        <div class="overflow-x-auto rounded-xl border border-[rgba(255,255,255,0.2)] bg-[#1a1a1a]">
           {entries.length === 0 ? (
-            <div class="text-center py-16 text-gray-500">
-              <p class="text-lg font-semibold mb-2">No player entries found.</p>
-              <p class="text-sm">Entries will appear here once users submit the RSVP form.</p>
+            <div class="text-center py-16 text-[rgba(255,255,255,0.7)]">
+              <p class="text-lg font-roboto-condensed font-semibold mb-2">No player entries found.</p>
+              <p class="text-sm font-roboto-condensed">Entries will appear here once users submit the RSVP form.</p>
             </div>
           ) : (
             <table class="w-full border-collapse min-w-full">
               <thead>
-                <tr class="bg-[#F1F3F5]">
-                  <th class="w-auto px-2 py-2 text-left text-sm font-bold text-gray-600 uppercase tracking-wide no-wrap whitespace-nowrap border-b-2 border-gray-300">Check-In</th>
-                  <th class="px-2 py-2 text-left text-sm font-bold text-gray-600 uppercase tracking-wide no-wrap whitespace-nowrap border-b-2 border-gray-300 border-l border-gray-200">Name</th>
-                  <th class="px-2 py-2 text-left text-sm font-bold text-gray-600 uppercase tracking-wide no-wrap whitespace-nowrap border-b-2 border-gray-300 border-l border-gray-200">Email</th>
-                  <th class="px-2 py-2 text-left text-sm font-bold text-gray-600 uppercase tracking-wide no-wrap whitespace-nowrap border-b-2 border-gray-300 border-l border-gray-200">Phone</th>
-                  <th class="px-2 py-2 text-left text-sm font-bold text-gray-600 uppercase tracking-wide no-wrap whitespace-nowrap border-b-2 border-gray-300 border-l border-gray-200">Alt. Contact Name</th>
-                  <th class="px-2 py-2 text-left text-sm font-bold text-gray-600 uppercase tracking-wide no-wrap whitespace-nowrap border-b-2 border-gray-300 border-l border-gray-200">Alt. Contact Phone</th>
-                  <th class="px-2 py-2 text-left text-sm font-bold text-gray-600 uppercase tracking-wide no-wrap whitespace-nowrap border-b-2 border-gray-300 border-l border-gray-200">Alt. Contact Email</th>
-                  <th class="px-2 py-2 text-left text-sm font-bold text-gray-600 uppercase tracking-wide no-wrap whitespace-nowrap border-b-2 border-gray-300 border-l border-gray-200">Address</th>
-                  <th class="px-2 py-2 text-left text-sm font-bold text-gray-600 uppercase tracking-wide no-wrap whitespace-nowrap border-b-2 border-gray-300 border-l border-gray-200">Sizes</th>
-                  <th class="px-2 py-2 text-center text-sm font-bold text-gray-600 uppercase tracking-wide no-wrap whitespace-nowrap border-b-2 border-gray-300 border-l border-gray-200">Actions</th>
+                <tr class="bg-[#212121]">
+                  <th class="w-auto px-2 py-2 text-left text-sm font-roboto-condensed font-bold text-white uppercase tracking-wide no-wrap whitespace-nowrap border-b-2 border-[rgba(255,255,255,0.3)]">Check-In</th>
+                  <th class="px-2 py-2 text-left text-sm font-roboto-condensed font-bold text-white uppercase tracking-wide no-wrap whitespace-nowrap border-b-2 border-[rgba(255,255,255,0.3)] border-l border-[rgba(255,255,255,0.2)]">Name</th>
+                  <th class="px-2 py-2 text-left text-sm font-roboto-condensed font-bold text-white uppercase tracking-wide no-wrap whitespace-nowrap border-b-2 border-[rgba(255,255,255,0.3)] border-l border-[rgba(255,255,255,0.2)]">Email</th>
+                  <th class="px-2 py-2 text-left text-sm font-roboto-condensed font-bold text-white uppercase tracking-wide no-wrap whitespace-nowrap border-b-2 border-[rgba(255,255,255,0.3)] border-l border-[rgba(255,255,255,0.2)]">Phone</th>
+                  <th class="px-2 py-2 text-left text-sm font-roboto-condensed font-bold text-white uppercase tracking-wide no-wrap whitespace-nowrap border-b-2 border-[rgba(255,255,255,0.3)] border-l border-[rgba(255,255,255,0.2)]">Alt. Contact Name</th>
+                  <th class="px-2 py-2 text-left text-sm font-roboto-condensed font-bold text-white uppercase tracking-wide no-wrap whitespace-nowrap border-b-2 border-[rgba(255,255,255,0.3)] border-l border-[rgba(255,255,255,0.2)]">Alt. Contact Phone</th>
+                  <th class="px-2 py-2 text-left text-sm font-roboto-condensed font-bold text-white uppercase tracking-wide no-wrap whitespace-nowrap border-b-2 border-[rgba(255,255,255,0.3)] border-l border-[rgba(255,255,255,0.2)]">Alt. Contact Email</th>
+                  <th class="px-2 py-2 text-left text-sm font-roboto-condensed font-bold text-white uppercase tracking-wide no-wrap whitespace-nowrap border-b-2 border-[rgba(255,255,255,0.3)] border-l border-[rgba(255,255,255,0.2)]">Address</th>
+                  <th class="px-2 py-2 text-left text-sm font-roboto-condensed font-bold text-white uppercase tracking-wide no-wrap whitespace-nowrap border-b-2 border-[rgba(255,255,255,0.3)] border-l border-[rgba(255,255,255,0.2)]">Sizes</th>
+                  <th class="px-2 py-2 text-center text-sm font-roboto-condensed font-bold text-white uppercase tracking-wide no-wrap whitespace-nowrap border-b-2 border-[rgba(255,255,255,0.3)] border-l border-[rgba(255,255,255,0.2)]">Actions</th>
                 </tr>
               </thead>
-              <tbody id="entries-tbody" class="divide-y divide-gray-200">
+              <tbody id="entries-tbody" class="divide-y divide-[rgba(255,255,255,0.1)]">
                 {entries.map((entry) => {
                 const checkInStatus = entry.checked_in ? 'ATTENDING' : 'CHECK-IN';
                 const checkInColor = entry.checked_in 
-                  ? 'bg-green-100 text-green-800 border border-green-200' 
-                  : 'bg-yellow-100 text-yellow-800 border border-yellow-200';
+                  ? 'bg-green-600 text-white border border-green-500' 
+                  : 'bg-[#ce1141] text-white border border-[#b01038]';
                 const { firstName } = splitName(entry.name || '');
                 const dateValue = typeof entry.created_at === 'string' 
                   ? new Date(entry.created_at).toISOString()
@@ -230,7 +247,7 @@ const imgBackground = '/assets/background.jpg'; // Update with your actual image
                 
                 return (
                   <tr 
-                    class="hover:bg-gray-50/50 transition-colors" 
+                    class="hover:bg-[#2a2a2a] transition-colors" 
                     data-entry-id={entry.id}
                     data-first-name={firstName.toLowerCase()}
                     data-created-at={dateValue}
@@ -243,7 +260,7 @@ const imgBackground = '/assets/background.jpg'; // Update with your actual image
                           data-entry-id={entry.id}
                           checked={entry.checked_in || false}
                         />
-                        <span class={`inline-flex items-center justify-center w-8 h-8 rounded-full text-xs font-bold uppercase tracking-wide ${checkInColor}`}>
+                        <span class={`inline-flex items-center justify-center w-8 h-8 rounded-full text-xs font-roboto-condensed font-bold uppercase tracking-wide ${checkInColor}`}>
                           {entry.checked_in ? (
                             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
@@ -256,17 +273,17 @@ const imgBackground = '/assets/background.jpg'; // Update with your actual image
                         </span>
                       </label>
                     </td>
-                    <td class="px-2 py-2 text-md font-semibold text-gray-800 capitalize border-l border-gray-100 whitespace-nowrap">{entry.name || '—'}</td>
-                    <td class="px-2 py-2 text-md font-semibold text-gray-800 border-l border-gray-100 whitespace-nowrap">{entry.email}</td>
-                    <td class="px-2 py-2 text-md font-semibold text-gray-800 border-l border-gray-100 whitespace-nowrap">{entry.phone || '—'}</td>
-                    <td class="px-2 py-2 text-md font-semibold text-gray-800 border-l border-gray-100 whitespace-nowrap">{entry.alternative_contact_name || '—'}</td>
-                    <td class="px-2 py-2 text-md font-semibold text-gray-800 border-l border-gray-100 whitespace-nowrap">{entry.alternative_contact_phone || '—'}</td>
-                    <td class="px-2 py-2 text-md font-semibold text-gray-800 border-l border-gray-100 whitespace-nowrap">{entry.alternative_contact_email || '—'}</td>
-                    <td class="px-2 py-2 text-md font-semibold text-gray-800 border-l border-gray-100 whitespace-nowrap">{entry.address || '—'}</td>
-                    <td class="px-2 py-2 text-md font-semibold text-gray-800 border-l border-gray-100 whitespace-nowrap">{sizes}</td>
-                    <td class="px-2 py-2 text-center border-l border-gray-100 whitespace-nowrap">
+                    <td class="px-2 py-2 text-md font-roboto-condensed font-semibold text-white capitalize border-l border-[rgba(255,255,255,0.1)] whitespace-nowrap">{entry.name || '—'}</td>
+                    <td class="px-2 py-2 text-md font-roboto-condensed font-semibold text-white border-l border-[rgba(255,255,255,0.1)] whitespace-nowrap">{entry.email}</td>
+                    <td class="px-2 py-2 text-md font-roboto-condensed font-semibold text-white border-l border-[rgba(255,255,255,0.1)] whitespace-nowrap">{entry.phone || '—'}</td>
+                    <td class="px-2 py-2 text-md font-roboto-condensed font-semibold text-white border-l border-[rgba(255,255,255,0.1)] whitespace-nowrap">{entry.alternative_contact_name || '—'}</td>
+                    <td class="px-2 py-2 text-md font-roboto-condensed font-semibold text-white border-l border-[rgba(255,255,255,0.1)] whitespace-nowrap">{entry.alternative_contact_phone || '—'}</td>
+                    <td class="px-2 py-2 text-md font-roboto-condensed font-semibold text-white border-l border-[rgba(255,255,255,0.1)] whitespace-nowrap">{entry.alternative_contact_email || '—'}</td>
+                    <td class="px-2 py-2 text-md font-roboto-condensed font-semibold text-white border-l border-[rgba(255,255,255,0.1)] whitespace-nowrap">{entry.address || '—'}</td>
+                    <td class="px-2 py-2 text-md font-roboto-condensed font-semibold text-white border-l border-[rgba(255,255,255,0.1)] whitespace-nowrap">{sizes}</td>
+                    <td class="px-2 py-2 text-center border-l border-[rgba(255,255,255,0.1)] whitespace-nowrap">
                       <button
-                        class="delete-entry-btn px-3 py-1.5 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors text-sm font-semibold uppercase flex items-center gap-2 mx-auto"
+                        class="delete-entry-btn px-3 py-1.5 bg-[#ce1141] text-white rounded-[4px] hover:bg-[#b01038] transition-colors text-sm font-roboto-condensed font-semibold uppercase flex items-center gap-2 mx-auto"
                         data-entry-id={entry.id}
                         data-entry-name={entry.name}
                       >
@@ -287,25 +304,25 @@ const imgBackground = '/assets/background.jpg'; // Update with your actual image
       <!-- Non-Players Table Section -->
       <div id="non-players-table-section" class="tab-content hidden">
 
-        <div class="overflow-x-auto rounded-xl shadow-md border bg-white border-gray-200">
+        <div class="overflow-x-auto rounded-xl border border-[rgba(255,255,255,0.2)] bg-[#1a1a1a]">
           {nonPlayerEntries.length === 0 ? (
-            <div class="text-center py-16 text-gray-500">
-              <p class="text-lg font-semibold mb-2">No non-player entries found.</p>
-              <p class="text-sm">Entries will appear here once users submit the non-player form.</p>
+            <div class="text-center py-16 text-[rgba(255,255,255,0.7)]">
+              <p class="text-lg font-roboto-condensed font-semibold mb-2">No non-player entries found.</p>
+              <p class="text-sm font-roboto-condensed">Entries will appear here once users submit the non-player form.</p>
             </div>
           ) : (
             <table class="w-full border-collapse min-w-full">
               <thead>
-                <tr class="bg-[#F1F3F5]">
-                  <th class="px-2 py-2 text-left text-sm font-bold text-gray-600 uppercase tracking-wide no-wrap whitespace-nowrap border-b-2 border-gray-300">Name</th>
-                  <th class="px-2 py-2 text-left text-sm font-bold text-gray-600 uppercase tracking-wide no-wrap whitespace-nowrap border-b-2 border-gray-300 border-l border-gray-200">Email</th>
-                  <th class="px-2 py-2 text-left text-sm font-bold text-gray-600 uppercase tracking-wide no-wrap whitespace-nowrap border-b-2 border-gray-300 border-l border-gray-200">Phone</th>
-                  <th class="px-2 py-2 text-left text-sm font-bold text-gray-600 uppercase tracking-wide no-wrap whitespace-nowrap border-b-2 border-gray-300 border-l border-gray-200">Ticket Count</th>
-                  <th class="px-2 py-2 text-left text-sm font-bold text-gray-600 uppercase tracking-wide no-wrap whitespace-nowrap border-b-2 border-gray-300 border-l border-gray-200">Additional Tickets</th>
-                  <th class="px-2 py-2 text-center text-sm font-bold text-gray-600 uppercase tracking-wide no-wrap whitespace-nowrap border-b-2 border-gray-300 border-l border-gray-200">Actions</th>
+                <tr class="bg-[#212121]">
+                  <th class="px-2 py-2 text-left text-sm font-roboto-condensed font-bold text-white uppercase tracking-wide no-wrap whitespace-nowrap border-b-2 border-[rgba(255,255,255,0.3)]">Name</th>
+                  <th class="px-2 py-2 text-left text-sm font-roboto-condensed font-bold text-white uppercase tracking-wide no-wrap whitespace-nowrap border-b-2 border-[rgba(255,255,255,0.3)] border-l border-[rgba(255,255,255,0.2)]">Email</th>
+                  <th class="px-2 py-2 text-left text-sm font-roboto-condensed font-bold text-white uppercase tracking-wide no-wrap whitespace-nowrap border-b-2 border-[rgba(255,255,255,0.3)] border-l border-[rgba(255,255,255,0.2)]">Phone</th>
+                  <th class="px-2 py-2 text-left text-sm font-roboto-condensed font-bold text-white uppercase tracking-wide no-wrap whitespace-nowrap border-b-2 border-[rgba(255,255,255,0.3)] border-l border-[rgba(255,255,255,0.2)]">Ticket Count</th>
+                  <th class="px-2 py-2 text-left text-sm font-roboto-condensed font-bold text-white uppercase tracking-wide no-wrap whitespace-nowrap border-b-2 border-[rgba(255,255,255,0.3)] border-l border-[rgba(255,255,255,0.2)]">Additional Tickets</th>
+                  <th class="px-2 py-2 text-center text-sm font-roboto-condensed font-bold text-white uppercase tracking-wide no-wrap whitespace-nowrap border-b-2 border-[rgba(255,255,255,0.3)] border-l border-[rgba(255,255,255,0.2)]">Actions</th>
                 </tr>
               </thead>
-              <tbody id="non-player-entries-tbody" class="divide-y divide-gray-200">
+              <tbody id="non-player-entries-tbody" class="divide-y divide-[rgba(255,255,255,0.1)]">
                 {nonPlayerEntries.map((entry) => {
                 const { firstName } = splitName(entry.name || '');
                 const dateValue = typeof entry.created_at === 'string' 
@@ -321,19 +338,19 @@ const imgBackground = '/assets/background.jpg'; // Update with your actual image
                 
                 return (
                   <tr 
-                    class="hover:bg-gray-50/50 transition-colors" 
+                    class="hover:bg-[#2a2a2a] transition-colors" 
                     data-entry-id={entry.id}
                     data-first-name={firstName.toLowerCase()}
                     data-created-at={dateValue}
                   >
-                    <td class="px-2 py-2 text-md font-semibold text-gray-800 capitalize whitespace-nowrap">{entry.name || '—'}</td>
-                    <td class="px-2 py-2 text-md font-semibold text-gray-800 border-l border-gray-100 whitespace-nowrap">{entry.email}</td>
-                    <td class="px-2 py-2 text-md font-semibold text-gray-800 border-l border-gray-100 whitespace-nowrap">{entry.phone || '—'}</td>
-                    <td class="px-2 py-2 text-md font-semibold text-gray-800 border-l border-gray-100 whitespace-nowrap">{entry.ticket_count}</td>
-                    <td class="px-2 py-2 text-md font-semibold text-gray-800 border-l border-gray-100 whitespace-nowrap">{additionalTickets}</td>
-                    <td class="px-2 py-2 text-center border-l border-gray-100 whitespace-nowrap">
+                    <td class="px-2 py-2 text-md font-roboto-condensed font-semibold text-white capitalize whitespace-nowrap">{entry.name || '—'}</td>
+                    <td class="px-2 py-2 text-md font-roboto-condensed font-semibold text-white border-l border-[rgba(255,255,255,0.1)] whitespace-nowrap">{entry.email}</td>
+                    <td class="px-2 py-2 text-md font-roboto-condensed font-semibold text-white border-l border-[rgba(255,255,255,0.1)] whitespace-nowrap">{entry.phone || '—'}</td>
+                    <td class="px-2 py-2 text-md font-roboto-condensed font-semibold text-white border-l border-[rgba(255,255,255,0.1)] whitespace-nowrap">{entry.ticket_count}</td>
+                    <td class="px-2 py-2 text-md font-roboto-condensed font-semibold text-white border-l border-[rgba(255,255,255,0.1)] whitespace-nowrap">{additionalTickets}</td>
+                    <td class="px-2 py-2 text-center border-l border-[rgba(255,255,255,0.1)] whitespace-nowrap">
                       <button
-                        class="delete-non-player-entry-btn px-3 py-1.5 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors text-sm font-semibold uppercase flex items-center gap-2 mx-auto"
+                        class="delete-non-player-entry-btn px-3 py-1.5 bg-[#ce1141] text-white rounded-[4px] hover:bg-[#b01038] transition-colors text-sm font-roboto-condensed font-semibold uppercase flex items-center gap-2 mx-auto"
                         data-entry-id={entry.id}
                         data-entry-name={entry.name}
                       >
@@ -354,6 +371,23 @@ const imgBackground = '/assets/background.jpg'; // Update with your actual image
   </div>
 </Layout>
 
+<style>
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-fade-in {
+    animation: fadeIn 0.6s ease-out forwards;
+  }
+</style>
+
 <script>
   // Helper function to split name
   function splitName(name: string): { firstName: string; lastName: string } {
@@ -366,7 +400,7 @@ const imgBackground = '/assets/background.jpg'; // Update with your actual image
 
   // Get current active tab
   function getActiveTab(): string {
-    const activeTab = document.querySelector('.tab-btn.bg-gray-600');
+    const activeTab = document.querySelector('.tab-btn.bg-\\[\\#ce1141\\]');
     return activeTab?.getAttribute('data-tab') || 'players';
   }
 
@@ -535,14 +569,14 @@ const imgBackground = '/assets/background.jpg'; // Update with your actual image
   function switchTab(tabName: string): void {
     // Update tab buttons - switch style
     document.querySelectorAll('.tab-btn').forEach(btn => {
-      btn.classList.remove('bg-gray-600', 'text-white', 'shadow-sm');
-      btn.classList.add('bg-transparent', 'text-gray-600');
+      btn.classList.remove('bg-[#ce1141]', 'text-white');
+      btn.classList.add('bg-transparent', 'text-[rgba(255,255,255,0.7)]');
     });
     
     const activeBtn = document.querySelector(`[data-tab="${tabName}"]`);
     if (activeBtn) {
-      activeBtn.classList.remove('bg-transparent', 'text-gray-600');
-      activeBtn.classList.add('bg-gray-600', 'text-white', 'shadow-sm');
+      activeBtn.classList.remove('bg-transparent', 'text-[rgba(255,255,255,0.7)]');
+      activeBtn.classList.add('bg-[#ce1141]', 'text-white');
     }
     
     // Update section title
@@ -635,8 +669,8 @@ const imgBackground = '/assets/background.jpg'; // Update with your actual image
         if (checkbox) checkbox.checked = checkedIn;
         if (statusSpan) {
           statusSpan.className = checkedIn
-            ? 'inline-flex items-center justify-center w-8 h-8 rounded-full text-xs font-bold uppercase tracking-wide bg-green-100 text-green-800 border border-green-200'
-            : 'inline-flex items-center justify-center w-8 h-8 rounded-full text-xs font-bold uppercase tracking-wide bg-yellow-100 text-yellow-800 border border-yellow-200';
+            ? 'inline-flex items-center justify-center w-8 h-8 rounded-full text-xs font-roboto-condensed font-bold uppercase tracking-wide bg-green-600 text-white border border-green-500'
+            : 'inline-flex items-center justify-center w-8 h-8 rounded-full text-xs font-roboto-condensed font-bold uppercase tracking-wide bg-[#ce1141] text-white border border-[#b01038]';
           statusSpan.innerHTML = checkedIn
             ? `<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" /></svg>`
             : `<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" stroke-width="2" /></svg>`;
