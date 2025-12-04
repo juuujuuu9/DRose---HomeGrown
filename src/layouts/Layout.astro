@@ -13,7 +13,51 @@ const { title } = Astro.props;
     <meta name="description" content="Landing Page Template" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700&display=swap" rel="stylesheet" />
     <title>{title}</title>
+    <style>
+      /* Prohibition Font Face */
+      @font-face {
+        font-family: 'Prohibition';
+        src: url('/fonts/Prohibition-Regular.woff') format('woff');
+        font-weight: 400;
+        font-style: normal;
+        font-display: swap;
+      }
+      
+      /* Prohibition Font Class */
+      .font-prohibition {
+        font-family: 'Prohibition', 'Impact', 'Arial Black', sans-serif;
+        font-weight: 400;
+        font-style: normal;
+        letter-spacing: 0.05em;
+      }
+      
+      .font-roboto-condensed {
+        font-family: 'Roboto Condensed', sans-serif;
+      }
+      
+      /* Apply Roboto Condensed to all form elements globally */
+      form,
+      form input,
+      form textarea,
+      form select,
+      form option,
+      form label,
+      form button:not(.font-prohibition),
+      form p,
+      form span {
+        font-family: 'Roboto Condensed', sans-serif !important;
+      }
+      
+      /* Ensure form placeholders also use Roboto Condensed */
+      form input::placeholder,
+      form textarea::placeholder {
+        font-family: 'Roboto Condensed', sans-serif !important;
+      }
+    </style>
   </head>
   <body>
     <slot />

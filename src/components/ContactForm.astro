@@ -1,335 +1,411 @@
 ---
 // Registration form component
-const shoeSizes = Array.from({ length: 13 }, (_, i) => (i + 5).toString());
+const shoeSizes = Array.from({ length: 11 }, (_, i) => (i + 5).toString());
+const sizeOptions = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
 ---
 
-<div class="bg-white p-8 rounded-lg shadow-lg">
-  <form id="registration-form" class="space-y-10">
-    <div>
-      <label for="name" class="block text-sm font-medium text-gray-700 mb-2">
-        Name (First and Last) *
-      </label>
-      <input 
-        type="text" 
-        id="name" 
-        name="name" 
-        required 
-        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-        placeholder="Enter your full name"
-      />
+<form id="registration-form" class="w-full">
+  <!-- Player Section -->
+  <div class="flex flex-col gap-[8px] items-start w-full">
+    <p class="font-roboto-condensed font-bold leading-normal relative shrink-0 text-[12px] text-white uppercase w-full whitespace-pre-wrap">
+      Player
+    </p>
+    
+    <!-- First Name and Last Name Row -->
+    <div class="flex flex-col items-start w-full">
+      <div class="flex gap-[10px] items-start w-full">
+        <div class="bg-[#212121] border border-[rgba(255,255,255,0.5)] border-solid flex flex-1 flex-col items-center min-h-0 overflow-clip px-4 md:px-[16px] py-3 md:py-[12px] rounded-[4px]">
+          <input
+            type="text"
+            id="first_name"
+            name="first_name"
+            required
+            class="w-full bg-transparent border-0 outline-0 font-roboto-condensed font-normal leading-normal text-[15px] text-white placeholder:text-[rgba(255,255,255,0.5)]"
+            placeholder="First Name"
+          />
+        </div>
+        <div class="bg-[#212121] border border-[rgba(255,255,255,0.5)] border-solid flex flex-1 flex-col items-center min-h-0 overflow-clip px-4 md:px-[16px] py-3 md:py-[12px] rounded-[4px]">
+          <input
+            type="text"
+            id="last_name"
+            name="last_name"
+            required
+            class="w-full bg-transparent border-0 outline-0 font-roboto-condensed font-normal leading-normal text-[15px] text-white placeholder:text-[rgba(255,255,255,0.5)]"
+            placeholder="Last Name"
+          />
+        </div>
+      </div>
     </div>
     
-    <div>
-      <label for="phone" class="block text-sm font-medium text-gray-700 mb-2">
-        Phone Number *
-      </label>
-      <input 
-        type="tel" 
-        id="phone" 
-        name="phone" 
-        required 
-        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-        placeholder="Enter your phone number"
-      />
-    </div>
-    
-    <div>
-      <label for="email" class="block text-sm font-medium text-gray-700 mb-2">
-        Email *
-      </label>
-      <input 
-        type="email" 
-        id="email" 
-        name="email" 
-        required 
-        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-        placeholder="Enter your email"
-      />
-    </div>
-    
-    <div>
-      <label for="address" class="block text-sm font-medium text-gray-700 mb-2">
-        Address *
-      </label>
-      <textarea 
-        id="address" 
-        name="address" 
-        rows="3"
+    <!-- Email Full Width (Mobile) -->
+    <div class="md:hidden bg-[#212121] border border-[rgba(255,255,255,0.5)] border-solid flex flex-col items-center overflow-clip px-4 py-3 rounded-[4px] w-full">
+      <input
+        type="email"
+        id="email"
+        name="email"
         required
-        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-        placeholder="Enter your address"
-      ></textarea>
-    </div>
-    
-    <div>
-      <label for="alternative_contact_name" class="block text-sm font-medium text-gray-700 mb-2">
-        Alternative Contact Full Name *
-      </label>
-      <input 
-        type="text" 
-        id="alternative_contact_name" 
-        name="alternative_contact_name" 
-        required 
-        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-        placeholder="Enter alternative contact full name"
+        class="w-full bg-transparent border-0 outline-0 font-roboto-condensed font-normal leading-normal text-[15px] text-white placeholder:text-[rgba(255,255,255,0.5)]"
+        placeholder="Email"
       />
     </div>
     
-    <div>
-      <label for="alternative_contact_phone" class="block text-sm font-medium text-gray-700 mb-2">
-        Alternative Contact Phone Number *
-      </label>
-      <input 
-        type="tel" 
-        id="alternative_contact_phone" 
-        name="alternative_contact_phone" 
-        required 
-        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-        placeholder="Enter alternative contact phone number"
+    <!-- Email and Phone Number Row (Desktop) -->
+    <div class="hidden md:flex flex-col items-start w-full">
+      <div class="flex gap-[10px] items-start w-full">
+        <div class="bg-[#212121] border border-[rgba(255,255,255,0.5)] border-solid flex flex-1 flex-col items-center min-h-0 overflow-clip px-[16px] py-[12px] rounded-[4px]">
+          <input
+            type="email"
+            id="email_desktop"
+            name="email"
+            required
+            class="w-full bg-transparent border-0 outline-0 font-roboto-condensed font-normal leading-normal text-[15px] text-white placeholder:text-[rgba(255,255,255,0.5)]"
+            placeholder="Email"
+          />
+        </div>
+        <div class="bg-[#212121] border border-[rgba(255,255,255,0.5)] border-solid flex flex-1 flex-col items-center min-h-0 overflow-clip px-[16px] py-[12px] rounded-[4px]">
+          <input
+            type="tel"
+            id="phone_desktop"
+            name="phone"
+            required
+            class="w-full bg-transparent border-0 outline-0 font-roboto-condensed font-normal leading-normal text-[15px] text-white placeholder:text-[rgba(255,255,255,0.5)]"
+            placeholder="Phone Number"
+          />
+        </div>
+      </div>
+    </div>
+    
+    <!-- Phone Number Full Width (Mobile) -->
+    <div class="md:hidden bg-[#212121] border border-[rgba(255,255,255,0.5)] border-solid flex flex-col items-center overflow-clip px-4 py-3 rounded-[4px] w-full">
+      <input
+        type="tel"
+        id="phone"
+        name="phone"
+        required
+        class="w-full bg-transparent border-0 outline-0 font-roboto-condensed font-normal leading-normal text-[15px] text-white placeholder:text-[rgba(255,255,255,0.5)]"
+        placeholder="Phone Number"
       />
     </div>
     
-    <div>
-      <label for="alternative_contact_email" class="block text-sm font-medium text-gray-700 mb-2">
-        Alternative Contact Email *
-      </label>
-      <input 
-        type="email" 
-        id="alternative_contact_email" 
-        name="alternative_contact_email" 
-        required 
-        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-        placeholder="Enter alternative contact email"
+    <!-- Address Full Width -->
+    <div class="bg-[#212121] border border-[rgba(255,255,255,0.5)] border-solid flex flex-col items-center overflow-clip px-4 md:px-[16px] py-3 md:py-[12px] rounded-[4px] w-full">
+      <input
+        type="text"
+        id="address"
+        name="address"
+        required
+        class="w-full bg-transparent border-0 outline-0 font-roboto-condensed font-normal leading-normal text-[15px] text-white placeholder:text-[rgba(255,255,255,0.5)]"
+        placeholder="Address"
+      />
+    </div>
+  </div>
+
+  <!-- Divider -->
+  <div class="bg-[rgba(255,255,255,0.5)] h-px shrink-0 w-full my-3"></div>
+
+  <!-- Alternative Contact Section -->
+  <div class="flex flex-col gap-[8px] items-start overflow-clip w-full">
+    <p class="font-roboto-condensed font-bold leading-normal relative shrink-0 text-[12px] text-white uppercase w-full whitespace-pre-wrap">
+      Alternative Contact
+    </p>
+    
+    <!-- First Name and Last Name Row -->
+    <div class="flex gap-[10px] items-start w-full">
+      <div class="bg-[#212121] border border-[rgba(255,255,255,0.5)] border-solid flex flex-1 flex-col items-center min-h-0 overflow-clip px-4 md:px-[16px] py-3 md:py-[12px] rounded-[4px]">
+        <input
+          type="text"
+          id="alternative_contact_first_name"
+          name="alternative_contact_first_name"
+          required
+          class="w-full bg-transparent border-0 outline-0 font-roboto-condensed font-normal leading-normal text-[15px] text-white placeholder:text-[rgba(255,255,255,0.5)]"
+          placeholder="First Name"
+        />
+      </div>
+      <div class="bg-[#212121] border border-[rgba(255,255,255,0.5)] border-solid flex flex-1 flex-col items-center min-h-0 overflow-clip px-4 md:px-[16px] py-3 md:py-[12px] rounded-[4px]">
+        <input
+          type="text"
+          id="alternative_contact_last_name"
+          name="alternative_contact_last_name"
+          required
+          class="w-full bg-transparent border-0 outline-0 font-roboto-condensed font-normal leading-normal text-[15px] text-white placeholder:text-[rgba(255,255,255,0.5)]"
+          placeholder="Last Name"
+        />
+      </div>
+    </div>
+    
+    <!-- Phone Number Full Width -->
+    <div class="bg-[#212121] border border-[rgba(255,255,255,0.5)] border-solid flex flex-col items-center overflow-clip px-4 md:px-[16px] py-3 md:py-[12px] rounded-[4px] w-full">
+      <input
+        type="tel"
+        id="alternative_contact_phone"
+        name="alternative_contact_phone"
+        required
+        class="w-full bg-transparent border-0 outline-0 font-roboto-condensed font-normal leading-normal text-[15px] text-white placeholder:text-[rgba(255,255,255,0.5)]"
+        placeholder="Phone Number"
       />
     </div>
     
-    <!-- Size Selection Fields -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <!-- Top Size -->
-      <div>
-        <label for="top_size" class="hidden md:block text-sm font-medium text-gray-700 mb-2">
-          Top Size (XS-XXL) *
-        </label>
-        <!-- Desktop Dropdown -->
-        <select 
-          id="top_size" 
-          name="top_size" 
-          required 
-          class="hidden md:block w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+    <!-- Email Full Width (required for API but not shown in Figma design - keeping visible) -->
+    <div class="bg-[#212121] border border-[rgba(255,255,255,0.5)] border-solid flex flex-col items-center overflow-clip px-4 md:px-[16px] py-3 md:py-[12px] rounded-[4px] w-full">
+      <input
+        type="email"
+        id="alternative_contact_email"
+        name="alternative_contact_email"
+        required
+        class="w-full bg-transparent border-0 outline-0 font-roboto-condensed font-normal leading-normal text-[15px] text-white placeholder:text-[rgba(255,255,255,0.5)]"
+        placeholder="Email"
+      />
+    </div>
+  </div>
+
+  <!-- Divider -->
+  <div class="bg-[rgba(255,255,255,0.5)] h-px shrink-0 w-full my-3"></div>
+
+  <!-- Size Selection: Desktop Dropdowns / Mobile Button Grids -->
+  <div class="flex flex-col gap-3 w-full">
+    <!-- Top Size -->
+    <div class="flex flex-col gap-2 items-start w-full">
+      <!-- Desktop Dropdown (no label) -->
+      <div class="hidden md:flex bg-[#212121] border border-[rgba(255,255,255,0.5)] border-solid items-start justify-between overflow-clip px-[16px] py-[12px] rounded-[4px] w-full">
+        <select
+          id="top_size"
+          name="top_size"
+          required
+          class="flex-1 min-h-0 bg-transparent border-0 outline-0 font-roboto-condensed font-normal leading-normal text-[15px] text-[rgba(255,255,255,0.5)] appearance-none cursor-pointer"
         >
-          <option value="">Select size</option>
-          <option value="XS">XS</option>
-          <option value="S">S</option>
-          <option value="M">M</option>
-          <option value="L">L</option>
-          <option value="XL">XL</option>
-          <option value="XXL">XXL</option>
+          <option value="" class="bg-[#212121] text-[rgba(255,255,255,0.5)]">Top Size</option>
+          {sizeOptions.map(size => (
+            <option value={size} class="bg-[#212121] text-white">{size}</option>
+          ))}
         </select>
-        <!-- Mobile Button Selector -->
-        <div class="md:hidden bg-gray-900/80 backdrop-blur-sm p-4 rounded-lg">
-          <label class="block text-white uppercase text-sm font-medium mb-3">TOP SIZE</label>
-          <div class="grid grid-cols-6 gap-2">
-            {['XS', 'S', 'M', 'L', 'XL', 'XXL'].map(size => (
-              <button
-                type="button"
-                data-size-field="top_size"
-                data-size-value={size}
-                class="size-button px-3 py-2 text-sm font-medium rounded border border-gray-500 bg-gray-800 text-white hover:bg-gray-700 transition-colors"
-                data-selected="false"
-              >
-                {size}
-              </button>
-            ))}
-          </div>
-        </div>
+        <svg class="w-4 h-4 text-white shrink-0 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+        </svg>
       </div>
-      
-      <!-- Bottom Size -->
-      <div>
-        <label for="bottom_size" class="hidden md:block text-sm font-medium text-gray-700 mb-2">
-          Bottom Size (XS-XXL) *
-        </label>
-        <!-- Desktop Dropdown -->
-        <select 
-          id="bottom_size" 
-          name="bottom_size" 
-          required 
-          class="hidden md:block w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-        >
-          <option value="">Select size</option>
-          <option value="XS">XS</option>
-          <option value="S">S</option>
-          <option value="M">M</option>
-          <option value="L">L</option>
-          <option value="XL">XL</option>
-          <option value="XXL">XXL</option>
-        </select>
-        <!-- Mobile Button Selector -->
-        <div class="md:hidden bg-gray-900/80 backdrop-blur-sm p-4 rounded-lg">
-          <label class="block text-white uppercase text-sm font-medium mb-3">BOTTOM SIZE</label>
-          <div class="grid grid-cols-6 gap-2">
-            {['XS', 'S', 'M', 'L', 'XL', 'XXL'].map(size => (
-              <button
-                type="button"
-                data-size-field="bottom_size"
-                data-size-value={size}
-                class="size-button px-3 py-2 text-sm font-medium rounded border border-gray-500 bg-gray-800 text-white hover:bg-gray-700 transition-colors"
-                data-selected="false"
-              >
+      <!-- Mobile Button Grid -->
+      <div class="md:hidden flex flex-col gap-2 items-start w-full">
+        <p class="font-roboto-condensed font-bold leading-normal relative shrink-0 text-[12px] text-white uppercase w-full whitespace-pre-wrap">
+          Top Size
+        </p>
+        <div class="flex gap-1 items-start w-full">
+          {sizeOptions.map(size => (
+            <button
+              type="button"
+              data-size-field="top_size"
+              data-size-value={size}
+              class="size-button bg-[#212121] border border-[rgba(255,255,255,0.5)] border-solid flex flex-col items-center justify-center overflow-clip rounded-[4px] shrink-0 w-[42px] h-[42px] cursor-pointer"
+            >
+              <p class="font-roboto-condensed font-normal leading-normal text-[15px] text-[rgba(255,255,255,0.5)] text-center">
                 {size}
-              </button>
-            ))}
-          </div>
+              </p>
+            </button>
+          ))}
         </div>
-      </div>
-      
-      <!-- Jacket/Hoodie Size -->
-      <div>
-        <label for="jacket_size" class="hidden md:block text-sm font-medium text-gray-700 mb-2">
-          Jacket/Hoodie Size (XS-XXL) *
-        </label>
-        <!-- Desktop Dropdown -->
-        <select 
-          id="jacket_size" 
-          name="jacket_size" 
-          required 
-          class="hidden md:block w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-        >
-          <option value="">Select size</option>
-          <option value="XS">XS</option>
-          <option value="S">S</option>
-          <option value="M">M</option>
-          <option value="L">L</option>
-          <option value="XL">XL</option>
-          <option value="XXL">XXL</option>
+        <select id="top_size" name="top_size" required class="hidden">
+          <option value=""></option>
+          {sizeOptions.map(size => (
+            <option value={size}>{size}</option>
+          ))}
         </select>
-        <!-- Mobile Button Selector -->
-        <div class="md:hidden bg-gray-900/80 backdrop-blur-sm p-4 rounded-lg">
-          <label class="block text-white uppercase text-sm font-medium mb-3">JACKET/HOODIE SIZE</label>
-          <div class="grid grid-cols-6 gap-2">
-            {['XS', 'S', 'M', 'L', 'XL', 'XXL'].map(size => (
-              <button
-                type="button"
-                data-size-field="jacket_size"
-                data-size-value={size}
-                class="size-button px-3 py-2 text-sm font-medium rounded border border-gray-500 bg-gray-800 text-white hover:bg-gray-700 transition-colors"
-                data-selected="false"
-              >
-                {size}
-              </button>
-            ))}
-          </div>
-        </div>
-      </div>
-      
-      <!-- Tight Size -->
-      <div>
-        <label for="tight_size" class="hidden md:block text-sm font-medium text-gray-700 mb-2">
-          Tight Size (XS-XXL) *
-        </label>
-        <!-- Desktop Dropdown -->
-        <select 
-          id="tight_size" 
-          name="tight_size" 
-          required 
-          class="hidden md:block w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-        >
-          <option value="">Select size</option>
-          <option value="XS">XS</option>
-          <option value="S">S</option>
-          <option value="M">M</option>
-          <option value="L">L</option>
-          <option value="XL">XL</option>
-          <option value="XXL">XXL</option>
-        </select>
-        <!-- Mobile Button Selector -->
-        <div class="md:hidden bg-gray-900/80 backdrop-blur-sm p-4 rounded-lg">
-          <label class="block text-white uppercase text-sm font-medium mb-3">TIGHT SIZE</label>
-          <div class="grid grid-cols-6 gap-2">
-            {['XS', 'S', 'M', 'L', 'XL', 'XXL'].map(size => (
-              <button
-                type="button"
-                data-size-field="tight_size"
-                data-size-value={size}
-                class="size-button px-3 py-2 text-sm font-medium rounded border border-gray-500 bg-gray-800 text-white hover:bg-gray-700 transition-colors"
-                data-selected="false"
-              >
-                {size}
-              </button>
-            ))}
-          </div>
-        </div>
       </div>
     </div>
-    
+
+    <!-- Bottom Size -->
+    <div class="flex flex-col gap-2 items-start w-full">
+      <!-- Desktop Dropdown (no label) -->
+      <div class="hidden md:flex bg-[#212121] border border-[rgba(255,255,255,0.5)] border-solid items-start justify-between overflow-clip px-[16px] py-[12px] rounded-[4px] w-full">
+        <select
+          id="bottom_size"
+          name="bottom_size"
+          required
+          class="flex-1 min-h-0 bg-transparent border-0 outline-0 font-roboto-condensed font-normal leading-normal text-[15px] text-[rgba(255,255,255,0.5)] appearance-none cursor-pointer"
+        >
+          <option value="" class="bg-[#212121] text-[rgba(255,255,255,0.5)]">Bottom Size</option>
+          {sizeOptions.map(size => (
+            <option value={size} class="bg-[#212121] text-white">{size}</option>
+          ))}
+        </select>
+        <svg class="w-4 h-4 text-white shrink-0 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+        </svg>
+      </div>
+      <!-- Mobile Button Grid -->
+      <div class="md:hidden flex flex-col gap-2 items-start w-full">
+        <p class="font-roboto-condensed font-bold leading-normal relative shrink-0 text-[12px] text-white uppercase w-full whitespace-pre-wrap">
+          Bottom Size
+        </p>
+        <div class="flex gap-1 items-start w-full">
+          {sizeOptions.map(size => (
+            <button
+              type="button"
+              data-size-field="bottom_size"
+              data-size-value={size}
+              class="size-button bg-[#212121] border border-[rgba(255,255,255,0.5)] border-solid flex flex-col items-center justify-center overflow-clip rounded-[4px] shrink-0 w-[42px] h-[42px] cursor-pointer"
+            >
+              <p class="font-roboto-condensed font-normal leading-normal text-[15px] text-[rgba(255,255,255,0.5)] text-center">
+                {size}
+              </p>
+            </button>
+          ))}
+        </div>
+        <select id="bottom_size" name="bottom_size" required class="hidden">
+          <option value=""></option>
+          {sizeOptions.map(size => (
+            <option value={size}>{size}</option>
+          ))}
+        </select>
+      </div>
+    </div>
+
+    <!-- Jacket/Hoodie Size -->
+    <div class="flex flex-col gap-2 items-start w-full">
+      <!-- Desktop Dropdown (no label) -->
+      <div class="hidden md:flex bg-[#212121] border border-[rgba(255,255,255,0.5)] border-solid items-start justify-between overflow-clip px-[16px] py-[12px] rounded-[4px] w-full">
+        <select
+          id="jacket_size"
+          name="jacket_size"
+          required
+          class="flex-1 min-h-0 bg-transparent border-0 outline-0 font-roboto-condensed font-normal leading-normal text-[15px] text-[rgba(255,255,255,0.5)] appearance-none cursor-pointer"
+        >
+          <option value="" class="bg-[#212121] text-[rgba(255,255,255,0.5)]">Jacket/Hoodie Size</option>
+          {sizeOptions.map(size => (
+            <option value={size} class="bg-[#212121] text-white">{size}</option>
+          ))}
+        </select>
+        <svg class="w-4 h-4 text-white shrink-0 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+        </svg>
+      </div>
+      <!-- Mobile Button Grid -->
+      <div class="md:hidden flex flex-col gap-2 items-start w-full">
+        <p class="font-roboto-condensed font-bold leading-normal relative shrink-0 text-[12px] text-white uppercase w-full whitespace-pre-wrap">
+          Jacket/Hoodie Size
+        </p>
+        <div class="flex gap-1 items-start w-full">
+          {sizeOptions.map(size => (
+            <button
+              type="button"
+              data-size-field="jacket_size"
+              data-size-value={size}
+              class="size-button bg-[#212121] border border-[rgba(255,255,255,0.5)] border-solid flex flex-col items-center justify-center overflow-clip rounded-[4px] shrink-0 w-[42px] h-[42px] cursor-pointer"
+            >
+              <p class="font-roboto-condensed font-normal leading-normal text-[15px] text-[rgba(255,255,255,0.5)] text-center">
+                {size}
+              </p>
+            </button>
+          ))}
+        </div>
+        <select id="jacket_size" name="jacket_size" required class="hidden">
+          <option value=""></option>
+          {sizeOptions.map(size => (
+            <option value={size}>{size}</option>
+          ))}
+        </select>
+      </div>
+    </div>
+
+    <!-- Tight Size -->
+    <div class="flex flex-col gap-2 items-start w-full">
+      <!-- Desktop Dropdown (no label) -->
+      <div class="hidden md:flex bg-[#212121] border border-[rgba(255,255,255,0.5)] border-solid items-start justify-between overflow-clip px-[16px] py-[12px] rounded-[4px] w-full">
+        <select
+          id="tight_size"
+          name="tight_size"
+          required
+          class="flex-1 min-h-0 bg-transparent border-0 outline-0 font-roboto-condensed font-normal leading-normal text-[15px] text-[rgba(255,255,255,0.5)] appearance-none cursor-pointer"
+        >
+          <option value="" class="bg-[#212121] text-[rgba(255,255,255,0.5)]">Tight Size</option>
+          {sizeOptions.map(size => (
+            <option value={size} class="bg-[#212121] text-white">{size}</option>
+          ))}
+        </select>
+        <svg class="w-4 h-4 text-white shrink-0 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+        </svg>
+      </div>
+      <!-- Mobile Button Grid -->
+      <div class="md:hidden flex flex-col gap-2 items-start w-full">
+        <p class="font-roboto-condensed font-bold leading-normal relative shrink-0 text-[12px] text-white uppercase w-full whitespace-pre-wrap">
+          Tight Size
+        </p>
+        <div class="flex gap-1 items-start w-full">
+          {sizeOptions.map(size => (
+            <button
+              type="button"
+              data-size-field="tight_size"
+              data-size-value={size}
+              class="size-button bg-[#212121] border border-[rgba(255,255,255,0.5)] border-solid flex flex-col items-center justify-center overflow-clip rounded-[4px] shrink-0 w-[42px] h-[42px] cursor-pointer"
+            >
+              <p class="font-roboto-condensed font-normal leading-normal text-[15px] text-[rgba(255,255,255,0.5)] text-center">
+                {size}
+              </p>
+            </button>
+          ))}
+        </div>
+        <select id="tight_size" name="tight_size" required class="hidden">
+          <option value=""></option>
+          {sizeOptions.map(size => (
+            <option value={size}>{size}</option>
+          ))}
+        </select>
+      </div>
+    </div>
+
     <!-- Shoe Size -->
-    <div>
-      <label for="shoe_size" class="hidden md:block text-sm font-medium text-gray-700 mb-2">
-        Shoe Size (5-17) *
-      </label>
-      <!-- Desktop Dropdown -->
-      <select 
-        id="shoe_size" 
-        name="shoe_size" 
-        required 
-        class="hidden md:block w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-      >
-        <option value="">Select size</option>
-        {shoeSizes.map(size => (
-          <option value={size}>{size}</option>
-        ))}
-      </select>
-      <!-- Mobile Button Selector -->
-      <div class="md:hidden bg-gray-900/80 backdrop-blur-sm p-4 rounded-lg">
-        <label class="block text-white uppercase text-sm font-medium mb-3">SHOE SIZE</label>
-        <div class="grid grid-cols-[repeat(7,minmax(0,1fr))] gap-2">
-          {shoeSizes.slice(0, 7).map(size => (
+    <div class="flex flex-col gap-2 items-start w-full">
+      <!-- Desktop Dropdown (no label) -->
+      <div class="hidden md:flex bg-[#212121] border border-[rgba(255,255,255,0.5)] border-solid items-start justify-between overflow-clip px-[16px] py-[12px] rounded-[4px] w-full">
+        <select
+          id="shoe_size"
+          name="shoe_size"
+          required
+          class="flex-1 min-h-0 bg-transparent border-0 outline-0 font-roboto-condensed font-normal leading-normal text-[15px] text-[rgba(255,255,255,0.5)] appearance-none cursor-pointer"
+        >
+          <option value="" class="bg-[#212121] text-[rgba(255,255,255,0.5)]">Shoe Size</option>
+          {shoeSizes.map(size => (
+            <option value={size} class="bg-[#212121] text-white">{size}</option>
+          ))}
+        </select>
+        <svg class="w-4 h-4 text-white shrink-0 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+        </svg>
+      </div>
+      <!-- Mobile Button Grid (7 columns x 2 rows) -->
+      <div class="md:hidden flex flex-col gap-2 items-start w-full">
+        <p class="font-roboto-condensed font-bold leading-normal relative shrink-0 text-[12px] text-white uppercase w-full whitespace-pre-wrap">
+          Shoe Size
+        </p>
+        <div class="grid grid-cols-7 gap-1 h-[88px] w-full">
+          {shoeSizes.map((size, index) => (
             <button
               type="button"
               data-size-field="shoe_size"
               data-size-value={size}
-              class="size-button px-2 py-2 text-sm font-medium rounded border border-gray-500 bg-gray-800 text-white hover:bg-gray-700 transition-colors"
-              data-selected="false"
+              class="size-button bg-[#212121] border border-[rgba(255,255,255,0.5)] border-solid flex flex-col items-center justify-center overflow-clip rounded-[4px] shrink-0 w-[42px] h-[42px] cursor-pointer"
             >
-              {size}
+              <p class="font-roboto-condensed font-normal leading-normal text-[15px] text-[rgba(255,255,255,0.5)] text-center">
+                {size}
+              </p>
             </button>
           ))}
         </div>
-        <div class="grid grid-cols-4 gap-2 mt-2">
-          {shoeSizes.slice(7).map(size => (
-            <button
-              type="button"
-              data-size-field="shoe_size"
-              data-size-value={size}
-              class="size-button px-3 py-2 text-sm font-medium rounded border border-gray-500 bg-gray-800 text-white hover:bg-gray-700 transition-colors"
-              data-selected="false"
-            >
-              {size}
-            </button>
+        <select id="shoe_size" name="shoe_size" required class="hidden">
+          <option value=""></option>
+          {shoeSizes.map(size => (
+            <option value={size}>{size}</option>
           ))}
-        </div>
+        </select>
       </div>
     </div>
+  </div>
 
-    <!-- Submit Button / Inline Confirmation Area -->
-    <div id="registration-action" class="text-center pt-10" aria-live="polite">
-      <button
-        id="register-button"
-        type="submit"
-        class="bg-[#D7000F] text-white px-12 py-6 rounded-lg text-[24px] font-semibold uppercase hover:bg-[#b8323d] transition-colors"
-      >
-        Register Now
-      </button>
-    </div>
-
-    <!-- Inline error box (hidden by default) -->
-    <div
-      id="registration-error"
-      class="hidden mt-6 p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg text-[18px] text-center"
-      aria-live="polite"
-    ></div>
-  </form>
-</div>
+  <!-- Inline error box (hidden by default) -->
+  <div
+    id="registration-error"
+    class="hidden mt-6 p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg text-[18px] text-center"
+    aria-live="polite"
+  ></div>
+</form>
 
 <script>
   // Mobile size button handler
@@ -348,16 +424,25 @@ const shoeSizes = Array.from({ length: 13 }, (_, i) => (i + 5).toString());
       const allButtons = document.querySelectorAll(`[data-size-field="${fieldName}"]`);
       allButtons.forEach(btn => {
         const isSelected = btn === this;
-        btn.setAttribute('data-selected', isSelected.toString());
+        const buttonElement = btn as HTMLButtonElement;
+        const textElement = buttonElement.querySelector('p');
         
         if (isSelected) {
-          // Selected: white background, dark text
-          btn.classList.remove('bg-gray-800', 'text-white', 'border-gray-500');
-          btn.classList.add('bg-white', 'text-gray-900', 'border-white');
+          // Selected: white background, dark text, dark border
+          buttonElement.classList.remove('bg-[#212121]', 'border-[rgba(255,255,255,0.5)]');
+          buttonElement.classList.add('bg-white', 'border-[#212121]');
+          if (textElement) {
+            textElement.classList.remove('text-[rgba(255,255,255,0.5)]');
+            textElement.classList.add('text-[#212121]');
+          }
         } else {
-          // Unselected: dark background, white text
-          btn.classList.remove('bg-white', 'text-gray-900', 'border-white');
-          btn.classList.add('bg-gray-800', 'text-white', 'border-gray-500');
+          // Unselected: dark background, white text, white border
+          buttonElement.classList.remove('bg-white', 'border-[#212121]');
+          buttonElement.classList.add('bg-[#212121]', 'border-[rgba(255,255,255,0.5)]');
+          if (textElement) {
+            textElement.classList.remove('text-[#212121]');
+            textElement.classList.add('text-[rgba(255,255,255,0.5)]');
+          }
         }
       });
     });
@@ -368,12 +453,46 @@ const shoeSizes = Array.from({ length: 13 }, (_, i) => (i + 5).toString());
 
     const form = e.target as HTMLFormElement;
     const formData = new FormData(form);
-    const data = Object.fromEntries(formData.entries());
+    
+    // Sync mobile/desktop email and phone fields
+    const emailMobile = document.getElementById('email') as HTMLInputElement;
+    const emailDesktop = document.getElementById('email_desktop') as HTMLInputElement;
+    const phoneMobile = document.getElementById('phone') as HTMLInputElement;
+    const phoneDesktop = document.getElementById('phone_desktop') as HTMLInputElement;
+    
+    if (emailMobile && emailDesktop) {
+      const emailValue = emailMobile.value || emailDesktop.value;
+      emailMobile.value = emailValue;
+      emailDesktop.value = emailValue;
+    }
+    if (phoneMobile && phoneDesktop) {
+      const phoneValue = phoneMobile.value || phoneDesktop.value;
+      phoneMobile.value = phoneValue;
+      phoneDesktop.value = phoneValue;
+    }
+    
+    // Combine first_name and last_name into name for backend compatibility
+    const data: Record<string, string> = {};
+    for (const [key, value] of formData.entries()) {
+      if (key === 'first_name' || key === 'last_name') {
+        continue;
+      }
+      data[key] = value.toString();
+    }
+    
+    // Combine names
+    const firstName = formData.get('first_name')?.toString() || '';
+    const lastName = formData.get('last_name')?.toString() || '';
+    data.name = `${firstName} ${lastName}`.trim();
+    
+    // Combine alternative contact names
+    const altFirstName = formData.get('alternative_contact_first_name')?.toString() || '';
+    const altLastName = formData.get('alternative_contact_last_name')?.toString() || '';
+    data.alternative_contact_name = `${altFirstName} ${altLastName}`.trim();
 
-    const actionContainer = document.getElementById('registration-action');
     const errorContainer = document.getElementById('registration-error');
-    const registerButtonElement = document.getElementById('register-button');
-    const registerButton = registerButtonElement instanceof HTMLButtonElement ? registerButtonElement : null;
+    const submitButtonWrapper = document.getElementById('submit-button-wrapper') as HTMLButtonElement;
+    const submitButton = submitButtonWrapper?.querySelector('p') as HTMLParagraphElement;
 
     // Clear previous error
     if (errorContainer) {
@@ -383,20 +502,14 @@ const shoeSizes = Array.from({ length: 13 }, (_, i) => (i + 5).toString());
 
     // Loading state
     let originalButtonHTML = null;
-    if (registerButton) {
-      originalButtonHTML = registerButton.innerHTML;
-      registerButton.disabled = true;
-      registerButton.classList.add('opacity-60', 'cursor-not-allowed');
-      registerButton.setAttribute('aria-busy', 'true');
-      registerButton.innerHTML = `
-        <span class="inline-flex items-center gap-3">
-          <svg class="animate-spin h-6 w-6 text-white" viewBox="0 0 24 24" fill="none">
-            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
-          </svg>
-          Submitting...
-        </span>
-      `;
+    if (submitButton) {
+      originalButtonHTML = submitButton.innerHTML;
+      submitButton.innerHTML = 'SUBMITTING...';
+      if (submitButtonWrapper) {
+        submitButtonWrapper.style.opacity = '0.6';
+        submitButtonWrapper.style.cursor = 'not-allowed';
+        submitButtonWrapper.setAttribute('aria-busy', 'true');
+      }
     }
 
     try {
@@ -407,20 +520,26 @@ const shoeSizes = Array.from({ length: 13 }, (_, i) => (i + 5).toString());
       });
 
       if (response.ok) {
-        if (actionContainer) {
-          actionContainer.setAttribute('aria-live', 'polite');
-          actionContainer.innerHTML = `
-            <div class="inline-block mt-2 p-4 bg-green-100 border border-green-400 text-green-700 rounded-lg text-[20px] font-semibold">
-              🎉 You're in! We'll be in touch soon with details about the run.
-            </div>
+        // Redirect or show success - the button wrapper will be replaced by success message
+        if (submitButtonWrapper) {
+          submitButtonWrapper.setAttribute('aria-live', 'polite');
+          submitButtonWrapper.innerHTML = `
+            <p class="font-prohibition leading-normal not-italic relative shrink-0 text-[20px] text-center text-white tracking-[4px] uppercase w-full whitespace-pre-wrap">
+              SUBMITTED!
+            </p>
           `;
         }
         form.reset();
         // Reset mobile size buttons
         document.querySelectorAll('.size-button').forEach(btn => {
-          btn.setAttribute('data-selected', 'false');
-          btn.classList.remove('bg-white', 'text-gray-900', 'border-white');
-          btn.classList.add('bg-gray-800', 'text-white', 'border-gray-500');
+          const buttonElement = btn as HTMLButtonElement;
+          const textElement = buttonElement.querySelector('p');
+          buttonElement.classList.remove('bg-white', 'border-[#212121]');
+          buttonElement.classList.add('bg-[#212121]', 'border-[rgba(255,255,255,0.5)]');
+          if (textElement) {
+            textElement.classList.remove('text-[#212121]');
+            textElement.classList.add('text-[rgba(255,255,255,0.5)]');
+          }
         });
       } else {
         const errorData = await response.json().catch(() => ({}));
@@ -429,11 +548,13 @@ const shoeSizes = Array.from({ length: 13 }, (_, i) => (i + 5).toString());
           errorContainer.textContent = 'Something went wrong. Please try again.';
           errorContainer.classList.remove('hidden');
         }
-        if (registerButton && originalButtonHTML !== null) {
-          registerButton.disabled = false;
-          registerButton.classList.remove('opacity-60', 'cursor-not-allowed');
-          registerButton.removeAttribute('aria-busy');
-          registerButton.innerHTML = originalButtonHTML;
+        if (submitButton && originalButtonHTML !== null) {
+          submitButton.innerHTML = originalButtonHTML;
+          if (submitButtonWrapper) {
+            submitButtonWrapper.style.opacity = '1';
+            submitButtonWrapper.style.cursor = 'pointer';
+            submitButtonWrapper.removeAttribute('aria-busy');
+          }
         }
       }
     } catch (error) {
@@ -442,11 +563,13 @@ const shoeSizes = Array.from({ length: 13 }, (_, i) => (i + 5).toString());
         errorContainer.textContent = 'Something went wrong. Please try again.';
         errorContainer.classList.remove('hidden');
       }
-      if (registerButton && originalButtonHTML !== null) {
-        registerButton.disabled = false;
-        registerButton.classList.remove('opacity-60', 'cursor-not-allowed');
-        registerButton.removeAttribute('aria-busy');
-        registerButton.innerHTML = originalButtonHTML;
+      if (submitButton && originalButtonHTML !== null) {
+        submitButton.innerHTML = originalButtonHTML;
+        if (submitButtonWrapper) {
+          submitButtonWrapper.style.opacity = '1';
+          submitButtonWrapper.style.cursor = 'pointer';
+          submitButtonWrapper.removeAttribute('aria-busy');
+        }
       }
     }
   });
