@@ -2,98 +2,103 @@
 // Non-player RSVP form component
 ---
 
-<div class="bg-white p-8 rounded-lg shadow-lg">
-  <form id="non-player-form" class="space-y-10">
-    <div>
-      <label for="name" class="block text-sm font-medium text-gray-700 mb-2">
-        Name (First and Last) *
-      </label>
-      <input 
-        type="text" 
-        id="name" 
-        name="name" 
-        required 
-        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-        placeholder="Enter your full name"
+<form id="non-player-form" class="w-full">
+  <!-- Main Contact Section -->
+  <div class="flex flex-col gap-[8px] items-start w-full">
+    <p class="font-roboto-condensed font-bold leading-normal relative shrink-0 text-[12px] text-white uppercase w-full whitespace-pre-wrap">
+      Main Contact
+    </p>
+    
+    <!-- Name Full Width -->
+    <div class="bg-[#212121] border border-[rgba(255,255,255,0.5)] border-solid flex flex-col items-center overflow-clip px-4 md:px-[16px] py-3 md:py-[12px] rounded-[4px] w-full">
+      <input
+        type="text"
+        id="name"
+        name="name"
+        required
+        class="w-full bg-transparent border-0 outline-0 font-roboto-condensed font-normal leading-normal text-[15px] text-white placeholder:text-[rgba(255,255,255,0.5)]"
+        placeholder="Name (First and Last)"
       />
     </div>
     
-    <div>
-      <label for="email" class="block text-sm font-medium text-gray-700 mb-2">
-        Email *
-      </label>
-      <input 
-        type="email" 
-        id="email" 
-        name="email" 
-        required 
-        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-        placeholder="Enter your email"
+    <!-- Email Full Width -->
+    <div class="bg-[#212121] border border-[rgba(255,255,255,0.5)] border-solid flex flex-col items-center overflow-clip px-4 md:px-[16px] py-3 md:py-[12px] rounded-[4px] w-full">
+      <input
+        type="email"
+        id="email"
+        name="email"
+        required
+        class="w-full bg-transparent border-0 outline-0 font-roboto-condensed font-normal leading-normal text-[15px] text-white placeholder:text-[rgba(255,255,255,0.5)]"
+        placeholder="Email"
       />
     </div>
     
-    <div>
-      <label for="phone" class="block text-sm font-medium text-gray-700 mb-2">
-        Phone Number *
-      </label>
-      <input 
-        type="tel" 
-        id="phone" 
-        name="phone" 
-        required 
-        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-        placeholder="Enter your phone number"
+    <!-- Phone Number Full Width -->
+    <div class="bg-[#212121] border border-[rgba(255,255,255,0.5)] border-solid flex flex-col items-center overflow-clip px-4 md:px-[16px] py-3 md:py-[12px] rounded-[4px] w-full">
+      <input
+        type="tel"
+        id="phone"
+        name="phone"
+        required
+        class="w-full bg-transparent border-0 outline-0 font-roboto-condensed font-normal leading-normal text-[15px] text-white placeholder:text-[rgba(255,255,255,0.5)]"
+        placeholder="Phone Number"
       />
     </div>
+  </div>
+
+  <!-- Divider -->
+  <div class="bg-[rgba(255,255,255,0.5)] h-px shrink-0 w-full my-3"></div>
+
+  <!-- Ticket Selection Section -->
+  <div class="flex flex-col gap-[8px] items-start w-full">
+    <p class="font-roboto-condensed font-bold leading-normal relative shrink-0 text-[12px] text-white uppercase w-full whitespace-pre-wrap">
+      Ticket Selection
+    </p>
     
-    <div>
-      <label for="ticket_count" class="block text-sm font-medium text-gray-700 mb-2">
-        How many tickets? *
-      </label>
-      <select 
-        id="ticket_count" 
-        name="ticket_count" 
-        required 
-        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+    <!-- Ticket Count Dropdown -->
+    <div class="bg-[#212121] border border-[rgba(255,255,255,0.5)] border-solid flex items-start justify-between overflow-clip px-4 md:px-[16px] py-3 md:py-[12px] rounded-[4px] w-full">
+      <select
+        id="ticket_count"
+        name="ticket_count"
+        required
+        class="flex-1 min-h-0 bg-transparent border-0 outline-0 font-roboto-condensed font-normal leading-normal text-[15px] text-[rgba(255,255,255,0.5)] appearance-none cursor-pointer"
       >
-        <option value="">Select number of tickets</option>
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-        <option value="5">5</option>
+        <option value="" class="bg-[#212121] text-[rgba(255,255,255,0.5)]">How many tickets?</option>
+        <option value="1" class="bg-[#212121] text-white">1</option>
+        <option value="2" class="bg-[#212121] text-white">2</option>
+        <option value="3" class="bg-[#212121] text-white">3</option>
+        <option value="4" class="bg-[#212121] text-white">4</option>
+        <option value="5" class="bg-[#212121] text-white">5</option>
       </select>
+      <svg class="w-4 h-4 text-white shrink-0 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+      </svg>
     </div>
+  </div>
 
-    <!-- Dynamic fields for additional ticket names -->
-    <div id="additional-tickets-container" class="hidden space-y-6"></div>
+  <!-- Divider before additional tickets (hidden by default) -->
+  <div id="additional-tickets-divider" class="hidden bg-[rgba(255,255,255,0.5)] h-px shrink-0 w-full my-3"></div>
 
-    <!-- Disclaimer -->
-    <div class="mt-8 p-4 bg-gray-50 border border-gray-300 rounded-lg">
-      <p class="text-sm text-gray-700">
-        <strong>Please note:</strong> This does not guarantee entry. Names will be confirmed and tickets will be issued the week prior to the event, with final tickets sent the day before or day of the event.
-      </p>
-    </div>
+  <!-- Dynamic fields for additional ticket names -->
+  <div id="additional-tickets-container" class="hidden flex-col gap-6 w-full"></div>
 
-    <!-- RSVP Button / Inline Confirmation Area -->
-    <div id="rsvp-action" class="text-center pt-10" aria-live="polite">
-      <button
-        id="rsvp-button"
-        type="submit"
-        class="bg-[#D7000F] text-white px-12 py-6 rounded-lg text-[24px] font-semibold uppercase hover:bg-[#b8323d] transition-colors"
-      >
-        RSVP HERE
-      </button>
-    </div>
+  <!-- Divider -->
+  <div class="bg-[rgba(255,255,255,0.5)] h-px shrink-0 w-full my-3"></div>
 
-    <!-- Inline error box (hidden by default) -->
-    <div
-      id="rsvp-error"
-      class="hidden mt-6 p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg text-[18px] text-center"
-      aria-live="polite"
-    ></div>
-  </form>
-</div>
+  <!-- Disclaimer -->
+  <div class="mt-3 p-4 bg-[#212121] border border-[rgba(255,255,255,0.5)] rounded-[4px]">
+    <p class="text-[12px] text-[rgba(255,255,255,0.7)] font-roboto-condensed">
+      <strong class="text-white">Please note:</strong> This does not guarantee entry. Names will be confirmed and tickets will be issued the week prior to the event, with final tickets sent the day before or day of the event.
+    </p>
+  </div>
+
+  <!-- Inline error box (hidden by default) -->
+  <div
+    id="rsvp-error"
+    class="hidden mt-6 p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg text-[18px] text-center"
+    aria-live="polite"
+  ></div>
+</form>
 
 <script>
   const ticketCountSelect = document.getElementById('ticket_count') as HTMLSelectElement;
@@ -111,50 +116,48 @@
     
     if (count > 1) {
       container.classList.remove('hidden');
+      container.classList.add('flex', 'flex-col');
+      const divider = document.getElementById('additional-tickets-divider');
+      if (divider) {
+        divider.classList.remove('hidden');
+      }
       
       // Create fields for additional tickets (count - 1 because first ticket is the main person)
       for (let i = 2; i <= count; i++) {
         const ticketGroup = document.createElement('div');
-        ticketGroup.className = 'border border-gray-200 rounded-lg p-4 bg-gray-50 space-y-4';
+        ticketGroup.className = 'flex flex-col gap-[8px] items-start w-full';
         ticketGroup.innerHTML = `
-          <h3 class="text-lg font-semibold text-gray-700 mb-4">Additional Ticket ${i - 1}</h3>
-          <div>
-            <label for="ticket_${i}_name" class="block text-sm font-medium text-gray-700 mb-2">
-              Name (First and Last) *
-            </label>
+          <p class="font-roboto-condensed font-bold leading-normal relative shrink-0 text-[12px] text-white uppercase w-full pt-6">
+            Additional Ticket ${i - 1}
+          </p>
+          <div class="bg-[#212121] border border-[rgba(255,255,255,0.5)] border-solid flex flex-col items-center overflow-clip px-4 md:px-[16px] py-3 md:py-[12px] rounded-[4px] w-full">
             <input 
               type="text" 
               id="ticket_${i}_name" 
               name="ticket_${i}_name" 
               required 
-              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              placeholder="Enter full name"
+              class="w-full bg-transparent border-0 outline-0 font-roboto-condensed font-normal leading-normal text-[15px] text-white placeholder:text-[rgba(255,255,255,0.5)]"
+              placeholder="Name (First and Last)"
             />
           </div>
-          <div>
-            <label for="ticket_${i}_email" class="block text-sm font-medium text-gray-700 mb-2">
-              Email *
-            </label>
+          <div class="bg-[#212121] border border-[rgba(255,255,255,0.5)] border-solid flex flex-col items-center overflow-clip px-4 md:px-[16px] py-3 md:py-[12px] rounded-[4px] w-full">
             <input 
               type="email" 
               id="ticket_${i}_email" 
               name="ticket_${i}_email" 
               required 
-              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              placeholder="Enter email"
+              class="w-full bg-transparent border-0 outline-0 font-roboto-condensed font-normal leading-normal text-[15px] text-white placeholder:text-[rgba(255,255,255,0.5)]"
+              placeholder="Email"
             />
           </div>
-          <div>
-            <label for="ticket_${i}_phone" class="block text-sm font-medium text-gray-700 mb-2">
-              Phone Number *
-            </label>
+          <div class="bg-[#212121] border border-[rgba(255,255,255,0.5)] border-solid flex flex-col items-center overflow-clip px-4 md:px-[16px] py-3 md:py-[12px] rounded-[4px] w-full">
             <input 
               type="tel" 
               id="ticket_${i}_phone" 
               name="ticket_${i}_phone" 
               required 
-              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              placeholder="Enter phone number"
+              class="w-full bg-transparent border-0 outline-0 font-roboto-condensed font-normal leading-normal text-[15px] text-white placeholder:text-[rgba(255,255,255,0.5)]"
+              placeholder="Phone Number"
             />
           </div>
         `;
@@ -165,6 +168,11 @@
       container.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     } else {
       container.classList.add('hidden');
+      container.classList.remove('flex', 'flex-col');
+      const divider = document.getElementById('additional-tickets-divider');
+      if (divider) {
+        divider.classList.add('hidden');
+      }
     }
   });
 
@@ -203,9 +211,9 @@
       additional_tickets: additionalTickets
     };
 
-    const actionContainer = document.getElementById('rsvp-action');
     const errorContainer = document.getElementById('rsvp-error');
-    const rsvpButton = document.getElementById('rsvp-button');
+    const submitButtonWrapper = document.getElementById('submit-button-wrapper') as HTMLButtonElement;
+    const submitButton = submitButtonWrapper?.querySelector('span') as HTMLSpanElement;
 
     // Clear previous error
     if (errorContainer) {
@@ -215,20 +223,14 @@
 
     // Loading state
     let originalButtonHTML = null;
-    if (rsvpButton) {
-      originalButtonHTML = rsvpButton.innerHTML;
-      rsvpButton.disabled = true;
-      rsvpButton.classList.add('opacity-60', 'cursor-not-allowed');
-      rsvpButton.setAttribute('aria-busy', 'true');
-      rsvpButton.innerHTML = `
-        <span class="inline-flex items-center gap-3">
-          <svg class="animate-spin h-6 w-6 text-white" viewBox="0 0 24 24" fill="none">
-            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
-          </svg>
-          Submitting...
-        </span>
-      `;
+    if (submitButton) {
+      originalButtonHTML = submitButton.innerHTML;
+      submitButton.innerHTML = 'SUBMITTING...';
+      if (submitButtonWrapper) {
+        submitButtonWrapper.style.opacity = '0.6';
+        submitButtonWrapper.style.cursor = 'not-allowed';
+        submitButtonWrapper.setAttribute('aria-busy', 'true');
+      }
     }
 
     try {
@@ -239,18 +241,24 @@
       });
 
       if (response.ok) {
-        if (actionContainer) {
-          actionContainer.setAttribute('aria-live', 'polite');
-          actionContainer.innerHTML = `
-            <div class="inline-block mt-2 p-4 bg-green-100 border border-green-400 text-green-700 rounded-lg text-[20px] font-semibold">
-              🎉 RSVP submitted! We'll be in touch soon with ticket confirmation.
-            </div>
+        // Success - the button wrapper will be replaced by success message
+        if (submitButtonWrapper) {
+          submitButtonWrapper.setAttribute('aria-live', 'polite');
+          submitButtonWrapper.innerHTML = `
+            <span class="font-prohibition leading-normal not-italic relative shrink-0 text-[20px] text-center text-white tracking-[4px] uppercase w-full whitespace-pre-wrap">
+              SUBMITTED!
+            </span>
           `;
         }
         form.reset();
         if (additionalTicketsContainer) {
           additionalTicketsContainer.classList.add('hidden');
+          additionalTicketsContainer.classList.remove('flex', 'flex-col');
           additionalTicketsContainer.innerHTML = '';
+        }
+        const divider = document.getElementById('additional-tickets-divider');
+        if (divider) {
+          divider.classList.add('hidden');
         }
       } else {
         const errorData = await response.json().catch(() => ({}));
@@ -259,11 +267,13 @@
           errorContainer.textContent = 'Something went wrong. Please try again.';
           errorContainer.classList.remove('hidden');
         }
-        if (rsvpButton && originalButtonHTML !== null) {
-          rsvpButton.disabled = false;
-          rsvpButton.classList.remove('opacity-60', 'cursor-not-allowed');
-          rsvpButton.removeAttribute('aria-busy');
-          rsvpButton.innerHTML = originalButtonHTML;
+        if (submitButton && originalButtonHTML !== null) {
+          submitButton.innerHTML = originalButtonHTML;
+          if (submitButtonWrapper) {
+            submitButtonWrapper.style.opacity = '1';
+            submitButtonWrapper.style.cursor = 'pointer';
+            submitButtonWrapper.removeAttribute('aria-busy');
+          }
         }
       }
     } catch (error) {
@@ -272,11 +282,13 @@
         errorContainer.textContent = 'Something went wrong. Please try again.';
         errorContainer.classList.remove('hidden');
       }
-      if (rsvpButton && originalButtonHTML !== null) {
-        rsvpButton.disabled = false;
-        rsvpButton.classList.remove('opacity-60', 'cursor-not-allowed');
-        rsvpButton.removeAttribute('aria-busy');
-        rsvpButton.innerHTML = originalButtonHTML;
+      if (submitButton && originalButtonHTML !== null) {
+        submitButton.innerHTML = originalButtonHTML;
+        if (submitButtonWrapper) {
+          submitButtonWrapper.style.opacity = '1';
+          submitButtonWrapper.style.cursor = 'pointer';
+          submitButtonWrapper.removeAttribute('aria-busy');
+        }
       }
     }
   });
