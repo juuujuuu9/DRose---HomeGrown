@@ -130,6 +130,49 @@ const getSenderEmail = (): string => {
   return fromEmail;
 };
 
+// Helper function to send email with retry logic for rate limits
+async function sendEmailWithRetry(
+  resend: Resend,
+  emailParams: { from: string; to: string[]; subject: string; html: string },
+  maxRetries: number = 3
+): Promise<{ success: boolean; error?: any }> {
+  for (let attempt = 0; attempt < maxRetries; attempt++) {
+    try {
+      const result = await resend.emails.send(emailParams);
+      
+      if (result.error) {
+        // Check if it's a rate limit error (429)
+        if (result.error.statusCode === 429) {
+          const retryDelay = Math.min(1000 * Math.pow(2, attempt), 5000); // Exponential backoff, max 5s
+          console.log(`⏳ Rate limit hit, retrying in ${retryDelay}ms (attempt ${attempt + 1}/${maxRetries})`);
+          await new Promise(resolve => setTimeout(resolve, retryDelay));
+          continue; // Retry
+        }
+        // Other errors, return failure
+        return { success: false, error: result.error };
+      }
+      
+      if (result.data) {
+        return { success: true };
+      }
+      
+      return { success: false, error: 'Unexpected response format' };
+    } catch (emailError: any) {
+      // Check if it's a rate limit error
+      if (emailError?.statusCode === 429 || emailError?.message?.includes('rate limit')) {
+        const retryDelay = Math.min(1000 * Math.pow(2, attempt), 5000);
+        console.log(`⏳ Rate limit hit, retrying in ${retryDelay}ms (attempt ${attempt + 1}/${maxRetries})`);
+        await new Promise(resolve => setTimeout(resolve, retryDelay));
+        continue; // Retry
+      }
+      // Other errors, return failure
+      return { success: false, error: emailError };
+    }
+  }
+  
+  return { success: false, error: 'Max retries exceeded' };
+}
+
 // Send email notification to all admins
 export async function sendAdminNotification(submission: Submission): Promise<void> {
   try {
@@ -153,40 +196,31 @@ export async function sendAdminNotification(submission: Submission): Promise<voi
     let successCount = 0;
     let failureCount = 0;
     
+    // Add initial delay to stagger concurrent requests
+    await new Promise(resolve => setTimeout(resolve, Math.random() * 200));
+    
     // Send email to all admin addresses with rate limiting
     for (let i = 0; i < ADMIN_EMAILS.length; i++) {
       const adminEmail = ADMIN_EMAILS[i];
-      try {
-        const result = await resend.emails.send({
-          from: `${senderName} <${senderEmail}>`,
-          to: [adminEmail],
-          subject: `New Player Submission - ${submission.name}`,
-          html: emailHtml,
-        });
-        
-        // Check if Resend returned an error (even if no exception was thrown)
-        if (result.error) {
-          console.error(`❌ Failed to send admin notification to ${adminEmail}:`, {
-            statusCode: result.error.statusCode,
-            message: result.error.message,
-            name: result.error.name
-          });
-          failureCount++;
-        } else if (result.data) {
-          console.log(`✅ Admin notification sent successfully to ${adminEmail} (ID: ${result.data.id})`);
-          successCount++;
-        } else {
-          console.warn(`⚠️  Unexpected response format from Resend for ${adminEmail}:`, result);
-          failureCount++;
-        }
-        
-        // Add delay between emails to respect rate limits
-        if (i < ADMIN_EMAILS.length - 1) {
-          await new Promise(resolve => setTimeout(resolve, 600)); // 600ms delay
-        }
-      } catch (emailError) {
-        console.error(`❌ Exception sending admin notification to ${adminEmail}:`, emailError);
+      
+      const result = await sendEmailWithRetry(resend, {
+        from: `${senderName} <${senderEmail}>`,
+        to: [adminEmail],
+        subject: `New Player Submission - ${submission.name}`,
+        html: emailHtml,
+      });
+      
+      if (result.success) {
+        console.log(`✅ Admin notification sent successfully to ${adminEmail}`);
+        successCount++;
+      } else {
+        console.error(`❌ Failed to send admin notification to ${adminEmail}:`, result.error);
         failureCount++;
+      }
+      
+      // Add delay between emails to respect rate limits (600ms = 1.67 req/s, well under 2 req/s)
+      if (i < ADMIN_EMAILS.length - 1) {
+        await new Promise(resolve => setTimeout(resolve, 600));
       }
     }
     
@@ -289,40 +323,31 @@ export async function sendNonPlayerAdminNotification(submission: NonPlayerSubmis
     let successCount = 0;
     let failureCount = 0;
     
+    // Add initial delay to stagger concurrent requests
+    await new Promise(resolve => setTimeout(resolve, Math.random() * 200));
+    
     // Send email to all admin addresses with rate limiting
     for (let i = 0; i < ADMIN_EMAILS.length; i++) {
       const adminEmail = ADMIN_EMAILS[i];
-      try {
-        const result = await resend.emails.send({
-          from: `${senderName} <${senderEmail}>`,
-          to: [adminEmail],
-          subject: `New Non-Player RSVP - ${submission.name} (${submission.ticket_count} ticket${submission.ticket_count > 1 ? 's' : ''})`,
-          html: emailHtml,
-        });
-        
-        // Check if Resend returned an error (even if no exception was thrown)
-        if (result.error) {
-          console.error(`❌ Failed to send admin notification to ${adminEmail}:`, {
-            statusCode: result.error.statusCode,
-            message: result.error.message,
-            name: result.error.name
-          });
-          failureCount++;
-        } else if (result.data) {
-          console.log(`✅ Admin notification sent successfully to ${adminEmail} (ID: ${result.data.id})`);
-          successCount++;
-        } else {
-          console.warn(`⚠️  Unexpected response format from Resend for ${adminEmail}:`, result);
-          failureCount++;
-        }
-        
-        // Add delay between emails to respect rate limits
-        if (i < ADMIN_EMAILS.length - 1) {
-          await new Promise(resolve => setTimeout(resolve, 600)); // 600ms delay
-        }
-      } catch (emailError) {
-        console.error(`❌ Exception sending admin notification to ${adminEmail}:`, emailError);
+      
+      const result = await sendEmailWithRetry(resend, {
+        from: `${senderName} <${senderEmail}>`,
+        to: [adminEmail],
+        subject: `New Non-Player RSVP - ${submission.name} (${submission.ticket_count} ticket${submission.ticket_count > 1 ? 's' : ''})`,
+        html: emailHtml,
+      });
+      
+      if (result.success) {
+        console.log(`✅ Admin notification sent successfully to ${adminEmail}`);
+        successCount++;
+      } else {
+        console.error(`❌ Failed to send admin notification to ${adminEmail}:`, result.error);
         failureCount++;
+      }
+      
+      // Add delay between emails to respect rate limits (600ms = 1.67 req/s, well under 2 req/s)
+      if (i < ADMIN_EMAILS.length - 1) {
+        await new Promise(resolve => setTimeout(resolve, 600));
       }
     }
     

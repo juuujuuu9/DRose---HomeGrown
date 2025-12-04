@@ -241,25 +241,8 @@
       });
 
       if (response.ok) {
-        // Success - the button wrapper will be replaced by success message
-        if (submitButtonWrapper) {
-          submitButtonWrapper.setAttribute('aria-live', 'polite');
-          submitButtonWrapper.innerHTML = `
-            <span class="font-prohibition leading-normal not-italic relative shrink-0 text-[20px] text-center text-white tracking-[4px] uppercase w-full whitespace-pre-wrap">
-              SUBMITTED!
-            </span>
-          `;
-        }
-        form.reset();
-        if (additionalTicketsContainer) {
-          additionalTicketsContainer.classList.add('hidden');
-          additionalTicketsContainer.classList.remove('flex', 'flex-col');
-          additionalTicketsContainer.innerHTML = '';
-        }
-        const divider = document.getElementById('additional-tickets-divider');
-        if (divider) {
-          divider.classList.add('hidden');
-        }
+        // Redirect to success page
+        window.location.href = '/success';
       } else {
         const errorData = await response.json().catch(() => ({}));
         console.error('Server error:', errorData);

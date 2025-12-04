@@ -4,7 +4,7 @@ const shoeSizes = Array.from({ length: 11 }, (_, i) => (i + 5).toString());
 const sizeOptions = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
 ---
 
-<form id="registration-form" class="w-full">
+<form id="registration-form" class="w-full" novalidate>
   <!-- Player Section -->
   <div class="flex flex-col gap-[8px] items-start w-full">
     <p class="font-roboto-condensed font-bold leading-normal relative shrink-0 text-[12px] text-white uppercase w-full whitespace-pre-wrap">
@@ -201,7 +201,7 @@ const sizeOptions = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
             </button>
           ))}
         </div>
-        <select id="top_size" name="top_size" required class="hidden">
+        <select id="top_size_mobile" name="top_size" class="hidden">
           <option value=""></option>
           {sizeOptions.map(size => (
             <option value={size}>{size}</option>
@@ -248,7 +248,7 @@ const sizeOptions = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
             </button>
           ))}
         </div>
-        <select id="bottom_size" name="bottom_size" required class="hidden">
+        <select id="bottom_size_mobile" name="bottom_size" class="hidden">
           <option value=""></option>
           {sizeOptions.map(size => (
             <option value={size}>{size}</option>
@@ -295,7 +295,7 @@ const sizeOptions = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
             </button>
           ))}
         </div>
-        <select id="jacket_size" name="jacket_size" required class="hidden">
+        <select id="jacket_size_mobile" name="jacket_size" class="hidden">
           <option value=""></option>
           {sizeOptions.map(size => (
             <option value={size}>{size}</option>
@@ -342,7 +342,7 @@ const sizeOptions = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
             </button>
           ))}
         </div>
-        <select id="tight_size" name="tight_size" required class="hidden">
+        <select id="tight_size_mobile" name="tight_size" class="hidden">
           <option value=""></option>
           {sizeOptions.map(size => (
             <option value={size}>{size}</option>
@@ -389,7 +389,7 @@ const sizeOptions = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
             </button>
           ))}
         </div>
-        <select id="shoe_size" name="shoe_size" required class="hidden">
+        <select id="shoe_size_mobile" name="shoe_size" class="hidden">
           <option value=""></option>
           {shoeSizes.map(size => (
             <option value={size}>{size}</option>
@@ -410,10 +410,17 @@ const sizeOptions = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
 <script>
   // Mobile size button handler
   document.querySelectorAll('.size-button').forEach(button => {
-    button.addEventListener('click', function() {
+    button.addEventListener('click', function(this: HTMLButtonElement) {
       const fieldName = this.getAttribute('data-size-field');
       const sizeValue = this.getAttribute('data-size-value');
-      const selectElement = document.getElementById(fieldName) as HTMLSelectElement;
+      
+      if (!fieldName || !sizeValue) return;
+      
+      // Try desktop select first, then mobile select
+      let selectElement = document.getElementById(fieldName) as HTMLSelectElement;
+      if (!selectElement) {
+        selectElement = document.getElementById(`${fieldName}_mobile`) as HTMLSelectElement;
+      }
       
       if (!selectElement) return;
       
@@ -452,6 +459,37 @@ const sizeOptions = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
     e.preventDefault();
 
     const form = e.target as HTMLFormElement;
+    
+    // Remove required attribute from hidden fields to prevent validation errors
+    const hiddenRequiredFields = form.querySelectorAll('input[required], select[required]');
+    hiddenRequiredFields.forEach((field: Element) => {
+      const htmlField = field as HTMLElement;
+      // Check if field is hidden (using display: none or visibility: hidden)
+      const style = window.getComputedStyle(htmlField);
+      if (style.display === 'none' || style.visibility === 'hidden' || htmlField.classList.contains('hidden')) {
+        htmlField.removeAttribute('required');
+      }
+    });
+    
+    // Also check parent containers
+    const allRequiredFields = form.querySelectorAll('input[required], select[required]');
+    allRequiredFields.forEach((field: Element) => {
+      const htmlField = field as HTMLElement;
+      let parent = htmlField.parentElement;
+      let isHidden = false;
+      while (parent && parent !== form) {
+        const parentStyle = window.getComputedStyle(parent);
+        if (parentStyle.display === 'none' || parent.classList.contains('hidden')) {
+          isHidden = true;
+          break;
+        }
+        parent = parent.parentElement;
+      }
+      if (isHidden) {
+        htmlField.removeAttribute('required');
+      }
+    });
+    
     const formData = new FormData(form);
     
     // Sync mobile/desktop email and phone fields
@@ -471,33 +509,101 @@ const sizeOptions = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
       phoneDesktop.value = phoneValue;
     }
     
+    // Sync mobile size selects with desktop selects
+    const sizeFields = ['top_size', 'bottom_size', 'jacket_size', 'tight_size', 'shoe_size'];
+    sizeFields.forEach(fieldName => {
+      const desktopSelect = document.getElementById(fieldName) as HTMLSelectElement | null;
+      const mobileSelect = document.getElementById(`${fieldName}_mobile`) as HTMLSelectElement | null;
+      
+      let finalValue = '';
+      
+      if (desktopSelect && mobileSelect) {
+        // Both exist - sync them
+        finalValue = desktopSelect.value || mobileSelect.value;
+        desktopSelect.value = finalValue;
+        mobileSelect.value = finalValue;
+      } else if (desktopSelect) {
+        // Only desktop exists
+        finalValue = desktopSelect.value;
+        if (mobileSelect && !finalValue) {
+          finalValue = mobileSelect.value;
+          desktopSelect.value = finalValue;
+        }
+      } else if (mobileSelect) {
+        // Only mobile exists
+        finalValue = mobileSelect.value;
+      }
+      
+      // Ensure FormData has the value
+      if (finalValue) {
+        formData.set(fieldName, finalValue);
+      }
+    });
+    
     // Combine first_name and last_name into name for backend compatibility
     const data: Record<string, string> = {};
     for (const [key, value] of formData.entries()) {
-      if (key === 'first_name' || key === 'last_name') {
+      // Skip individual name fields as we'll combine them
+      if (key === 'first_name' || key === 'last_name' || 
+          key === 'alternative_contact_first_name' || key === 'alternative_contact_last_name') {
         continue;
       }
-      data[key] = value.toString();
+      // Only include non-empty values
+      const stringValue = value.toString().trim();
+      if (stringValue) {
+        data[key] = stringValue;
+      }
     }
     
     // Combine names
-    const firstName = formData.get('first_name')?.toString() || '';
-    const lastName = formData.get('last_name')?.toString() || '';
+    const firstName = formData.get('first_name')?.toString()?.trim() || '';
+    const lastName = formData.get('last_name')?.toString()?.trim() || '';
     data.name = `${firstName} ${lastName}`.trim();
     
     // Combine alternative contact names
-    const altFirstName = formData.get('alternative_contact_first_name')?.toString() || '';
-    const altLastName = formData.get('alternative_contact_last_name')?.toString() || '';
+    const altFirstName = formData.get('alternative_contact_first_name')?.toString()?.trim() || '';
+    const altLastName = formData.get('alternative_contact_last_name')?.toString()?.trim() || '';
     data.alternative_contact_name = `${altFirstName} ${altLastName}`.trim();
-
+    
+    // Debug: Log the data being sent
+    console.log('Form data being sent:', data);
+    
+    // Get UI elements
     const errorContainer = document.getElementById('registration-error');
     const submitButtonWrapper = document.getElementById('submit-button-wrapper') as HTMLButtonElement;
     const submitButton = submitButtonWrapper?.querySelector('p') as HTMLParagraphElement;
-
+    
     // Clear previous error
     if (errorContainer) {
       errorContainer.textContent = '';
       errorContainer.classList.add('hidden');
+    }
+    
+    // Validate required fields before submission
+    const requiredFields = [
+      'name',
+      'email',
+      'phone',
+      'alternative_contact_name',
+      'alternative_contact_phone',
+      'alternative_contact_email',
+      'address',
+      'top_size',
+      'bottom_size',
+      'jacket_size',
+      'tight_size',
+      'shoe_size'
+    ];
+    
+    const missingFields = requiredFields.filter(field => !data[field] || data[field].trim() === '');
+    
+    if (missingFields.length > 0) {
+      console.error('Missing required fields:', missingFields);
+      if (errorContainer) {
+        errorContainer.textContent = `Please fill in all required fields. Missing: ${missingFields.join(', ')}`;
+        errorContainer.classList.remove('hidden');
+      }
+      return;
     }
 
     // Loading state
@@ -520,32 +626,19 @@ const sizeOptions = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
       });
 
       if (response.ok) {
-        // Redirect or show success - the button wrapper will be replaced by success message
-        if (submitButtonWrapper) {
-          submitButtonWrapper.setAttribute('aria-live', 'polite');
-          submitButtonWrapper.innerHTML = `
-            <p class="font-prohibition leading-normal not-italic relative shrink-0 text-[20px] text-center text-white tracking-[4px] uppercase w-full whitespace-pre-wrap">
-              SUBMITTED!
-            </p>
-          `;
-        }
-        form.reset();
-        // Reset mobile size buttons
-        document.querySelectorAll('.size-button').forEach(btn => {
-          const buttonElement = btn as HTMLButtonElement;
-          const textElement = buttonElement.querySelector('p');
-          buttonElement.classList.remove('bg-white', 'border-[#212121]');
-          buttonElement.classList.add('bg-[#212121]', 'border-[rgba(255,255,255,0.5)]');
-          if (textElement) {
-            textElement.classList.remove('text-[#212121]');
-            textElement.classList.add('text-[rgba(255,255,255,0.5)]');
-          }
-        });
+        // Redirect to success page
+        window.location.href = '/success';
       } else {
         const errorData = await response.json().catch(() => ({}));
         console.error('Server error:', errorData);
         if (errorContainer) {
-          errorContainer.textContent = 'Something went wrong. Please try again.';
+          let errorMessage = 'Something went wrong. Please try again.';
+          if (errorData.missing && Array.isArray(errorData.missing)) {
+            errorMessage = `Please fill in all required fields. Missing: ${errorData.missing.join(', ')}`;
+          } else if (errorData.error) {
+            errorMessage = errorData.error;
+          }
+          errorContainer.textContent = errorMessage;
           errorContainer.classList.remove('hidden');
         }
         if (submitButton && originalButtonHTML !== null) {
