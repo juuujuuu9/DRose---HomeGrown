@@ -11,8 +11,17 @@ const imgHomegrownCursiveMobile = "https://www.figma.com/api/mcp/asset/aaa531a4-
 
 <Layout title="Success | Non-Players" description="HOMEGROWN AT SIMEON">
   <style>
-    body {
-      background-color: #000000;
+    /* Black background only for desktop */
+    @media (min-width: 1024px) {
+      body {
+        background-color: #000000;
+      }
+    }
+    /* Light background for mobile */
+    @media (max-width: 1023px) {
+      body {
+        background-color: #F5F5F5;
+      }
     }
   </style>
 
@@ -85,10 +94,10 @@ const imgHomegrownCursiveMobile = "https://www.figma.com/api/mcp/asset/aaa531a4-
   </main>
 
   <!-- Mobile Layout -->
-  <main class="lg:hidden min-h-screen bg-black flex items-center justify-center">
-    <div class="w-full max-w-md bg-[#F5F5F5] rounded-2xl overflow-hidden animate-fade-in">
+  <main class="lg:hidden min-h-screen bg-[#F5F5F5] flex flex-col">
+    <div class="w-full flex-1 bg-[#F5F5F5] overflow-y-auto animate-fade-in flex flex-col">
       <!-- Logo Section -->
-      <div class="flex flex-col items-center gap-[10px] pt-8 pb-6 px-6">
+      <div class="flex flex-col items-center gap-[10px] pt-8 pb-6 px-6 flex-shrink-0">
         <div class="h-[60px] w-[61.535px] relative">
           <img alt="Derrick Rose logo" class="w-full h-full object-contain" src={imgDerrickRoseMobile} />
         </div>
@@ -98,7 +107,7 @@ const imgHomegrownCursiveMobile = "https://www.figma.com/api/mcp/asset/aaa531a4-
       </div>
 
       <!-- Success Message -->
-      <div class="px-6 pb-4">
+      <div class="px-6 pb-4 flex-shrink-0">
         <h1 class="font-roboto-condensed text-[#CE1141] text-[28px] font-bold uppercase leading-[32px] break-words text-center mb-4">
           YOUR SUBMISSION HAS BEEN RECEIVED!
         </h1>
@@ -110,7 +119,7 @@ const imgHomegrownCursiveMobile = "https://www.figma.com/api/mcp/asset/aaa531a4-
       </div>
 
       <!-- Background Image -->
-      <div class="w-full relative mb-0">
+      <div class="w-full relative mb-0 flex-shrink-0">
         <img 
           alt="Urban basketball court with elevated train tracks" 
           class="w-full object-cover aspect-video" 
@@ -119,7 +128,7 @@ const imgHomegrownCursiveMobile = "https://www.figma.com/api/mcp/asset/aaa531a4-
       </div>
 
       <!-- Back to Homepage Button -->
-      <div class="px-0 pb-0">
+      <div class="px-0 pb-0 flex-shrink-0">
         <a 
           href="/"
           class="bg-[#CE1141] hover:bg-[#a00d33] text-white py-4 px-8 rounded-none text-[18px] font-prohibition font-bold uppercase tracking-wider transition-colors duration-200 block text-center w-full"
@@ -129,7 +138,7 @@ const imgHomegrownCursiveMobile = "https://www.figma.com/api/mcp/asset/aaa531a4-
       </div>
 
       <!-- Footer -->
-      <div class="flex items-center justify-between px-6 pb-0 pt-0">
+      <div class="flex items-center justify-between px-6 pb-6 pt-4 flex-shrink-0 mt-auto">
         <div class="border border-gray-900 px-2 py-0.5 rounded-none">
           <p class="text-[13px] uppercase tracking-[0.75px] text-gray-900 font-normal font-roboto-condensed">
             HOMEGROWN AT SIMEON
