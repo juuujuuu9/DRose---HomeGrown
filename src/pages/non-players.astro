@@ -2,10 +2,6 @@
 import Layout from '../layouts/Layout.astro';
 
 // Get image assets from Figma design
-// Desktop image (left column) - basketball court with train
-const imgDesktopBasketballCourt = "https://www.figma.com/api/mcp/asset/5b27b049-97da-418a-9e48-90dccbb0d4e4";
-// Mobile image (inside card) - basketball court with train  
-const imgMobileBasketballCourt = "https://www.figma.com/api/mcp/asset/b53e319b-a7bb-4131-b717-1b5005bc5e65";
 // Desktop logos
 const imgDerrickRoseDesktop = "https://www.figma.com/api/mcp/asset/1e346d4c-6df8-425d-8567-97003bcfbbe1";
 const imgHomegrownCursiveDesktop = "https://www.figma.com/api/mcp/asset/ee0ae443-0dba-4ebc-994c-4d92329058d6";
@@ -22,7 +18,7 @@ const imgHomegrownCursiveMobile = "https://www.figma.com/api/mcp/asset/aaa531a4-
       <img 
         alt="Urban basketball court with elevated train tracks" 
         class="w-full h-full object-cover" 
-        src={imgDesktopBasketballCourt} 
+        src="/bg-photo.png" 
       />
     </div>
 
@@ -125,17 +121,13 @@ const imgHomegrownCursiveMobile = "https://www.figma.com/api/mcp/asset/aaa531a4-
         </div>
       </div>
 
-      <!-- Dotted Separator -->
-      <div class="px-6 pb-6">
-        <div class="border-t-2 border-dotted border-gray-400"></div>
-      </div>
-
       <!-- Image -->
-      <div class="px-6 pb-6">
+      <div class="p-0 mb-8 aspect-square">
+        <!-- <div class="border-t-2 border-dotted border-gray-400"></div> -->
         <img 
           alt="Urban basketball court with elevated train tracks" 
-          class="w-full h-auto rounded-lg" 
-          src={imgMobileBasketballCourt} 
+          class="w-full h-auto" 
+          src="/bg-photo.png" 
         />
       </div>
 
@@ -148,7 +140,7 @@ const imgHomegrownCursiveMobile = "https://www.figma.com/api/mcp/asset/aaa531a4-
       </div>
 
       <!-- RSVP Button -->
-      <div class="px-6 pb-6">
+      <div class="p-0">
         <a 
           href="/non-players/rsvp" 
           class="block w-full bg-[#CE1141] hover:bg-[#a00d33] text-white text-center py-4 px-8 text-[24px] font-normal font-prohibition uppercase tracking-[4.80px] break-words transition-colors duration-200"
@@ -158,7 +150,7 @@ const imgHomegrownCursiveMobile = "https://www.figma.com/api/mcp/asset/aaa531a4-
       </div>
 
       <!-- Footer -->
-      <div class="px-6 pb-6 flex items-center justify-between">
+      <div class="px-6 flex items-center justify-between">
         <div class="border border-gray-900 px-3 py-1.5">
           <p class="text-[15px] uppercase tracking-[0.75px] text-[#212121] font-normal font-roboto-condensed break-words">HOMEGROWN AT SIMEON</p>
         </div>
@@ -167,7 +159,7 @@ const imgHomegrownCursiveMobile = "https://www.figma.com/api/mcp/asset/aaa531a4-
             <p class="text-[15px] uppercase text-[#212121] font-bold font-roboto-condensed break-words">HOME</p>
             <p class="text-[15px] uppercase text-[#212121] font-bold font-roboto-condensed break-words">GAME</p>
           </div>
-          <div class="bg-[#CE1141] text-white w-10 h-12 flex items-center justify-center text-[36px] font-normal font-prohibition uppercase tracking-[7.20px] leading-none">
+          <div class="bg-[#CE1141] text-white w-10 h-16 flex items-center justify-center  pb-3 pl-1 text-[36px] font-normal font-prohibition uppercase tracking-[7.20px] leading-none">
             1
           </div>
         </div>
