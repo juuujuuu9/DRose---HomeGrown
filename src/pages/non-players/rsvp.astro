@@ -503,72 +503,8 @@ const imgHomegrownCursiveMobile = "https://www.figma.com/api/mcp/asset/aaa531a4-
       });
 
       if (response.ok) {
-        if (actionContainer) {
-          actionContainer.setAttribute('aria-live', 'polite');
-          actionContainer.innerHTML = `
-            <div class="inline-block mt-2 p-4 bg-green-100 border border-green-400 text-green-700 rounded-lg text-[16px] font-semibold font-roboto-condensed">
-              🎉 You're in! We'll be in touch soon with details about the event.
-            </div>
-          `;
-        }
-        form.reset();
-        // Reset guest containers
-        if (guestsContainer) {
-          guestsContainer.innerHTML = `
-            <div class="guest-group" data-guest-index="1">
-              <label class="text-gray-700 font-roboto-condensed text-[12px] font-semibold uppercase mb-2 block">
-                GUEST 1
-              </label>
-              <div class="flex gap-3">
-                <input
-                  type="text"
-                  name="guest_1_first"
-                  placeholder="First Name"
-                  class="flex-1 bg-white border border-gray-300 rounded px-4 py-3 text-gray-900 placeholder:text-gray-400 font-roboto-condensed text-[15px] outline-none focus:border-[#CE1141] focus:ring-1 focus:ring-[#CE1141]"
-                />
-                <input
-                  type="text"
-                  name="guest_1_last"
-                  placeholder="Last Name"
-                  class="flex-1 bg-white border border-gray-300 rounded px-4 py-3 text-gray-900 placeholder:text-gray-400 font-roboto-condensed text-[15px] outline-none focus:border-[#CE1141] focus:ring-1 focus:ring-[#CE1141]"
-                />
-              </div>
-            </div>
-          `;
-          guestCount = 1;
-          if (addGuestBtn) {
-            addGuestBtn.disabled = false;
-            addGuestBtn.classList.remove('opacity-50', 'cursor-not-allowed');
-          }
-        }
-        if (guestsContainerMobile) {
-          guestsContainerMobile.innerHTML = `
-            <div class="guest-group" data-guest-index="1">
-              <label class="text-gray-700 font-roboto-condensed text-[12px] font-semibold uppercase mb-2 block">
-                GUEST 1
-              </label>
-              <div class="flex gap-3 w-full">
-                <input
-                  type="text"
-                  name="guest_1_first"
-                  placeholder="First Name"
-                  class="w-1/2 min-w-0 bg-white border border-gray-300 rounded px-4 py-3 text-gray-900 placeholder:text-gray-400 font-roboto-condensed text-[15px] outline-none focus:border-[#CE1141] focus:ring-1 focus:ring-[#CE1141]"
-                />
-                <input
-                  type="text"
-                  name="guest_1_last"
-                  placeholder="Last Name"
-                  class="w-1/2 min-w-0 bg-white border border-gray-300 rounded px-4 py-3 text-gray-900 placeholder:text-gray-400 font-roboto-condensed text-[15px] outline-none focus:border-[#CE1141] focus:ring-1 focus:ring-[#CE1141]"
-                />
-              </div>
-            </div>
-          `;
-          guestCountMobile = 1;
-          if (addGuestBtnMobile) {
-            addGuestBtnMobile.disabled = false;
-            addGuestBtnMobile.classList.remove('opacity-50', 'cursor-not-allowed');
-          }
-        }
+        // Redirect to success page
+        window.location.href = '/non-players/success';
       } else {
         const errorData = await response.json().catch(() => ({}));
         console.error('Server error:', errorData);

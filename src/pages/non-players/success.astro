@@ -1,13 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 
-// Desktop background images from Figma (same as other pages)
-const imgRsvpPagePlayersOnlyFormOpt2 = "https://www.figma.com/api/mcp/asset/5b27b049-97da-418a-9e48-90dccbb0d4e4";
-const imgRsvpPagePlayersOnlyFormOpt3 = "https://www.figma.com/api/mcp/asset/b61944d2-0df1-4e37-95e1-42b45a13e9fa";
-// Mobile background images from Figma
-const imgRsvpPagePlayersOnlyFormMobile = "https://www.figma.com/api/mcp/asset/b53e319b-a7bb-4131-b717-1b5005bc5e65";
-const imgRsvpPagePlayersOnlyFormMobile1 = "https://www.figma.com/api/mcp/asset/cec3d09d-efa4-48f2-b208-83b3f6fb2210";
-// Desktop logos
+// Desktop logos from non-players.astro
 const imgDerrickRoseDesktop = "https://www.figma.com/api/mcp/asset/1e346d4c-6df8-425d-8567-97003bcfbbe1";
 const imgHomegrownCursiveDesktop = "https://www.figma.com/api/mcp/asset/ee0ae443-0dba-4ebc-994c-4d92329058d6";
 // Mobile logos
@@ -15,109 +9,153 @@ const imgDerrickRoseMobile = "https://www.figma.com/api/mcp/asset/44ae098a-0d6e-
 const imgHomegrownCursiveMobile = "https://www.figma.com/api/mcp/asset/aaa531a4-5a7c-4c3f-b36d-e045c6f12dd5";
 ---
 
-<Layout title="Success">
-  <main class="min-h-screen bg-black relative overflow-hidden">
-    <!-- Background Images - Desktop -->
-    <div aria-hidden="true" class="hidden lg:block absolute inset-0 pointer-events-none">
-      <div class="absolute bg-black inset-0"></div>
-      <img 
-        alt="" 
-        class="absolute max-w-none object-cover size-full opacity-50" 
-        src={imgRsvpPagePlayersOnlyFormOpt2} 
-      />
-      <img 
-        alt="" 
-        class="absolute max-w-none object-cover size-full opacity-50" 
-        src={imgRsvpPagePlayersOnlyFormOpt3} 
-      />
-    </div>
-    
-    <!-- Background Images - Mobile -->
-    <div aria-hidden="true" class="lg:hidden absolute inset-0 pointer-events-none">
-      <div class="absolute bg-black inset-0"></div>
-      <img 
-        alt="" 
-        class="absolute max-w-none object-cover size-full opacity-50" 
-        src={imgRsvpPagePlayersOnlyFormMobile} 
-      />
-      <img 
-        alt="" 
-        class="absolute max-w-none object-cover size-full opacity-50" 
-        src={imgRsvpPagePlayersOnlyFormMobile1} 
-      />
-    </div>
+<Layout title="Success | Non-Players" description="HOMEGROWN AT SIMEON">
+  <style>
+    body {
+      background-color: #000000;
+    }
+  </style>
 
-    <!-- Main Content -->
-    <div class="relative z-10 flex flex-col gap-5 items-center justify-center pb-12 pt-[90px] px-0 min-h-screen animate-fade-in">
-      <!-- Container -->
-      <div class="flex flex-1 flex-col gap-5 items-center min-h-0 overflow-clip px-5 py-0 w-full max-w-[1440px]">
-        <!-- Top Branding -->
-        <p class="font-prohibition leading-normal not-italic relative shrink-0 text-[#ce1141] text-[30px] uppercase w-full whitespace-pre-wrap text-center">
-          <span class="tracking-[3.9px] lg:tracking-[32px] xl:tracking-[48px] inline-block -mr-[3.9px] lg:-mr-[48px]">Homegrown  at  Simeon</span>
-        </p>
+  <!-- Desktop Layout -->
+  <main class="hidden lg:flex min-h-screen bg-black relative overflow-hidden rounded-3xl">
+    <!-- Main Container with border -->
+    <div class="w-full h-dvh bg-[#F5F5F5] flex animate-fade-in">
+      <!-- Left Section: Background Image -->
+      <div class="w-1/2 h-full relative bg-white">
+        <img 
+          alt="Urban basketball court with elevated train tracks" 
+          class="w-full h-full object-cover" 
+          src="/bg-photo.png" 
+        />
+      </div>
 
-        <!-- Main Content Box - Vertically Centered Content -->
-        <div class="flex flex-1 flex-col justify-between items-center min-h-0 w-full">
-          <!-- Spacer to push content to center -->
-          <div class="flex-1 flex items-center justify-center w-full">
-            <!-- Mobile: Content Frame with Border -->
-            <div class="lg:hidden flex flex-col gap-8 items-center justify-center px-6 py-8 w-full border border-gray-700/50">
-              <!-- Logo Section -->
-              <div class="flex flex-col gap-[10px] items-center">
-                <div class="h-[60px] relative shrink-0 w-[61.535px]">
-                  <img alt="Derrick Rose" class="block max-w-none size-full" src={imgDerrickRoseMobile} />
-                </div>
-                <div class="h-[84px] relative shrink-0 w-[320px]">
-                  <img alt="Homegrown" class="block max-w-none size-full" src={imgHomegrownCursiveMobile} />
-                </div>
-              </div>
-
-              <!-- Success Message -->
-              <p class="font-prohibition leading-normal text-[#ce1141] text-[22px] uppercase text-center tracking-[2px] px-4">
-                YOUR SUBMISSION HAS BEEN RECEIVED!
-              </p>
-            </div>
-
-            <!-- Desktop: Content (no border) -->
-            <div class="hidden lg:flex flex-col gap-12 items-center justify-center px-6 py-8 w-full">
-              <!-- Logo Section -->
-              <div class="flex flex-col gap-[10px] items-center">
-                <div class="h-[79px] relative shrink-0 w-[81px]">
-                  <img alt="Derrick Rose" class="block max-w-none size-full" src={imgDerrickRoseDesktop} />
-                </div>
-                <div class="h-[110px] relative shrink-0 w-[418px]">
-                  <img alt="Homegrown" class="block max-w-none size-full" src={imgHomegrownCursiveDesktop} />
-                </div>
-              </div>
-
-              <!-- Success Message -->
-              <p class="font-prohibition leading-normal text-[#ce1141] text-[36px] uppercase text-center tracking-[4px]">
-                YOUR SUBMISSION HAS BEEN RECEIVED!
-              </p>
-            </div>
+      <!-- Right Section: Content -->
+      <div class="w-1/2 h-full bg-[#F5F5F5] flex flex-col px-12 pt-8 overflow-y-auto">
+        <!-- Logo Section -->
+        <div class="flex flex-col items-center gap-[10px] pt-4 pb-10">
+          <div class="h-[79px] w-[81px] relative">
+            <img alt="Derrick Rose logo" class="w-full h-full object-contain" src={imgDerrickRoseDesktop} />
           </div>
-
-          <!-- Back to RSVP Button -->
-          <a 
-            href="/non-players/rsvp"
-            class="bg-[#ce1141] hover:bg-[#b01038] cursor-pointer flex items-center justify-center px-6 py-3 w-[362px] lg:w-full border-0 transition-colors duration-200 shrink-0"
-          >
-            <span class="font-prohibition leading-none text-[20px] text-white tracking-[4px] uppercase inline-block -mr-[4px] pb-[5px]">
-              BACK TO RSVP
-            </span>
-          </a>
+          <div class="h-[110px] w-[418px] relative">
+            <img alt="Homegrown" class="w-full h-full object-contain" src={imgHomegrownCursiveDesktop} />
+          </div>
         </div>
 
-        <!-- Bottom Branding -->
-        <p class="font-prohibition leading-normal not-italic relative shrink-0 text-[#ce1141] text-[30px] uppercase w-full whitespace-pre-wrap text-center">
-          <span class="tracking-[3.9px] lg:tracking-[32px] xl:tracking-[48px] inline-block -mr-[3.9px] lg:-mr-[48px]">Homegrown  at  Simeon</span>
+        <!-- Success Message -->
+        <div class="flex flex-col gap-6 flex-1 justify-center">
+          <h1 class="font-roboto-condensed text-[#CE1141] text-[48px] font-bold uppercase leading-[46px] break-words text-left px-12">
+            YOUR SUBMISSION HAS BEEN RECEIVED!
+          </h1>
+
+          <!-- Disclaimer -->
+          <p class="text-gray-900 text-[15px] font-roboto-condensed leading-relaxed text-left px-12">
+            Please note, this does not guarantee entry. Names will be confirmed and tickets will be issued the week prior to the event, with final tickets sent the day before or day of the event.
+          </p>
+
+          <!-- Back to Homepage Button -->
+          <div class="pt-8">
+            <a 
+              href="/"
+              class="bg-[#CE1141] hover:bg-[#a00d33] text-white px-8 py-4 text-[18px] font-prohibition font-bold uppercase tracking-wider transition-colors duration-200 inline-block text-center w-full"
+            >
+              BACK TO HOMEPAGE
+            </a>
+          </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="flex items-center justify-between pt-6 mt-auto">
+          <div class="border border-gray-900 px-2 py-0.5">
+            <p class="text-[13px] uppercase tracking-[0.75px] text-gray-900 font-normal font-roboto-condensed">
+              HOMEGROWN AT SIMEON
+            </p>
+          </div>
+          <div class="flex items-center gap-2">
+            <div class="text-right">
+              <p class="text-[13px] uppercase text-gray-900 font-bold font-roboto-condensed">HOME</p>
+              <p class="text-[13px] uppercase text-gray-900 font-bold font-roboto-condensed">GAME</p>
+            </div>
+            <div class="bg-[#CE1141] text-white w-10 h-16 flex items-center justify-center">
+              <span class="font-prohibition text-[36px] tracking-[.70px] pb-[7px]">1</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Mobile Layout -->
+  <main class="lg:hidden min-h-screen bg-black flex items-center justify-center min-h-dvh">
+    <div class="w-full max-w-md bg-[#F5F5F5] rounded-2xl overflow-hidden animate-fade-in min-h-dvh">
+      <!-- Logo Section -->
+      <div class="flex flex-col items-center gap-[10px] pt-8 pb-6 px-6">
+        <div class="h-[60px] w-[61.535px] relative">
+          <img alt="Derrick Rose logo" class="w-full h-full object-contain" src={imgDerrickRoseMobile} />
+        </div>
+        <div class="h-[84px] w-[320px] relative">
+          <img alt="Homegrown" class="w-full h-full object-contain" src={imgHomegrownCursiveMobile} />
+        </div>
+      </div>
+
+      <!-- Success Message -->
+      <div class="px-6 pb-4">
+        <h1 class="font-roboto-condensed text-[#CE1141] text-[28px] font-bold uppercase leading-[32px] break-words text-center mb-4">
+          YOUR SUBMISSION HAS BEEN RECEIVED!
+        </h1>
+
+        <!-- Disclaimer -->
+        <p class="text-gray-900 text-[13px] font-roboto-condensed leading-relaxed text-left mb-6">
+          Please note, this does not guarantee entry. Names will be confirmed and tickets will be issued the week prior to the event, with final tickets sent the day before or day of the event.
         </p>
+      </div>
+
+      <!-- Background Image -->
+      <div class="w-full relative mb-0">
+        <img 
+          alt="Urban basketball court with elevated train tracks" 
+          class="w-full object-cover aspect-video" 
+          src="/bg-photo.png" 
+        />
+      </div>
+
+      <!-- Back to Homepage Button -->
+      <div class="px-0 pb-0">
+        <a 
+          href="/"
+          class="bg-[#CE1141] hover:bg-[#a00d33] text-white py-4 px-8 rounded-none text-[18px] font-prohibition font-bold uppercase tracking-wider transition-colors duration-200 block text-center w-full"
+        >
+          BACK TO HOMEPAGE
+        </a>
+      </div>
+
+      <!-- Footer -->
+      <div class="flex items-center justify-between px-6 pb-0 pt-0">
+        <div class="border border-gray-900 px-3 py-1.5 rounded-none">
+          <p class="text-[13px] uppercase tracking-[0.75px] text-gray-900 font-normal font-roboto-condensed">
+            HOMEGROWN AT SIMEON
+          </p>
+        </div>
+        <div class="flex items-center gap-2">
+          <div class="text-right">
+            <p class="text-[13px] uppercase text-gray-900 font-bold font-roboto-condensed">HOME</p>
+            <p class="text-[13px] uppercase text-gray-900 font-bold font-roboto-condensed">GAME</p>
+          </div>
+          <div class="bg-[#CE1141] text-white w-10 h-16 flex items-center justify-center rounded-none">
+            <span class="font-prohibition text-[36px] tracking-[.45px] pb-[7px]">1</span>
+          </div>
+        </div>
       </div>
     </div>
   </main>
 </Layout>
 
 <style>
+  /* Apply Roboto Condensed to all text on this page, except Prohibition font */
+  main,
+  main *:not(.font-prohibition) {
+    font-family: 'Roboto Condensed', sans-serif !important;
+  }
+
   @keyframes fadeIn {
     from {
       opacity: 0;
