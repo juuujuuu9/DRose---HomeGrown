@@ -1,5 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import ContactForm from '../components/ContactForm.astro';
 
 // Desktop background images from Figma (updated URLs)
 const imgRsvpPagePlayersOnlyFormOpt2 = "https://www.figma.com/api/mcp/asset/5b27b049-97da-418a-9e48-90dccbb0d4e4";
@@ -48,18 +49,18 @@ const imgHomegrownCursiveMobile = "https://www.figma.com/api/mcp/asset/aaa531a4-
     </div>
 
     <!-- Main Content -->
-    <div class="relative z-10 flex flex-col items-center justify-stretch h-screen animate-fade-in">
+    <div class="relative z-10 flex flex-col gap-5 items-center justify-center pb-12 pt-[90px] px-0 min-h-screen animate-fade-in">
       <!-- Container -->
-      <div class="flex flex-col items-center justify-stretch w-full max-w-[1440px] h-full px-5 py-16">
+      <div class="flex flex-1 flex-col gap-5 items-center min-h-0 overflow-clip px-5 py-0 w-full max-w-[1440px]">
         <!-- Top Branding -->
-        <p class="font-prohibition leading-normal not-italic relative shrink-0 text-[#ce1141] text-[30px] uppercase w-full whitespace-pre-wrap text-center mb-auto">
+        <p class="font-prohibition leading-normal not-italic relative shrink-0 text-[#ce1141] text-[30px] uppercase w-full whitespace-pre-wrap text-center">
           <span class="tracking-[3.9px] lg:tracking-[32px] xl:tracking-[48px] inline-block -mr-[3.9px] lg:-mr-[48px]">Homegrown  at  Simeon</span>
         </p>
 
-        <!-- Centered Logo Section -->
-        <div class="flex flex-col gap-[10px] items-center justify-center flex-1 py-10">
-          <!-- Mobile Logo -->
-          <div class="lg:hidden flex flex-col gap-[10px] items-center">
+        <!-- Main Content Box -->
+        <div class="flex flex-col gap-3 lg:flex-1 lg:justify-between items-center min-h-0 w-full">
+          <!-- Mobile: Logo Section (centered at top) -->
+          <div class="lg:hidden flex flex-col gap-[10px] items-center mt-10 overflow-clip px-6 py-[10px] w-full">
             <div class="h-[60px] relative shrink-0 w-[61.535px]">
               <img alt="Derrick Rose" class="block max-w-none size-full" src={imgDerrickRoseMobile} />
             </div>
@@ -68,19 +69,42 @@ const imgHomegrownCursiveMobile = "https://www.figma.com/api/mcp/asset/aaa531a4-
             </div>
           </div>
           
-          <!-- Desktop Logo -->
-          <div class="hidden lg:flex flex-col gap-[10px] items-center">
-            <div class="h-[79px] relative shrink-0 w-[81px]">
-              <img alt="Derrick Rose" class="block max-w-none size-full" src={imgDerrickRoseDesktop} />
-            </div>
-            <div class="h-[110px] relative shrink-0 w-[418px]">
-              <img alt="Homegrown" class="block max-w-none size-full" src={imgHomegrownCursiveDesktop} />
+          <!-- Blank spacer for mobile -->
+          <div class="lg:hidden h-[24px] shrink-0 w-[362px]"></div>
+          <div class="flex flex-col lg:flex-row lg:flex-1 items-center lg:justify-between min-h-0 w-full px-0 lg:px-5 py-0 lg:py-5">
+            <!-- Content Area: Desktop (Logo Left, Form Right) / Mobile (Form Full Width) -->
+            <div class="flex flex-col lg:flex-row lg:flex-1 items-center lg:justify-between min-h-0 w-full px-0 lg:px-0 py-0 lg:py-5">
+              <!-- Desktop: Logo Section (Left) -->
+              <div class="hidden lg:flex flex-col gap-[10px] items-center overflow-clip pr-6 py-[10px] w-1/2">
+                <div class="h-[79px] relative shrink-0 w-[81px]">
+                  <img alt="Derrick Rose" class="block max-w-none size-full" src={imgDerrickRoseDesktop} />
+                </div>
+                <div class="h-[110px] relative shrink-0 w-[418px]">
+                  <img alt="Homegrown" class="block max-w-none size-full" src={imgHomegrownCursiveDesktop} />
+                </div>
+              </div>
+
+              <!-- Form Section -->
+              <div class="flex flex-col gap-[18px] lg:flex-1 lg:flex-col lg:gap-3 h-full items-start min-h-0 px-6 lg:px-0 py-5 w-1/2 w-full lg:w-auto">
+                <ContactForm />
+              </div>
             </div>
           </div>
+          <!-- Submit Button -->
+          <button
+            type="submit"
+            form="registration-form"
+            id="submit-button-wrapper"
+            class="bg-[#ce1141] hover:bg-[#b01038] cursor-pointer flex items-center justify-center px-6 py-3 w-[362px] lg:w-full border-0 transition-colors duration-200"
+          >
+            <span class="font-prohibition leading-none text-[20px] text-white tracking-[4px] uppercase inline-block -mr-[4px] pb-[5px]">
+              SUBMIT RSVP
+            </span>
+          </button>
         </div>
 
         <!-- Bottom Branding -->
-        <p class="font-prohibition leading-normal not-italic relative shrink-0 text-[#ce1141] text-[30px] uppercase w-full whitespace-pre-wrap text-center mt-auto">
+        <p class="font-prohibition leading-normal not-italic relative shrink-0 text-[#ce1141] text-[30px] uppercase w-full whitespace-pre-wrap text-center">
           <span class="tracking-[3.9px] lg:tracking-[32px] xl:tracking-[48px] inline-block -mr-[3.9px] lg:-mr-[48px]">Homegrown  at  Simeon</span>
         </p>
       </div>

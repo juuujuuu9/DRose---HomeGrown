@@ -23,7 +23,7 @@ const imgHomegrownCursiveMobile = "https://www.figma.com/api/mcp/asset/aaa531a4-
     </div>
 
     <!-- Right Column: Content Panel -->
-    <div class="w-1/2 h-screen bg-[#F5F5F5] flex flex-col px-12 py-16">
+    <div class="w-1/2 h-screen bg-[#F5F5F5] flex flex-col px-12 py-16 animate-fade-in">
       <!-- Top: Logo -->
       <div class="flex flex-col items-center gap-[10px] pt-8">
         <div class="h-[79px] w-[81px] relative">
@@ -90,7 +90,7 @@ const imgHomegrownCursiveMobile = "https://www.figma.com/api/mcp/asset/aaa531a4-
   <!-- Mobile Layout -->
   <main class="lg:hidden min-h-screen bg-black flex items-center justify-center">
     <!-- Card Container -->
-    <div class="card-container w-full bg-[#F2F2F2] rounded-3xl overflow-hidden relative">
+    <div class="card-container w-full bg-[#F2F2F2] rounded-3xl overflow-hidden relative animate-fade-in">
       <!-- Top: Logo -->
       <div class="flex flex-col items-center gap-[10px] pt-12 pb-8">
         <div class="h-[60px] w-[61.535px] relative">
@@ -185,5 +185,20 @@ const imgHomegrownCursiveMobile = "https://www.figma.com/api/mcp/asset/aaa531a4-
         rgba(0, 0, 0, 0.015) 2px,
         rgba(0, 0, 0, 0.015) 4px
       );
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-fade-in {
+    animation: fadeIn 0.6s ease-out forwards;
   }
 </style>
