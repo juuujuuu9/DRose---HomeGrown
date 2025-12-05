@@ -17,9 +17,9 @@ const imgHomegrownCursiveMobile = "https://www.figma.com/api/mcp/asset/aaa531a4-
   </style>
 
   <!-- Desktop Layout -->
-  <main class="hidden lg:flex min-h-screen bg-black relative overflow-hidden">
+  <main class="hidden lg:flex min-h-screen bg-black relative overflow-hidden rounded-3xl">
     <!-- Main Container with border -->
-    <div class="w-[95%] h-[95vh] mx-auto my-[2.5vh] border border-gray-800 bg-[#F5F5F5] flex animate-fade-in">
+    <div class="w-full h-dvh bg-[#F5F5F5] flex animate-fade-in">
       <!-- Left Section: Background Image -->
       <div class="w-1/2 h-full relative bg-white">
         <img 
@@ -30,9 +30,9 @@ const imgHomegrownCursiveMobile = "https://www.figma.com/api/mcp/asset/aaa531a4-
       </div>
 
       <!-- Right Section: Form -->
-      <div class="w-1/2 h-full bg-[#F5F5F5] flex flex-col px-12 py-8 overflow-y-auto">
+      <div class="w-1/2 h-full bg-[#F5F5F5] flex flex-col px-12 pt-8 overflow-y-auto">
         <!-- Logo Section -->
-        <div class="flex flex-col items-center gap-[10px] pt-4 pb-6">
+        <div class="flex flex-col items-center gap-[10px] pt-4 pb-10">
           <div class="h-[79px] w-[81px] relative">
             <img alt="Derrick Rose logo" class="w-full h-full object-contain" src={imgDerrickRoseDesktop} />
           </div>
@@ -44,7 +44,7 @@ const imgHomegrownCursiveMobile = "https://www.figma.com/api/mcp/asset/aaa531a4-
         <!-- Form -->
         <form id="non-player-form" class="flex flex-col gap-6 flex-1">
           <!-- Name Field -->
-          <div class="flex flex-col gap-2">
+          <div class="flex flex-col gap-2 px-12">
             <input
               type="text"
               id="name"
@@ -56,7 +56,7 @@ const imgHomegrownCursiveMobile = "https://www.figma.com/api/mcp/asset/aaa531a4-
           </div>
 
           <!-- Email Field -->
-          <div class="flex flex-col gap-2">
+          <div class="flex flex-col gap-2 px-12">
             <input
               type="email"
               id="email"
@@ -68,7 +68,7 @@ const imgHomegrownCursiveMobile = "https://www.figma.com/api/mcp/asset/aaa531a4-
           </div>
 
           <!-- Phone Number Field -->
-          <div class="flex flex-col gap-2">
+          <div class="flex flex-col gap-2 px-12">
             <input
               type="tel"
               id="phone"
@@ -80,7 +80,8 @@ const imgHomegrownCursiveMobile = "https://www.figma.com/api/mcp/asset/aaa531a4-
           </div>
 
           <!-- Guests Section -->
-          <div class="bg-gray-200 border border-gray-300 rounded p-4 flex flex-col gap-4">
+          <div class="px-12 flex flex-col gap-4">
+            <div class="border border-black rounded p-4">
             <label class="text-gray-700 font-roboto-condensed text-[14px] font-semibold uppercase">
               Guests (Up to 4)
             </label>
@@ -112,10 +113,11 @@ const imgHomegrownCursiveMobile = "https://www.figma.com/api/mcp/asset/aaa531a4-
             <button
               type="button"
               id="add-guest-btn"
-              class="bg-[#CE1141] hover:bg-[#a00d33] text-white px-4 py-2 rounded text-[14px] font-roboto-condensed font-semibold uppercase transition-colors duration-200 self-start"
+              class="bg-[#CE1141] hover:bg-[#a00d33] text-white px-4 py-2 rounded text-[14px] mt-4 font-roboto-condensed font-semibold uppercase transition-colors duration-200 self-start"
             >
               + Add Guest
             </button>
+          </div>
           </div>
 
           <!-- Submit Button / Inline Confirmation Area -->
@@ -130,8 +132,8 @@ const imgHomegrownCursiveMobile = "https://www.figma.com/api/mcp/asset/aaa531a4-
           </div>
 
           <!-- Disclaimer -->
-          <div class="pt-2">
-            <p class="text-gray-600 text-[13px] font-roboto-condensed leading-relaxed">
+          <div class="pt-2 px-12 mx-auto">
+            <p class="text-gray-600 text-[13px] text-center font-roboto-condensed leading-relaxed max-w-[500px]">
               Please note, this does not guarantee entry. Names will be confirmed and tickets will be issued the week prior to the event, with final tickets sent the day before or day of the event.
             </p>
           </div>
@@ -145,7 +147,7 @@ const imgHomegrownCursiveMobile = "https://www.figma.com/api/mcp/asset/aaa531a4-
         </form>
 
         <!-- Footer -->
-        <div class="flex items-center justify-between pt-6 mt-auto border-t border-gray-300">
+        <div class="flex items-center justify-between pt-6 mt-auto">
           <div class="border border-gray-900 px-3 py-1.5">
             <p class="text-[13px] uppercase tracking-[0.75px] text-gray-900 font-normal font-roboto-condensed">
               HOMEGROWN AT SIMEON
@@ -157,7 +159,7 @@ const imgHomegrownCursiveMobile = "https://www.figma.com/api/mcp/asset/aaa531a4-
               <p class="text-[13px] uppercase text-gray-900 font-bold font-roboto-condensed">GAME</p>
             </div>
             <div class="bg-[#CE1141] text-white w-10 h-16 flex items-center justify-center">
-              <span class="font-prohibition text-[28px] tracking-[7.20px] pb-[7px]">1</span>
+              <span class="font-prohibition text-[36px] tracking-[7.20px] pb-[7px]">1</span>
             </div>
           </div>
         </div>
