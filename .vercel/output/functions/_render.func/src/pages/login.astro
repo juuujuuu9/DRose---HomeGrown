@@ -1,0 +1,201 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+// Desktop background images from Figma (updated URLs)
+const imgRsvpPagePlayersOnlyFormOpt2 = "https://www.figma.com/api/mcp/asset/5b27b049-97da-418a-9e48-90dccbb0d4e4";
+const imgRsvpPagePlayersOnlyFormOpt3 = "https://www.figma.com/api/mcp/asset/b61944d2-0df1-4e37-95e1-42b45a13e9fa";
+// Mobile background images from Figma
+const imgRsvpPagePlayersOnlyFormMobile = "https://www.figma.com/api/mcp/asset/b53e319b-a7bb-4131-b717-1b5005bc5e65";
+const imgRsvpPagePlayersOnlyFormMobile1 = "https://www.figma.com/api/mcp/asset/cec3d09d-efa4-48f2-b208-83b3f6fb2210";
+---
+
+<Layout title="Admin Login">
+  <main class="min-h-screen bg-black relative overflow-hidden">
+    <!-- Background Images - Desktop -->
+    <div aria-hidden="true" class="hidden lg:block absolute inset-0 pointer-events-none">
+      <div class="absolute bg-black inset-0"></div>
+      <img 
+        alt="" 
+        class="absolute max-w-none object-cover size-full opacity-50" 
+        src={imgRsvpPagePlayersOnlyFormOpt2} 
+      />
+      <img 
+        alt="" 
+        class="absolute max-w-none object-cover size-full opacity-50" 
+        src={imgRsvpPagePlayersOnlyFormOpt3} 
+      />
+    </div>
+    
+    <!-- Background Images - Mobile -->
+    <div aria-hidden="true" class="lg:hidden absolute inset-0 pointer-events-none">
+      <div class="absolute bg-black inset-0"></div>
+      <img 
+        alt="" 
+        class="absolute max-w-none object-cover size-full opacity-50" 
+        src={imgRsvpPagePlayersOnlyFormMobile} 
+      />
+      <img 
+        alt="" 
+        class="absolute max-w-none object-cover size-full opacity-50" 
+        src={imgRsvpPagePlayersOnlyFormMobile1} 
+      />
+    </div>
+
+    <!-- Main Content -->
+    <div class="relative z-10 flex items-center justify-center py-12 px-4 min-h-screen animate-fade-in">
+      <div class="max-w-md w-full p-8">
+      <h1 class="font-prohibition text-3xl text-center mb-8 text-[#ce1141] uppercase tracking-wider">
+        Admin Login
+      </h1>
+      
+      <form id="login-form" class="space-y-6">
+        <div>
+          <label for="username" class="block font-roboto-condensed text-sm font-bold text-white mb-2 uppercase">
+            Username
+          </label>
+          <div class="bg-[#212121] border border-[rgba(255,255,255,0.5)] border-solid flex flex-col items-center overflow-clip px-4 py-3 rounded-[4px]">
+            <input
+              type="text"
+              id="username"
+              name="username"
+              required
+              class="w-full bg-transparent border-0 outline-0 font-roboto-condensed font-normal leading-normal text-[15px] text-white placeholder:text-[rgba(255,255,255,0.5)] focus:ring-0"
+              placeholder="Username"
+              autocomplete="username"
+            />
+          </div>
+        </div>
+
+        <div>
+          <label for="password" class="block font-roboto-condensed text-sm font-bold text-white mb-2 uppercase">
+            Password
+          </label>
+          <div class="bg-[#212121] border border-[rgba(255,255,255,0.5)] border-solid flex flex-col items-center overflow-clip px-4 py-3 rounded-[4px]">
+            <input
+              type="password"
+              id="password"
+              name="password"
+              required
+              class="w-full bg-transparent border-0 outline-0 font-roboto-condensed font-normal leading-normal text-[15px] text-white placeholder:text-[rgba(255,255,255,0.5)] focus:ring-0"
+              placeholder="Password"
+              autocomplete="current-password"
+            />
+          </div>
+        </div>
+
+        <!-- Submit Button / Inline Confirmation Area -->
+        <div id="login-action" class="pt-4" aria-live="polite">
+          <button
+            id="login-button"
+            type="submit"
+            class="w-full bg-[#ce1141] hover:bg-[#b01038] text-white px-6 py-3 rounded-[4px] text-lg font-prohibition uppercase tracking-wider transition-colors"
+          >
+            Login
+          </button>
+        </div>
+
+        <!-- Inline error box (hidden by default) -->
+        <div
+          id="login-error"
+          class="hidden mt-4 p-4 bg-red-900 border border-red-600 text-red-100 rounded-[4px] text-center font-roboto-condensed"
+          aria-live="polite"
+        ></div>
+      </form>
+      </div>
+    </div>
+  </main>
+</Layout>
+
+<style>
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-fade-in {
+    animation: fadeIn 0.6s ease-out forwards;
+  }
+</style>
+
+<script>
+  document.getElementById('login-form')?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const form = e.target as HTMLFormElement;
+    const formData = new FormData(form);
+    const data = Object.fromEntries(formData.entries());
+
+    const actionContainer = document.getElementById('login-action');
+    const errorContainer = document.getElementById('login-error');
+    const loginButton = document.getElementById('login-button') as HTMLButtonElement;
+
+    // Clear previous error
+    if (errorContainer) {
+      errorContainer.textContent = '';
+      errorContainer.classList.add('hidden');
+    }
+
+    // Loading state
+    let originalButtonHTML = null;
+    if (loginButton) {
+      originalButtonHTML = loginButton.innerHTML;
+      loginButton.disabled = true;
+      loginButton.classList.add('opacity-60', 'cursor-not-allowed');
+      loginButton.setAttribute('aria-busy', 'true');
+      loginButton.innerHTML = `
+        <span class="inline-flex items-center justify-center gap-2">
+          <svg class="animate-spin h-5 w-5 text-white" viewBox="0 0 24 24" fill="none">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+          </svg>
+          Logging in...
+        </span>
+      `;
+    }
+
+    try {
+      const response = await fetch('/api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+
+      if (response.ok) {
+        // Redirect to admin page
+        window.location.href = '/admin';
+      } else {
+        const errorData = await response.json().catch(() => ({}));
+        console.error('Login error:', errorData);
+        if (errorContainer) {
+          errorContainer.textContent = errorData.error || 'Invalid username or password. Please try again.';
+          errorContainer.classList.remove('hidden');
+        }
+        if (loginButton && originalButtonHTML !== null) {
+          loginButton.disabled = false;
+          loginButton.classList.remove('opacity-60', 'cursor-not-allowed');
+          loginButton.removeAttribute('aria-busy');
+          loginButton.innerHTML = originalButtonHTML;
+        }
+      }
+    } catch (error) {
+      console.error('Login submission error:', error);
+      if (errorContainer) {
+        errorContainer.textContent = 'Something went wrong. Please try again.';
+        errorContainer.classList.remove('hidden');
+      }
+      if (loginButton && originalButtonHTML !== null) {
+        loginButton.disabled = false;
+        loginButton.classList.remove('opacity-60', 'cursor-not-allowed');
+        loginButton.removeAttribute('aria-busy');
+        loginButton.innerHTML = originalButtonHTML;
+      }
+    }
+  });
+</script>
+

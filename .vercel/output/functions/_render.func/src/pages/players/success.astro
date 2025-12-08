@@ -1,0 +1,123 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+// Desktop background images from Figma (same as other pages)
+const imgRsvpPagePlayersOnlyFormOpt3 = "https://www.figma.com/api/mcp/asset/b61944d2-0df1-4e37-95e1-42b45a13e9fa";
+// Mobile background images from Figma
+const imgRsvpPagePlayersOnlyFormMobile1 = "https://www.figma.com/api/mcp/asset/cec3d09d-efa4-48f2-b208-83b3f6fb2210";
+// Desktop logos
+const imgDerrickRoseDesktop = "https://www.figma.com/api/mcp/asset/1e346d4c-6df8-425d-8567-97003bcfbbe1";
+const imgHomegrownCursiveDesktop = "https://www.figma.com/api/mcp/asset/ee0ae443-0dba-4ebc-994c-4d92329058d6";
+// Mobile logos
+const imgDerrickRoseMobile = "https://www.figma.com/api/mcp/asset/44ae098a-0d6e-40ab-9e62-e928bac7c3f6";
+const imgHomegrownCursiveMobile = "https://www.figma.com/api/mcp/asset/aaa531a4-5a7c-4c3f-b36d-e045c6f12dd5";
+---
+
+<Layout title="Success">
+  <main class="min-h-screen bg-black relative overflow-hidden">
+    <!-- Background Images - Desktop -->
+    <div aria-hidden="true" class="hidden lg:block absolute inset-0 pointer-events-none">
+      <div class="absolute bg-black inset-0"></div>
+      <img 
+        alt="" 
+        class="absolute max-w-none object-cover size-full opacity-50" 
+        src={imgRsvpPagePlayersOnlyFormOpt3} 
+      />
+    </div>
+    
+    <!-- Background Images - Mobile -->
+    <div aria-hidden="true" class="lg:hidden absolute inset-0 pointer-events-none">
+      <div class="absolute bg-black inset-0"></div>
+      <img 
+        alt="" 
+        class="absolute max-w-none object-cover size-full opacity-50" 
+        src={imgRsvpPagePlayersOnlyFormMobile1} 
+      />
+    </div>
+
+    <!-- Main Content -->
+    <div class="relative z-10 flex flex-col gap-5 items-center justify-center pb-12 pt-[90px] px-0 min-h-screen animate-fade-in">
+      <!-- Container -->
+      <div class="flex flex-1 flex-col gap-5 items-center min-h-0 overflow-clip px-5 py-0 w-full max-w-[1440px]">
+        <!-- Top Branding -->
+        <p class="font-prohibition leading-normal not-italic relative shrink-0 text-[#ce1141] text-[30px] uppercase w-full whitespace-pre-wrap text-center">
+          <span class="tracking-[3.9px] lg:tracking-[32px] xl:tracking-[48px] inline-block -mr-[3.9px] lg:-mr-[48px]">Homegrown  at  Simeon</span>
+        </p>
+
+        <!-- Main Content Box - Vertically Centered Content -->
+        <div class="flex flex-1 flex-col justify-between items-center min-h-0 w-full">
+          <!-- Spacer to push content to center -->
+          <div class="flex-1 flex items-center justify-center w-full">
+            <!-- Mobile: Content Frame with Border -->
+            <div class="lg:hidden flex flex-col gap-8 items-center justify-center px-6 py-8 w-full border border-gray-700/50">
+              <!-- Logo Section -->
+              <div class="flex flex-col gap-[10px] items-center">
+                <div class="h-[60px] relative shrink-0 w-[61.535px]">
+                  <img alt="Derrick Rose" class="block max-w-none size-full" src={imgDerrickRoseMobile} />
+                </div>
+                <div class="h-[84px] relative shrink-0 w-[320px]">
+                  <img alt="Homegrown" class="block max-w-none size-full" src={imgHomegrownCursiveMobile} />
+                </div>
+              </div>
+
+              <!-- Success Message -->
+              <p class="font-prohibition leading-normal text-[#ce1141] text-[22px] uppercase text-center tracking-[2px] px-4">
+                YOUR SUBMISSION HAS BEEN RECEIVED!
+              </p>
+            </div>
+
+            <!-- Desktop: Content (no border) -->
+            <div class="hidden lg:flex flex-col gap-12 items-center justify-center px-6 py-8 w-full">
+              <!-- Logo Section -->
+              <div class="flex flex-col gap-[10px] items-center">
+                <div class="h-[79px] relative shrink-0 w-[81px]">
+                  <img alt="Derrick Rose" class="block max-w-none size-full" src={imgDerrickRoseDesktop} />
+                </div>
+                <div class="h-[110px] relative shrink-0 w-[418px]">
+                  <img alt="Homegrown" class="block max-w-none size-full" src={imgHomegrownCursiveDesktop} />
+                </div>
+              </div>
+
+              <!-- Success Message -->
+              <p class="font-prohibition leading-normal text-[#ce1141] text-[36px] uppercase text-center tracking-[4px]">
+                YOUR SUBMISSION HAS BEEN RECEIVED!
+              </p>
+            </div>
+          </div>
+
+          <!-- Back to RSVP Button -->
+          <a 
+            href="/players/rsvp"
+            class="bg-[#ce1141] hover:bg-[#b01038] cursor-pointer flex items-center justify-center px-6 py-3 w-[362px] lg:w-full border-0 transition-colors duration-200 shrink-0"
+          >
+            <span class="font-prohibition leading-none text-[20px] text-white tracking-[4px] uppercase inline-block -mr-[4px] pb-[5px]">
+              BACK TO RSVP
+            </span>
+          </a>
+        </div>
+
+        <!-- Bottom Branding -->
+        <p class="font-prohibition leading-normal not-italic relative shrink-0 text-[#ce1141] text-[30px] uppercase w-full whitespace-pre-wrap text-center">
+          <span class="tracking-[3.9px] lg:tracking-[32px] xl:tracking-[48px] inline-block -mr-[3.9px] lg:-mr-[48px]">Homegrown  at  Simeon</span>
+        </p>
+      </div>
+    </div>
+  </main>
+</Layout>
+
+<style>
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-fade-in {
+    animation: fadeIn 0.6s ease-out forwards;
+  }
+</style>

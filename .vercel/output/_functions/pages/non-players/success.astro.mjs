@@ -1,0 +1,44 @@
+/* empty css                                    */
+import { e as createComponent, k as renderComponent, r as renderTemplate, m as maybeRenderHead, h as addAttribute } from '../../chunks/astro/server_CujPIBlR.mjs';
+import 'piccolore';
+import { $ as $$Layout } from '../../chunks/Layout_CCEfJV9Y.mjs';
+/* empty css                                      */
+export { renderers } from '../../renderers.mjs';
+
+const $$Success = createComponent(($$result, $$props, $$slots) => {
+  const imgDerrickRoseDesktop = "https://www.figma.com/api/mcp/asset/1e346d4c-6df8-425d-8567-97003bcfbbe1";
+  const imgHomegrownCursiveDesktop = "https://www.figma.com/api/mcp/asset/ee0ae443-0dba-4ebc-994c-4d92329058d6";
+  const imgDerrickRoseMobile = "https://www.figma.com/api/mcp/asset/44ae098a-0d6e-40ab-9e62-e928bac7c3f6";
+  const imgHomegrownCursiveMobile = "https://www.figma.com/api/mcp/asset/aaa531a4-5a7c-4c3f-b36d-e045c6f12dd5";
+  return renderTemplate`${renderComponent($$result, "Layout", $$Layout, { "title": "Success | Non-Players", "description": "HOMEGROWN AT SIMEON", "ogImage": "/og-image-2.png", "data-astro-cid-ydsktekz": true }, { "default": ($$result2) => renderTemplate`   ${maybeRenderHead()}<main class="hidden lg:flex min-h-screen bg-black relative overflow-hidden rounded-3xl" data-astro-cid-ydsktekz> <!-- Main Container with border --> <div class="w-full h-dvh bg-[#F5F5F5] flex animate-fade-in" data-astro-cid-ydsktekz> <!-- Left Section: Background Image --> <div class="w-1/2 h-full relative bg-white" data-astro-cid-ydsktekz> <img alt="Urban basketball court with elevated train tracks" class="w-full h-full object-cover" src="/bg-photo.png" data-astro-cid-ydsktekz> </div> <!-- Right Section: Content --> <div class="w-1/2 h-full bg-[#F5F5F5] flex flex-col px-12 pt-8 overflow-y-auto" data-astro-cid-ydsktekz> <!-- Logo Section --> <div class="flex flex-col items-center gap-[10px] pt-4 pb-10" data-astro-cid-ydsktekz> <div class="h-[79px] w-[81px] relative" data-astro-cid-ydsktekz> <img alt="Derrick Rose logo" class="w-full h-full object-contain"${addAttribute(imgDerrickRoseDesktop, "src")} data-astro-cid-ydsktekz> </div> <div class="h-[110px] w-[418px] relative" data-astro-cid-ydsktekz> <img alt="Homegrown" class="w-full h-full object-contain"${addAttribute(imgHomegrownCursiveDesktop, "src")} data-astro-cid-ydsktekz> </div> </div> <!-- Success Message --> <div class="flex flex-col gap-6 flex-1 justify-center pt-24" data-astro-cid-ydsktekz> <h1 class="font-roboto-condensed text-[#CE1141] text-[48px] font-bold uppercase leading-[46px] break-words text-left px-12" data-astro-cid-ydsktekz>
+YOUR SUBMISSION HAS BEEN RECEIVED!
+</h1> <!-- Disclaimer --> <p class="text-gray-900 text-[15px] font-roboto-condensed leading-relaxed text-left px-12" data-astro-cid-ydsktekz>
+Please note, this does not guarantee entry. Names will be confirmed and tickets will be issued the week prior to the event, with final tickets sent the day before or day of the event.
+</p> <!-- Back to Homepage Button --> <div class="pt-24" data-astro-cid-ydsktekz> <a href="/non-players/" class="bg-[#CE1141] hover:bg-[#a00d33] text-white px-8 py-4 text-[18px] font-prohibition font-bold uppercase tracking-wider transition-colors duration-200 inline-block text-center w-full" data-astro-cid-ydsktekz>
+BACK TO HOMEPAGE
+</a> </div> </div> <!-- Footer --> <div class="flex items-center justify-between pt-6 mt-auto" data-astro-cid-ydsktekz> <div class="border border-gray-900 px-2 py-0.5" data-astro-cid-ydsktekz> <p class="text-[15px] uppercase tracking-[0.75px] text-gray-900 font-normal font-roboto-condensed" data-astro-cid-ydsktekz>
+HOMEGROWN AT SIMEON
+</p> </div> <div class="flex items-center gap-2" data-astro-cid-ydsktekz> <div class="text-right" data-astro-cid-ydsktekz> <p class="text-[13px] uppercase text-gray-900 font-bold font-roboto-condensed" data-astro-cid-ydsktekz>HOME</p> <p class="text-[13px] uppercase text-gray-900 font-bold font-roboto-condensed" data-astro-cid-ydsktekz>GAME</p> </div> <div class="bg-[#CE1141] text-white w-10 h-16 flex items-center justify-center" data-astro-cid-ydsktekz> <span class="font-prohibition text-[36px] tracking-[.70px] pb-[7px]" data-astro-cid-ydsktekz>1</span> </div> </div> </div> </div> </div> </main>  <main class="lg:hidden h-screen bg-black flex flex-col p-0 overflow-hidden" data-astro-cid-ydsktekz> <div class="w-full max-w-md bg-[#F5F5F5] rounded-2xl overflow-y-auto animate-fade-in flex flex-col mx-auto" data-astro-cid-ydsktekz> <!-- Logo Section --> <div class="flex flex-col items-center gap-[10px] pt-8 pb-6 px-6" data-astro-cid-ydsktekz> <div class="h-[60px] w-[61.535px] relative" data-astro-cid-ydsktekz> <img alt="Derrick Rose logo" class="w-full h-full object-contain"${addAttribute(imgDerrickRoseMobile, "src")} data-astro-cid-ydsktekz> </div> <div class="h-[84px] w-[320px] relative" data-astro-cid-ydsktekz> <img alt="Homegrown" class="w-full h-full object-contain"${addAttribute(imgHomegrownCursiveMobile, "src")} data-astro-cid-ydsktekz> </div> </div> <!-- Success Message --> <div class="px-6 pt-8 pb-4" data-astro-cid-ydsktekz> <h1 class="font-roboto-condensed text-[#CE1141] text-[28px] font-bold uppercase leading-[32px] break-words text-center mb-4" data-astro-cid-ydsktekz>
+YOUR SUBMISSION HAS BEEN RECEIVED!
+</h1> <!-- Disclaimer --> <p class="text-gray-900 text-[13px] font-roboto-condensed leading-relaxed text-left mb-6" data-astro-cid-ydsktekz>
+Please note, this does not guarantee entry. Names will be confirmed and tickets will be issued the week prior to the event, with final tickets sent the day before or day of the event.
+</p> </div> <!-- Background Image --> <div class="w-full relative mb-0" data-astro-cid-ydsktekz> <img alt="Urban basketball court with elevated train tracks" class="w-full object-cover aspect-video" src="/bg-photo.png" data-astro-cid-ydsktekz> </div> <!-- Back to Homepage Button --> <div class="px-0 pb-0" data-astro-cid-ydsktekz> <a href="/non-players/" class="bg-[#CE1141] hover:bg-[#a00d33] text-white py-4 px-8 rounded-none text-[18px] font-prohibition font-bold uppercase tracking-wider transition-colors duration-200 block text-center w-full" data-astro-cid-ydsktekz>
+BACK TO HOMEPAGE
+</a> </div> <!-- Footer --> <div class="flex items-center justify-between px-6 pb-0 pt-0" data-astro-cid-ydsktekz> <div class="border border-gray-900 px-2 py-0.5 rounded-none" data-astro-cid-ydsktekz> <p class="text-[13px] uppercase tracking-[0.75px] text-gray-900 font-normal font-roboto-condensed" data-astro-cid-ydsktekz>
+HOMEGROWN AT SIMEON
+</p> </div> <div class="flex items-center gap-2" data-astro-cid-ydsktekz> <div class="text-right" data-astro-cid-ydsktekz> <p class="text-[13px] uppercase text-gray-900 font-bold font-roboto-condensed" data-astro-cid-ydsktekz>HOME</p> <p class="text-[13px] uppercase text-gray-900 font-bold font-roboto-condensed" data-astro-cid-ydsktekz>GAME</p> </div> <div class="bg-[#CE1141] text-white w-10 h-16 flex items-center justify-center rounded-none" data-astro-cid-ydsktekz> <span class="font-prohibition text-[36px] tracking-[.45px] pb-[7px]" data-astro-cid-ydsktekz>1</span> </div> </div> </div> </div> </main> ` })} `;
+}, "/Users/user/Development/Drose - HomeGrown/src/pages/non-players/success.astro", void 0);
+
+const $$file = "/Users/user/Development/Drose - HomeGrown/src/pages/non-players/success.astro";
+const $$url = "/non-players/success";
+
+const _page = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: $$Success,
+  file: $$file,
+  url: $$url
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const page = () => _page;
+
+export { page };
