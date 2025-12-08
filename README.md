@@ -46,8 +46,15 @@ Deploy to Vercel with zero configuration. Make sure to set all environment varia
 ## Troubleshooting
 
 ### Vercel Deployment Issues
-- **Error**: "Function Runtimes must have a valid version"
-- **Solution**: Use `framework: "astro"` in vercel.json instead of function-specific configs
+- **Error**: "Cannot find module '/var/task/dist/server/entry.mjs'"
+- **Solution**: 
+  1. Ensure `@astrojs/vercel` adapter is installed (not `@astrojs/vercel/serverless`)
+  2. Verify `output: 'server'` is set in `astro.config.mjs`
+  3. Check Vercel project settings → General → Build & Development Settings
+  4. Ensure "Framework Preset" is set to "Astro" (or auto-detected)
+  5. Build Command should be: `npm run build`
+  6. Output Directory should be empty (adapter handles this automatically)
+  7. If issue persists, try clearing Vercel build cache and redeploying
 
 ### Database Connection Issues
 - **Error**: "Cannot read properties of undefined (reading 'searchParams')"
