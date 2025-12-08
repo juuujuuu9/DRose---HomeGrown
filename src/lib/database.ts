@@ -12,11 +12,17 @@ if (!connectionString) {
 
 console.log('✅ Database connection string found');
 
+// Configure pool for serverless environments (Vercel)
+// Serverless functions need smaller connection pools and shorter timeouts
 const pool = new Pool({
   connectionString: connectionString,
   ssl: {
     rejectUnauthorized: false
-  }
+  },
+  // Serverless-optimized settings
+  max: 2, // Maximum number of clients in the pool (lower for serverless)
+  idleTimeoutMillis: 30000, // Close idle clients after 30 seconds
+  connectionTimeoutMillis: 10000, // Return an error after 10 seconds if connection could not be established
 });
 
 // Database schema interface

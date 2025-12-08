@@ -3,7 +3,7 @@ import { e as createComponent, f as createAstro, k as renderComponent, l as rend
 import 'piccolore';
 import { $ as $$Layout } from '../chunks/Layout_CCEfJV9Y.mjs';
 import { i as isAuthenticated } from '../chunks/auth_Cnl4rBo8.mjs';
-import { i as initializeDatabase, g as getAllSubmissions, a as getAllNonPlayerSubmissions } from '../chunks/database_BNLmaEc3.mjs';
+import { i as initializeDatabase, a as initializeNonPlayerDatabase, g as getAllSubmissions, b as getAllNonPlayerSubmissions } from '../chunks/database_D9X_F_qv.mjs';
 /* empty css                                 */
 export { renderers } from '../renderers.mjs';
 
@@ -14,9 +14,27 @@ const $$Admin = createComponent(async ($$result, $$props, $$slots) => {
   if (!isAuthenticated(Astro2.cookies)) {
     return Astro2.redirect("/login", 302);
   }
-  await initializeDatabase();
-  const entries = await getAllSubmissions();
-  const nonPlayerEntries = await getAllNonPlayerSubmissions();
+  try {
+    await initializeDatabase();
+    await initializeNonPlayerDatabase();
+  } catch (error) {
+    console.error("Error initializing database:", error);
+    console.error("Error details:", error instanceof Error ? error.message : String(error));
+  }
+  let entries = [];
+  let nonPlayerEntries = [];
+  try {
+    entries = await getAllSubmissions();
+  } catch (error) {
+    console.error("Error fetching player submissions:", error);
+    console.error("Error details:", error instanceof Error ? error.message : String(error));
+  }
+  try {
+    nonPlayerEntries = await getAllNonPlayerSubmissions();
+  } catch (error) {
+    console.error("Error fetching non-player submissions:", error);
+    console.error("Error details:", error instanceof Error ? error.message : String(error));
+  }
   function splitName(name) {
     const parts = name.trim().split(/\s+/);
     return {
@@ -24,13 +42,12 @@ const $$Admin = createComponent(async ($$result, $$props, $$slots) => {
       lastName: parts.slice(1).join(" ") || ""
     };
   }
-  const imgRsvpPagePlayersOnlyFormOpt2 = "https://www.figma.com/api/mcp/asset/5b27b049-97da-418a-9e48-90dccbb0d4e4";
   const imgRsvpPagePlayersOnlyFormOpt3 = "https://www.figma.com/api/mcp/asset/b61944d2-0df1-4e37-95e1-42b45a13e9fa";
   const imgRsvpPagePlayersOnlyFormMobile = "https://www.figma.com/api/mcp/asset/b53e319b-a7bb-4131-b717-1b5005bc5e65";
   const imgRsvpPagePlayersOnlyFormMobile1 = "https://www.figma.com/api/mcp/asset/cec3d09d-efa4-48f2-b208-83b3f6fb2210";
   const imgDerrickRoseDesktop = "https://www.figma.com/api/mcp/asset/1e346d4c-6df8-425d-8567-97003bcfbbe1";
   const imgDerrickRoseMobile = "https://www.figma.com/api/mcp/asset/44ae098a-0d6e-40ab-9e62-e928bac7c3f6";
-  return renderTemplate`${renderComponent($$result, "Layout", $$Layout, { "title": "Admin Dashboard", "data-astro-cid-2zp6q64z": true }, { "default": async ($$result2) => renderTemplate` ${maybeRenderHead()}<div class="relative min-h-screen py-4 px-2 bg-black overflow-hidden" data-astro-cid-2zp6q64z> <!-- Background Images - Desktop --> <div aria-hidden="true" class="hidden lg:block fixed inset-0 pointer-events-none z-0" data-astro-cid-2zp6q64z> <div class="absolute bg-black inset-0" data-astro-cid-2zp6q64z></div> <img alt="" class="absolute max-w-none object-cover size-full opacity-50"${addAttribute(imgRsvpPagePlayersOnlyFormOpt2, "src")} data-astro-cid-2zp6q64z> <img alt="" class="absolute max-w-none object-cover size-full opacity-50"${addAttribute(imgRsvpPagePlayersOnlyFormOpt3, "src")} data-astro-cid-2zp6q64z> </div> <!-- Background Images - Mobile --> <div aria-hidden="true" class="lg:hidden fixed inset-0 pointer-events-none z-0" data-astro-cid-2zp6q64z> <div class="absolute bg-black inset-0" data-astro-cid-2zp6q64z></div> <img alt="" class="absolute max-w-none object-cover size-full opacity-50"${addAttribute(imgRsvpPagePlayersOnlyFormMobile, "src")} data-astro-cid-2zp6q64z> <img alt="" class="absolute max-w-none object-cover size-full opacity-50"${addAttribute(imgRsvpPagePlayersOnlyFormMobile1, "src")} data-astro-cid-2zp6q64z> </div> <!-- Header --> <div class="relative z-10 flex justify-between items-center mb-4 pb-2 border-b border-[rgba(255,255,255,0.3)] max-w-7xl mx-auto animate-fade-in" data-astro-cid-2zp6q64z> <div class="flex flex-row gap-4" data-astro-cid-2zp6q64z> <a href="/" class="overflow-clip py-[10px] ml-3" data-astro-cid-2zp6q64z> <!-- Mobile: Derrick Rose Logo --> <div class="lg:hidden h-[60px] relative shrink-0 w-[61.535px]" data-astro-cid-2zp6q64z> <img alt="Derrick Rose" class="block max-w-none size-full"${addAttribute(imgDerrickRoseMobile, "src")} data-astro-cid-2zp6q64z> </div> <!-- Desktop: Derrick Rose Logo --> <div class="hidden lg:block h-[79px] relative shrink-0 w-[81px]" data-astro-cid-2zp6q64z> <img alt="Derrick Rose" class="block max-w-none size-full"${addAttribute(imgDerrickRoseDesktop, "src")} data-astro-cid-2zp6q64z> </div> </a> </div> <div class="flex gap-2" data-astro-cid-2zp6q64z> <!-- Export CSVs Button --> <button id="export-csv-btn" class="px-3 py-2 border border-[rgba(255,255,255,0.5)] rounded-[4px] text-white bg-[#212121] hover:bg-[#2a2a2a] transition-colors flex items-center gap-2.5 font-roboto-condensed font-semibold uppercase text-sm" data-astro-cid-2zp6q64z> <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" data-astro-cid-2zp6q64z> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" data-astro-cid-2zp6q64z></path> </svg>
+  return renderTemplate`${renderComponent($$result, "Layout", $$Layout, { "title": "Admin Dashboard", "data-astro-cid-2zp6q64z": true }, { "default": async ($$result2) => renderTemplate` ${maybeRenderHead()}<div class="relative min-h-screen py-4 px-2 bg-black overflow-hidden" data-astro-cid-2zp6q64z> <!-- Background Images - Desktop --> <div aria-hidden="true" class="hidden lg:block fixed inset-0 pointer-events-none z-0" data-astro-cid-2zp6q64z> <div class="absolute bg-black inset-0" data-astro-cid-2zp6q64z></div> <img alt="" class="absolute max-w-none object-cover size-full opacity-50"${addAttribute(imgRsvpPagePlayersOnlyFormOpt3, "src")} data-astro-cid-2zp6q64z> </div> <!-- Background Images - Mobile --> <div aria-hidden="true" class="lg:hidden fixed inset-0 pointer-events-none z-0" data-astro-cid-2zp6q64z> <div class="absolute bg-black inset-0" data-astro-cid-2zp6q64z></div> <img alt="" class="absolute max-w-none object-cover size-full opacity-50"${addAttribute(imgRsvpPagePlayersOnlyFormMobile, "src")} data-astro-cid-2zp6q64z> <img alt="" class="absolute max-w-none object-cover size-full opacity-50"${addAttribute(imgRsvpPagePlayersOnlyFormMobile1, "src")} data-astro-cid-2zp6q64z> </div> <!-- Header --> <div class="relative z-10 flex justify-between items-center mb-4 pb-2 border-b border-[rgba(255,255,255,0.3)] max-w-7xl mx-auto animate-fade-in" data-astro-cid-2zp6q64z> <div class="flex flex-row gap-4" data-astro-cid-2zp6q64z> <a href="/" class="overflow-clip py-[10px] ml-3" data-astro-cid-2zp6q64z> <!-- Mobile: Derrick Rose Logo --> <div class="lg:hidden h-[60px] relative shrink-0 w-[61.535px]" data-astro-cid-2zp6q64z> <img alt="Derrick Rose" class="block max-w-none size-full"${addAttribute(imgDerrickRoseMobile, "src")} data-astro-cid-2zp6q64z> </div> <!-- Desktop: Derrick Rose Logo --> <div class="hidden lg:block h-[79px] relative shrink-0 w-[81px]" data-astro-cid-2zp6q64z> <img alt="Derrick Rose" class="block max-w-none size-full"${addAttribute(imgDerrickRoseDesktop, "src")} data-astro-cid-2zp6q64z> </div> </a> </div> <div class="flex gap-2" data-astro-cid-2zp6q64z> <!-- Export CSVs Button --> <button id="export-csv-btn" class="px-3 py-2 border border-[rgba(255,255,255,0.5)] rounded-[4px] text-white bg-[#212121] hover:bg-[#2a2a2a] transition-colors flex items-center gap-2.5 font-roboto-condensed font-semibold uppercase text-sm" data-astro-cid-2zp6q64z> <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" data-astro-cid-2zp6q64z> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" data-astro-cid-2zp6q64z></path> </svg>
 Export CSVs
 </button> <button id="logout-btn" class="px-3 py-2 border border-[rgba(255,255,255,0.5)] rounded-[4px] text-white bg-[#212121] hover:bg-[#2a2a2a] transition-colors flex items-center gap-2.5 font-roboto-condensed font-semibold uppercase text-sm" data-astro-cid-2zp6q64z> <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" data-astro-cid-2zp6q64z> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" data-astro-cid-2zp6q64z></path> </svg>
 Logout

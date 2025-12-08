@@ -1,5 +1,5 @@
 import { r as requireAuth } from '../../../../chunks/auth_Cnl4rBo8.mjs';
-import { a as getAllNonPlayerSubmissions } from '../../../../chunks/database_BNLmaEc3.mjs';
+import { b as getAllNonPlayerSubmissions } from '../../../../chunks/database_D9X_F_qv.mjs';
 export { renderers } from '../../../../renderers.mjs';
 
 const GET = async ({ cookies }) => {

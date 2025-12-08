@@ -11,7 +11,14 @@ const pool = new Pool({
   connectionString,
   ssl: {
     rejectUnauthorized: false
-  }
+  },
+  // Serverless-optimized settings
+  max: 2,
+  // Maximum number of clients in the pool (lower for serverless)
+  idleTimeoutMillis: 3e4,
+  // Close idle clients after 30 seconds
+  connectionTimeoutMillis: 1e4
+  // Return an error after 10 seconds if connection could not be established
 });
 async function initializeDatabase() {
   const client = await pool.connect();
@@ -292,4 +299,4 @@ async function getEntryCounts() {
   }
 }
 
-export { getAllNonPlayerSubmissions as a, initializeNonPlayerDatabase as b, createNonPlayerSubmission as c, deleteSubmission as d, createSubmission as e, getEntryCounts as f, getAllSubmissions as g, initializeDatabase as i, updateCheckInStatus as u };
+export { initializeNonPlayerDatabase as a, getAllNonPlayerSubmissions as b, createNonPlayerSubmission as c, deleteSubmission as d, createSubmission as e, getEntryCounts as f, getAllSubmissions as g, initializeDatabase as i, updateCheckInStatus as u };

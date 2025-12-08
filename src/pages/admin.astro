@@ -1,19 +1,47 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import { isAuthenticated } from '../lib/auth';
-import { getAllSubmissions, getAllNonPlayerSubmissions, initializeDatabase } from '../lib/database';
+import { 
+  getAllSubmissions, 
+  getAllNonPlayerSubmissions, 
+  initializeDatabase,
+  initializeNonPlayerDatabase 
+} from '../lib/database';
 
 // Check authentication
 if (!isAuthenticated(Astro.cookies)) {
   return Astro.redirect('/login', 302);
 }
 
-// Initialize database schema (ensures migrations run)
-await initializeDatabase();
+// Initialize database schemas (ensures migrations run)
+try {
+  await initializeDatabase();
+  await initializeNonPlayerDatabase();
+} catch (error) {
+  console.error('Error initializing database:', error);
+  console.error('Error details:', error instanceof Error ? error.message : String(error));
+  // Continue - tables may already exist
+}
 
 // Fetch entries server-side
-const entries = await getAllSubmissions();
-const nonPlayerEntries = await getAllNonPlayerSubmissions();
+let entries = [];
+let nonPlayerEntries = [];
+
+try {
+  entries = await getAllSubmissions();
+} catch (error) {
+  console.error('Error fetching player submissions:', error);
+  console.error('Error details:', error instanceof Error ? error.message : String(error));
+  // Continue with empty array to prevent page crash
+}
+
+try {
+  nonPlayerEntries = await getAllNonPlayerSubmissions();
+} catch (error) {
+  console.error('Error fetching non-player submissions:', error);
+  console.error('Error details:', error instanceof Error ? error.message : String(error));
+  // Continue with empty array to prevent page crash
+}
 
 // Helper function to split name
 function splitName(name: string): { firstName: string; lastName: string } {

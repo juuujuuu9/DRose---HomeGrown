@@ -1,19 +1,47 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import { isAuthenticated } from '../lib/auth';
-import { getAllSubmissions, getAllNonPlayerSubmissions, initializeDatabase } from '../lib/database';
+import { 
+  getAllSubmissions, 
+  getAllNonPlayerSubmissions, 
+  initializeDatabase,
+  initializeNonPlayerDatabase 
+} from '../lib/database';
 
 // Check authentication
 if (!isAuthenticated(Astro.cookies)) {
   return Astro.redirect('/login', 302);
 }
 
-// Initialize database schema (ensures migrations run)
-await initializeDatabase();
+// Initialize database schemas (ensures migrations run)
+try {
+  await initializeDatabase();
+  await initializeNonPlayerDatabase();
+} catch (error) {
+  console.error('Error initializing database:', error);
+  console.error('Error details:', error instanceof Error ? error.message : String(error));
+  // Continue - tables may already exist
+}
 
 // Fetch entries server-side
-const entries = await getAllSubmissions();
-const nonPlayerEntries = await getAllNonPlayerSubmissions();
+let entries = [];
+let nonPlayerEntries = [];
+
+try {
+  entries = await getAllSubmissions();
+} catch (error) {
+  console.error('Error fetching player submissions:', error);
+  console.error('Error details:', error instanceof Error ? error.message : String(error));
+  // Continue with empty array to prevent page crash
+}
+
+try {
+  nonPlayerEntries = await getAllNonPlayerSubmissions();
+} catch (error) {
+  console.error('Error fetching non-player submissions:', error);
+  console.error('Error details:', error instanceof Error ? error.message : String(error));
+  // Continue with empty array to prevent page crash
+}
 
 // Helper function to split name
 function splitName(name: string): { firstName: string; lastName: string } {
@@ -25,7 +53,6 @@ function splitName(name: string): { firstName: string; lastName: string } {
 }
 
 // Desktop background images from Figma (updated URLs)
-const imgRsvpPagePlayersOnlyFormOpt2 = "https://www.figma.com/api/mcp/asset/5b27b049-97da-418a-9e48-90dccbb0d4e4";
 const imgRsvpPagePlayersOnlyFormOpt3 = "https://www.figma.com/api/mcp/asset/b61944d2-0df1-4e37-95e1-42b45a13e9fa";
 // Mobile background images from Figma
 const imgRsvpPagePlayersOnlyFormMobile = "https://www.figma.com/api/mcp/asset/b53e319b-a7bb-4131-b717-1b5005bc5e65";
@@ -43,11 +70,6 @@ const imgHomegrownCursiveMobile = "https://www.figma.com/api/mcp/asset/aaa531a4-
     <!-- Background Images - Desktop -->
     <div aria-hidden="true" class="hidden lg:block fixed inset-0 pointer-events-none z-0">
       <div class="absolute bg-black inset-0"></div>
-      <img 
-        alt="" 
-        class="absolute max-w-none object-cover size-full opacity-50" 
-        src={imgRsvpPagePlayersOnlyFormOpt2} 
-      />
       <img 
         alt="" 
         class="absolute max-w-none object-cover size-full opacity-50" 
