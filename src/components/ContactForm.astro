@@ -264,6 +264,52 @@ const sizeOptions = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
       </div>
     </div>
 
+    <!-- Sports Bra Size -->
+    <div class="flex flex-col gap-2 items-start w-full">
+      <!-- Desktop Dropdown (no label) -->
+      <div class="hidden md:flex bg-[#212121] border border-[rgba(255,255,255,0.5)] border-solid items-start justify-between overflow-clip px-[16px] py-[12px] rounded-[4px] w-full">
+        <select
+          id="sports_bra_size"
+          name="sports_bra_size"
+          class="flex-1 min-h-0 bg-transparent border-0 outline-0 font-roboto-condensed font-normal leading-normal text-[15px] text-[rgba(255,255,255,0.5)] appearance-none cursor-pointer"
+        >
+          <option value="" class="bg-[#212121] text-[rgba(255,255,255,0.5)]">Sports Bra Size</option>
+          {sizeOptions.map(size => (
+            <option value={size} class="bg-[#212121] text-white">{size}</option>
+          ))}
+        </select>
+        <svg class="w-4 h-4 text-white shrink-0 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+        </svg>
+      </div>
+      <!-- Mobile Button Grid -->
+      <div class="md:hidden flex flex-col gap-2 items-start w-full">
+        <p class="font-roboto-condensed font-bold leading-normal relative shrink-0 text-[12px] text-white uppercase w-full whitespace-pre-wrap">
+          Sports Bra Size
+        </p>
+        <div class="flex gap-1 items-start w-full">
+          {sizeOptions.map(size => (
+            <button
+              type="button"
+              data-size-field="sports_bra_size"
+              data-size-value={size}
+              class="size-button bg-[#212121] border border-[rgba(255,255,255,0.5)] border-solid flex flex-col items-center justify-center overflow-clip rounded-[4px] shrink-0 w-[42px] h-[42px] cursor-pointer"
+            >
+              <p class="font-roboto-condensed font-normal leading-normal text-[15px] text-[rgba(255,255,255,0.5)] text-center">
+                {size}
+              </p>
+            </button>
+          ))}
+        </div>
+        <select id="sports_bra_size_mobile" name="sports_bra_size" class="hidden">
+          <option value=""></option>
+          {sizeOptions.map(size => (
+            <option value={size}>{size}</option>
+          ))}
+        </select>
+      </div>
+    </div>
+
     <!-- Tight Size -->
     <div class="flex flex-col gap-2 items-start w-full">
       <!-- Desktop Dropdown (no label) -->
@@ -528,7 +574,7 @@ const sizeOptions = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
     }
     
     // Sync mobile size selects with desktop selects
-    const sizeFields = ['top_size', 'bottom_size', 'jacket_size', 'tight_size', 'shoe_size'];
+    const sizeFields = ['top_size', 'bottom_size', 'jacket_size', 'sports_bra_size', 'tight_size', 'shoe_size'];
     sizeFields.forEach(fieldName => {
       const desktopSelect = document.getElementById(fieldName) as HTMLSelectElement | null;
       const mobileSelect = document.getElementById(`${fieldName}_mobile`) as HTMLSelectElement | null;
@@ -637,6 +683,22 @@ const sizeOptions = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
       'shoe_size'
     ];
     
+    // Map field names to their display names (placeholders)
+    const fieldDisplayNames: Record<string, string> = {
+      'name': 'Name',
+      'email': 'Email',
+      'phone': 'Phone Number',
+      'alternative_contact_name': 'Alternative Contact Name',
+      'alternative_contact_phone': 'Alternative Contact Phone',
+      'alternative_contact_email': 'Alternative Contact Email',
+      'address': 'Address',
+      'top_size': 'Jersey Size',
+      'bottom_size': 'Shorts Size',
+      'jacket_size': 'Jacket/Hoodie Size',
+      'tight_size': 'Compression Tight Size',
+      'shoe_size': 'Shoe Size (Mens)'
+    };
+    
     const missingFields = requiredFields.filter(field => !data[field] || data[field].trim() === '');
     
     if (missingFields.length > 0) {
@@ -652,7 +714,8 @@ const sizeOptions = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
         }
       }
       if (errorContainer) {
-        errorContainer.textContent = `Please fill in all required fields. Missing: ${missingFields.join(', ')}`;
+        const missingFieldNames = missingFields.map(field => fieldDisplayNames[field] || field);
+        errorContainer.textContent = `Please fill in all required fields. Missing: ${missingFieldNames.join(', ')}`;
         errorContainer.classList.remove('hidden');
       }
       return;
@@ -674,7 +737,23 @@ const sizeOptions = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
         if (errorContainer) {
           let errorMessage = 'Something went wrong. Please try again.';
           if (errorData.missing && Array.isArray(errorData.missing)) {
-            errorMessage = `Please fill in all required fields. Missing: ${errorData.missing.join(', ')}`;
+            // Map field names to display names for error message
+            const fieldDisplayNames: Record<string, string> = {
+              'name': 'Name',
+              'email': 'Email',
+              'phone': 'Phone Number',
+              'alternative_contact_name': 'Alternative Contact Name',
+              'alternative_contact_phone': 'Alternative Contact Phone',
+              'alternative_contact_email': 'Alternative Contact Email',
+              'address': 'Address',
+              'top_size': 'Jersey Size',
+              'bottom_size': 'Shorts Size',
+              'jacket_size': 'Jacket/Hoodie Size',
+              'tight_size': 'Compression Tight Size',
+              'shoe_size': 'Shoe Size (Mens)'
+            };
+            const missingFieldNames = errorData.missing.map((field: string) => fieldDisplayNames[field] || field);
+            errorMessage = `Please fill in all required fields. Missing: ${missingFieldNames.join(', ')}`;
           } else if (errorData.error) {
             errorMessage = errorData.error;
           }

@@ -53,6 +53,7 @@ export const POST: APIRoute = async ({ request }) => {
       preferred_jersey_number: typeof data.preferred_jersey_number === 'string' ? data.preferred_jersey_number : null,
       bottom_size: data.bottom_size,
       jacket_size: data.jacket_size,
+      sports_bra_size: data.sports_bra_size || null,
       tight_size: data.tight_size,
       shoe_size: data.shoe_size
     });

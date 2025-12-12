@@ -110,6 +110,12 @@ function createAdminEmailTemplate(submission: Submission, totalEntries: number, 
             <td style="padding: 8px 0; border-bottom: 1px solid #eee;"><strong>Jacket/Hoodie Size:</strong></td>
             <td style="padding: 8px 0; border-bottom: 1px solid #eee;">${submission.jacket_size}</td>
           </tr>
+          ${submission.sports_bra_size ? `
+          <tr>
+            <td style="padding: 8px 0; border-bottom: 1px solid #eee;"><strong>Sports Bra Size:</strong></td>
+            <td style="padding: 8px 0; border-bottom: 1px solid #eee;">${submission.sports_bra_size}</td>
+          </tr>
+          ` : ''}
           <tr>
             <td style="padding: 8px 0; border-bottom: 1px solid #eee;"><strong>Tight Size:</strong></td>
             <td style="padding: 8px 0; border-bottom: 1px solid #eee;">${submission.tight_size}</td>
