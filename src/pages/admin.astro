@@ -53,11 +53,8 @@ function splitName(name: string): { firstName: string; lastName: string } {
   };
 }
 
-// Desktop background images from Figma (updated URLs)
-const imgRsvpPagePlayersOnlyFormOpt3 = "https://www.figma.com/api/mcp/asset/b61944d2-0df1-4e37-95e1-42b45a13e9fa";
-// Mobile background images from Figma
-const imgRsvpPagePlayersOnlyFormMobile = "https://www.figma.com/api/mcp/asset/b53e319b-a7bb-4131-b717-1b5005bc5e65";
-const imgRsvpPagePlayersOnlyFormMobile1 = "https://www.figma.com/api/mcp/asset/cec3d09d-efa4-48f2-b208-83b3f6fb2210";
+// Background image - local file
+const imgBackground = "/assets/bg-1.png";
 // Desktop logos
 const imgDerrickRoseDesktop = "/assets/Derrick%20Rose.svg";
 const imgHomegrownCursiveDesktop = "/assets/Homegrown%20Cursive.svg";
@@ -68,28 +65,13 @@ const imgHomegrownCursiveMobile = "/assets/Homegrown%20Cursive.svg";
 
 <Layout title="Admin Dashboard">
   <div class="relative min-h-screen py-4 px-2 bg-black overflow-hidden">
-    <!-- Background Images - Desktop -->
-    <div aria-hidden="true" class="hidden lg:block fixed inset-0 pointer-events-none z-0">
+    <!-- Background Image -->
+    <div aria-hidden="true" class="fixed inset-0 pointer-events-none z-0">
       <div class="absolute bg-black inset-0"></div>
       <img 
         alt="" 
-        class="absolute max-w-none object-cover size-full opacity-50" 
-        src={imgRsvpPagePlayersOnlyFormOpt3} 
-      />
-    </div>
-    
-    <!-- Background Images - Mobile -->
-    <div aria-hidden="true" class="lg:hidden fixed inset-0 pointer-events-none z-0">
-      <div class="absolute bg-black inset-0"></div>
-      <img 
-        alt="" 
-        class="absolute max-w-none object-cover size-full opacity-50" 
-        src={imgRsvpPagePlayersOnlyFormMobile} 
-      />
-      <img 
-        alt="" 
-        class="absolute max-w-none object-cover size-full opacity-50" 
-        src={imgRsvpPagePlayersOnlyFormMobile1} 
+        class="absolute inset-0 max-w-none object-50%-50% object-cover size-full opacity-50" 
+        src={imgBackground} 
       />
     </div>
 
