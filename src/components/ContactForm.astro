@@ -103,65 +103,7 @@ const sizeOptions = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
   </div>
 
   <!-- Divider -->
-  <div class="bg-[rgba(255,255,255,0.5)] h-px shrink-0 w-full my-3"></div>
-
-  <!-- Alternative Contact Section -->
-  <div class="flex flex-col gap-[8px] items-start overflow-clip w-full">
-    <p class="font-roboto-condensed font-bold leading-normal relative shrink-0 text-[12px] text-white uppercase w-full whitespace-pre-wrap">
-      Alternative Contact
-    </p>
-    
-    <!-- First Name and Last Name Row -->
-    <div class="flex gap-[10px] items-start w-full">
-      <div class="bg-[#212121] border border-[rgba(255,255,255,0.5)] border-solid flex flex-1 flex-col items-center min-h-0 overflow-clip px-4 md:px-[16px] py-3 md:py-[12px] rounded-[4px]">
-        <input
-          type="text"
-          id="alternative_contact_first_name"
-          name="alternative_contact_first_name"
-          required
-          class="w-full bg-transparent border-0 outline-0 font-roboto-condensed font-normal leading-normal text-[15px] text-white placeholder:text-[rgba(255,255,255,0.5)]"
-          placeholder="First Name"
-        />
-      </div>
-      <div class="bg-[#212121] border border-[rgba(255,255,255,0.5)] border-solid flex flex-1 flex-col items-center min-h-0 overflow-clip px-4 md:px-[16px] py-3 md:py-[12px] rounded-[4px]">
-        <input
-          type="text"
-          id="alternative_contact_last_name"
-          name="alternative_contact_last_name"
-          required
-          class="w-full bg-transparent border-0 outline-0 font-roboto-condensed font-normal leading-normal text-[15px] text-white placeholder:text-[rgba(255,255,255,0.5)]"
-          placeholder="Last Name"
-        />
-      </div>
-    </div>
-    
-    <!-- Phone Number Full Width -->
-    <div class="bg-[#212121] border border-[rgba(255,255,255,0.5)] border-solid flex flex-col items-center overflow-clip px-4 md:px-[16px] py-3 md:py-[12px] rounded-[4px] w-full">
-      <input
-        type="tel"
-        id="alternative_contact_phone"
-        name="alternative_contact_phone"
-        required
-        class="w-full bg-transparent border-0 outline-0 font-roboto-condensed font-normal leading-normal text-[15px] text-white placeholder:text-[rgba(255,255,255,0.5)]"
-        placeholder="Phone Number"
-      />
-    </div>
-    
-    <!-- Email Full Width (required for API but not shown in Figma design - keeping visible) -->
-    <div class="bg-[#212121] border border-[rgba(255,255,255,0.5)] border-solid flex flex-col items-center overflow-clip px-4 md:px-[16px] py-3 md:py-[12px] rounded-[4px] w-full">
-      <input
-        type="email"
-        id="alternative_contact_email"
-        name="alternative_contact_email"
-        required
-        class="w-full bg-transparent border-0 outline-0 font-roboto-condensed font-normal leading-normal text-[15px] text-white placeholder:text-[rgba(255,255,255,0.5)]"
-        placeholder="Email"
-      />
-    </div>
-  </div>
-
-  <!-- Divider -->
-  <div class="bg-[rgba(255,255,255,0.5)] h-px shrink-0 w-full my-3"></div>
+  <div class="bg-[rgba(255,255,255,0.5)] h-px shrink-0 w-full my-6"></div>
 
   <!-- Size Selection: Desktop Dropdowns / Mobile Button Grids -->
   <div class="flex flex-col gap-3 w-full">
@@ -223,26 +165,10 @@ const sizeOptions = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
           max={jerseyNumberMax}
           inputmode="numeric"
           class="w-full bg-transparent border-0 outline-0 font-roboto-condensed font-normal leading-normal text-[15px] text-white placeholder:text-[rgba(255,255,255,0.5)]"
-          placeholder="Jersey # (0-99)"
+          placeholder="Preferred Jersey # (0-99)"
         />
       </div>
-    </div>
-
-    <!-- Preferred jersey # -->
-    <div class="flex flex-col gap-2 items-start w-full">
-      <div class="bg-[#212121] border border-[rgba(255,255,255,0.5)] border-solid flex flex-col items-center overflow-clip px-4 md:px-[16px] py-3 md:py-[12px] rounded-[4px] w-full">
-        <input
-          type="number"
-          id="preferred_jersey_number"
-          name="preferred_jersey_number"
-          min={jerseyNumberMin}
-          max={jerseyNumberMax}
-          inputmode="numeric"
-          class="w-full bg-transparent border-0 outline-0 font-roboto-condensed font-normal leading-normal text-[15px] text-white placeholder:text-[rgba(255,255,255,0.5)]"
-          placeholder="Preferred Jersey #"
-        />
-      </div>
-    </div>
+    </div> 
 
     <!-- Bottom Size -->
     <div class="flex flex-col gap-2 items-start w-full">
@@ -348,7 +274,7 @@ const sizeOptions = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
           required
           class="flex-1 min-h-0 bg-transparent border-0 outline-0 font-roboto-condensed font-normal leading-normal text-[15px] text-[rgba(255,255,255,0.5)] appearance-none cursor-pointer"
         >
-          <option value="" class="bg-[#212121] text-[rgba(255,255,255,0.5)]">Tight Size</option>
+          <option value="" class="bg-[#212121] text-[rgba(255,255,255,0.5)]">Compression Tight Size</option>
           {sizeOptions.map(size => (
             <option value={size} class="bg-[#212121] text-white">{size}</option>
           ))}
@@ -360,7 +286,7 @@ const sizeOptions = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
       <!-- Mobile Button Grid -->
       <div class="md:hidden flex flex-col gap-2 items-start w-full">
         <p class="font-roboto-condensed font-bold leading-normal relative shrink-0 text-[12px] text-white uppercase w-full whitespace-pre-wrap">
-          Tight Size
+          Compression Tight Size
         </p>
         <div class="flex gap-1 items-start w-full">
           {sizeOptions.map(size => (
@@ -430,6 +356,64 @@ const sizeOptions = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
           ))}
         </select>
       </div>
+    </div>
+  </div>
+
+  <!-- Divider -->
+  <div class="bg-[rgba(255,255,255,0.5)] h-px shrink-0 w-full my-1 mt-6"></div>
+
+  <!-- Alternative Contact Section -->
+  <div class="flex flex-col gap-[8px] items-start overflow-clip w-full">
+    <p class="font-roboto-condensed font-bold leading-normal relative shrink-0 text-[12px] text-white uppercase w-full whitespace-pre-wrap">
+      Alternative Contact
+    </p>
+    
+    <!-- First Name and Last Name Row -->
+    <div class="flex gap-[10px] items-start w-full">
+      <div class="bg-[#212121] border border-[rgba(255,255,255,0.5)] border-solid flex flex-1 flex-col items-center min-h-0 overflow-clip px-4 md:px-[16px] py-3 md:py-[12px] rounded-[4px]">
+        <input
+          type="text"
+          id="alternative_contact_first_name"
+          name="alternative_contact_first_name"
+          required
+          class="w-full bg-transparent border-0 outline-0 font-roboto-condensed font-normal leading-normal text-[15px] text-white placeholder:text-[rgba(255,255,255,0.5)]"
+          placeholder="First Name"
+        />
+      </div>
+      <div class="bg-[#212121] border border-[rgba(255,255,255,0.5)] border-solid flex flex-1 flex-col items-center min-h-0 overflow-clip px-4 md:px-[16px] py-3 md:py-[12px] rounded-[4px]">
+        <input
+          type="text"
+          id="alternative_contact_last_name"
+          name="alternative_contact_last_name"
+          required
+          class="w-full bg-transparent border-0 outline-0 font-roboto-condensed font-normal leading-normal text-[15px] text-white placeholder:text-[rgba(255,255,255,0.5)]"
+          placeholder="Last Name"
+        />
+      </div>
+    </div>
+    
+    <!-- Phone Number Full Width -->
+    <div class="bg-[#212121] border border-[rgba(255,255,255,0.5)] border-solid flex flex-col items-center overflow-clip px-4 md:px-[16px] py-3 md:py-[12px] rounded-[4px] w-full">
+      <input
+        type="tel"
+        id="alternative_contact_phone"
+        name="alternative_contact_phone"
+        required
+        class="w-full bg-transparent border-0 outline-0 font-roboto-condensed font-normal leading-normal text-[15px] text-white placeholder:text-[rgba(255,255,255,0.5)]"
+        placeholder="Phone Number"
+      />
+    </div>
+    
+    <!-- Email Full Width (required for API but not shown in Figma design - keeping visible) -->
+    <div class="bg-[#212121] border border-[rgba(255,255,255,0.5)] border-solid flex flex-col items-center overflow-clip px-4 md:px-[16px] py-3 md:py-[12px] rounded-[4px] w-full">
+      <input
+        type="email"
+        id="alternative_contact_email"
+        name="alternative_contact_email"
+        required
+        class="w-full bg-transparent border-0 outline-0 font-roboto-condensed font-normal leading-normal text-[15px] text-white placeholder:text-[rgba(255,255,255,0.5)]"
+        placeholder="Email"
+      />
     </div>
   </div>
 
