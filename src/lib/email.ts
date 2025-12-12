@@ -87,11 +87,23 @@ function createAdminEmailTemplate(submission: Submission, totalEntries: number, 
             <td style="padding: 8px 0; border-bottom: 1px solid #eee;">${submission.address}</td>
           </tr>
           <tr>
-            <td style="padding: 8px 0; border-bottom: 1px solid #eee;"><strong>Top Size:</strong></td>
+            <td style="padding: 8px 0; border-bottom: 1px solid #eee;"><strong>Jersey size:</strong></td>
             <td style="padding: 8px 0; border-bottom: 1px solid #eee;">${submission.top_size}</td>
           </tr>
+          ${submission.jersey_number ? `
           <tr>
-            <td style="padding: 8px 0; border-bottom: 1px solid #eee;"><strong>Bottom Size:</strong></td>
+            <td style="padding: 8px 0; border-bottom: 1px solid #eee;"><strong>Jersey # (0-99):</strong></td>
+            <td style="padding: 8px 0; border-bottom: 1px solid #eee;">${submission.jersey_number}</td>
+          </tr>
+          ` : ''}
+          ${submission.preferred_jersey_number ? `
+          <tr>
+            <td style="padding: 8px 0; border-bottom: 1px solid #eee;"><strong>Preferred jersey #:</strong></td>
+            <td style="padding: 8px 0; border-bottom: 1px solid #eee;">${submission.preferred_jersey_number}</td>
+          </tr>
+          ` : ''}
+          <tr>
+            <td style="padding: 8px 0; border-bottom: 1px solid #eee;"><strong>Shorts size:</strong></td>
             <td style="padding: 8px 0; border-bottom: 1px solid #eee;">${submission.bottom_size}</td>
           </tr>
           <tr>
@@ -103,7 +115,7 @@ function createAdminEmailTemplate(submission: Submission, totalEntries: number, 
             <td style="padding: 8px 0; border-bottom: 1px solid #eee;">${submission.tight_size}</td>
           </tr>
           <tr>
-            <td style="padding: 8px 0; border-bottom: 1px solid #eee;"><strong>Shoe Size:</strong></td>
+            <td style="padding: 8px 0; border-bottom: 1px solid #eee;"><strong>Shoe size (mens):</strong></td>
             <td style="padding: 8px 0; border-bottom: 1px solid #eee;">${submission.shoe_size}</td>
           </tr>
         </table>

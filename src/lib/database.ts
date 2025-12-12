@@ -37,6 +37,8 @@ export interface Submission {
   alternative_contact_email: string;
   address: string;
   top_size: string;
+  jersey_number?: string | null;
+  preferred_jersey_number?: string | null;
   bottom_size: string;
   jacket_size: string;
   tight_size: string;
@@ -71,6 +73,8 @@ export async function initializeDatabase(): Promise<void> {
         alternative_contact_email VARCHAR(255) NOT NULL,
         address TEXT NOT NULL,
         top_size VARCHAR(10) NOT NULL,
+        jersey_number VARCHAR(3),
+        preferred_jersey_number VARCHAR(3),
         bottom_size VARCHAR(10) NOT NULL,
         jacket_size VARCHAR(10) NOT NULL,
         tight_size VARCHAR(10) NOT NULL,
@@ -83,6 +87,16 @@ export async function initializeDatabase(): Promise<void> {
     await client.query(`
       ALTER TABLE submissions 
       ADD COLUMN IF NOT EXISTS checked_in BOOLEAN DEFAULT FALSE
+    `);
+
+    // Add optional jersey number fields (for existing databases)
+    await client.query(`
+      ALTER TABLE submissions
+      ADD COLUMN IF NOT EXISTS jersey_number VARCHAR(3)
+    `);
+    await client.query(`
+      ALTER TABLE submissions
+      ADD COLUMN IF NOT EXISTS preferred_jersey_number VARCHAR(3)
     `);
     
     // Add new alternative contact columns if they don't exist (for existing databases)
@@ -163,6 +177,8 @@ export async function createSubmission(data: {
   alternative_contact_email: string;
   address: string;
   top_size: string;
+  jersey_number?: string | null;
+  preferred_jersey_number?: string | null;
   bottom_size: string;
   jacket_size: string;
   tight_size: string;
@@ -173,12 +189,13 @@ export async function createSubmission(data: {
     const result = await client.query(`
       INSERT INTO submissions (
         name, email, phone, alternative_contact_name, alternative_contact_phone, alternative_contact_email, address,
-        top_size, bottom_size, jacket_size, tight_size, shoe_size
+        top_size, jersey_number, preferred_jersey_number, bottom_size, jacket_size, tight_size, shoe_size
       )
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)
       RETURNING 
         id::text, created_at::text, name, email, phone,
-        alternative_contact_name, alternative_contact_phone, alternative_contact_email, address, top_size, bottom_size,
+        alternative_contact_name, alternative_contact_phone, alternative_contact_email, address,
+        top_size, jersey_number, preferred_jersey_number, bottom_size,
         jacket_size, tight_size, shoe_size
     `, [
       data.name,
@@ -189,6 +206,8 @@ export async function createSubmission(data: {
       data.alternative_contact_email,
       data.address,
       data.top_size,
+      data.jersey_number ?? null,
+      data.preferred_jersey_number ?? null,
       data.bottom_size,
       data.jacket_size,
       data.tight_size,
@@ -211,7 +230,8 @@ export async function getAllSubmissions(): Promise<Submission[]> {
     const result = await client.query(`
       SELECT 
         id::text, created_at::text, name, email, phone,
-        alternative_contact_name, alternative_contact_phone, alternative_contact_email, address, top_size, bottom_size,
+        alternative_contact_name, alternative_contact_phone, alternative_contact_email, address,
+        top_size, jersey_number, preferred_jersey_number, bottom_size,
         jacket_size, tight_size, shoe_size,
         COALESCE(checked_in, false) as checked_in
       FROM submissions 

@@ -7,6 +7,7 @@ import {
   initializeDatabase,
   initializeNonPlayerDatabase 
 } from '../lib/database';
+import type { Submission, NonPlayerSubmission } from '../lib/database';
 
 // Check authentication
 if (!isAuthenticated(Astro.cookies)) {
@@ -24,8 +25,8 @@ try {
 }
 
 // Fetch entries server-side
-let entries = [];
-let nonPlayerEntries = [];
+let entries: Submission[] = [];
+let nonPlayerEntries: NonPlayerSubmission[] = [];
 
 try {
   entries = await getAllSubmissions();
@@ -58,11 +59,11 @@ const imgRsvpPagePlayersOnlyFormOpt3 = "https://www.figma.com/api/mcp/asset/b619
 const imgRsvpPagePlayersOnlyFormMobile = "https://www.figma.com/api/mcp/asset/b53e319b-a7bb-4131-b717-1b5005bc5e65";
 const imgRsvpPagePlayersOnlyFormMobile1 = "https://www.figma.com/api/mcp/asset/cec3d09d-efa4-48f2-b208-83b3f6fb2210";
 // Desktop logos
-const imgDerrickRoseDesktop = "https://www.figma.com/api/mcp/asset/1e346d4c-6df8-425d-8567-97003bcfbbe1";
-const imgHomegrownCursiveDesktop = "https://www.figma.com/api/mcp/asset/ee0ae443-0dba-4ebc-994c-4d92329058d6";
+const imgDerrickRoseDesktop = "/assets/Derrick%20Rose.svg";
+const imgHomegrownCursiveDesktop = "/assets/Homegrown%20Cursive.svg";
 // Mobile logos
-const imgDerrickRoseMobile = "https://www.figma.com/api/mcp/asset/44ae098a-0d6e-40ab-9e62-e928bac7c3f6";
-const imgHomegrownCursiveMobile = "https://www.figma.com/api/mcp/asset/aaa531a4-5a7c-4c3f-b36d-e045c6f12dd5";
+const imgDerrickRoseMobile = "/assets/Derrick%20Rose.svg";
+const imgHomegrownCursiveMobile = "/assets/Homegrown%20Cursive.svg";
 ---
 
 <Layout title="Admin Dashboard">
@@ -260,11 +261,13 @@ const imgHomegrownCursiveMobile = "https://www.figma.com/api/mcp/asset/aaa531a4-
                   ? new Date(entry.created_at).toISOString()
                   : (entry.created_at as Date).toISOString();
                 const sizes = [
-                  entry.top_size ? `Top: ${entry.top_size}` : null,
-                  entry.bottom_size ? `Bottom: ${entry.bottom_size}` : null,
+                  entry.top_size ? `Jersey: ${entry.top_size}` : null,
+                  entry.jersey_number ? `Jersey #: ${entry.jersey_number}` : null,
+                  entry.preferred_jersey_number ? `Preferred jersey #: ${entry.preferred_jersey_number}` : null,
+                  entry.bottom_size ? `Shorts: ${entry.bottom_size}` : null,
                   entry.jacket_size ? `Jacket: ${entry.jacket_size}` : null,
                   entry.tight_size ? `Tight: ${entry.tight_size}` : null,
-                  entry.shoe_size ? `Shoe: ${entry.shoe_size}` : null
+                  entry.shoe_size ? `Shoe (mens): ${entry.shoe_size}` : null
                 ].filter(Boolean).join(', ') || '—';
                 
                 return (
@@ -351,11 +354,9 @@ const imgHomegrownCursiveMobile = "https://www.figma.com/api/mcp/asset/aaa531a4-
                   ? new Date(entry.created_at).toISOString()
                   : (entry.created_at as Date).toISOString();
                 const additionalTickets = entry.additional_tickets && entry.additional_tickets.length > 0
-                  ? entry.additional_tickets.map(ticket => 
-                      typeof ticket === 'string' 
-                        ? ticket 
-                        : `${ticket.name} (${ticket.email}, ${ticket.phone})`
-                    ).join(', ')
+                  ? entry.additional_tickets
+                    .map((ticket: { name: string; email: string; phone: string }) => `${ticket.name} (${ticket.email}, ${ticket.phone})`)
+                    .join(', ')
                   : '—';
                 
                 return (

@@ -1,6 +1,8 @@
 ---
 // Registration form component
 const shoeSizes = Array.from({ length: 11 }, (_, i) => (i + 5).toString());
+const jerseyNumberMin = 0;
+const jerseyNumberMax = 99;
 const sizeOptions = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
 ---
 
@@ -173,7 +175,7 @@ const sizeOptions = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
           required
           class="flex-1 min-h-0 bg-transparent border-0 outline-0 font-roboto-condensed font-normal leading-normal text-[15px] text-[rgba(255,255,255,0.5)] appearance-none cursor-pointer"
         >
-          <option value="" class="bg-[#212121] text-[rgba(255,255,255,0.5)]">Top Size</option>
+          <option value="" class="bg-[#212121] text-[rgba(255,255,255,0.5)]">Jersey size</option>
           {sizeOptions.map(size => (
             <option value={size} class="bg-[#212121] text-white">{size}</option>
           ))}
@@ -185,7 +187,7 @@ const sizeOptions = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
       <!-- Mobile Button Grid -->
       <div class="md:hidden flex flex-col gap-2 items-start w-full">
         <p class="font-roboto-condensed font-bold leading-normal relative shrink-0 text-[12px] text-white uppercase w-full whitespace-pre-wrap">
-          Top Size
+          Jersey size
         </p>
         <div class="flex gap-1 items-start w-full">
           {sizeOptions.map(size => (
@@ -210,6 +212,38 @@ const sizeOptions = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
       </div>
     </div>
 
+    <!-- Jersey # (0-99) -->
+    <div class="flex flex-col gap-2 items-start w-full">
+      <div class="bg-[#212121] border border-[rgba(255,255,255,0.5)] border-solid flex flex-col items-center overflow-clip px-4 md:px-[16px] py-3 md:py-[12px] rounded-[4px] w-full">
+        <input
+          type="number"
+          id="jersey_number"
+          name="jersey_number"
+          min={jerseyNumberMin}
+          max={jerseyNumberMax}
+          inputmode="numeric"
+          class="w-full bg-transparent border-0 outline-0 font-roboto-condensed font-normal leading-normal text-[15px] text-white placeholder:text-[rgba(255,255,255,0.5)]"
+          placeholder="Jersey # (0-99)"
+        />
+      </div>
+    </div>
+
+    <!-- Preferred jersey # -->
+    <div class="flex flex-col gap-2 items-start w-full">
+      <div class="bg-[#212121] border border-[rgba(255,255,255,0.5)] border-solid flex flex-col items-center overflow-clip px-4 md:px-[16px] py-3 md:py-[12px] rounded-[4px] w-full">
+        <input
+          type="number"
+          id="preferred_jersey_number"
+          name="preferred_jersey_number"
+          min={jerseyNumberMin}
+          max={jerseyNumberMax}
+          inputmode="numeric"
+          class="w-full bg-transparent border-0 outline-0 font-roboto-condensed font-normal leading-normal text-[15px] text-white placeholder:text-[rgba(255,255,255,0.5)]"
+          placeholder="Preferred jersey #"
+        />
+      </div>
+    </div>
+
     <!-- Bottom Size -->
     <div class="flex flex-col gap-2 items-start w-full">
       <!-- Desktop Dropdown (no label) -->
@@ -220,7 +254,7 @@ const sizeOptions = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
           required
           class="flex-1 min-h-0 bg-transparent border-0 outline-0 font-roboto-condensed font-normal leading-normal text-[15px] text-[rgba(255,255,255,0.5)] appearance-none cursor-pointer"
         >
-          <option value="" class="bg-[#212121] text-[rgba(255,255,255,0.5)]">Bottom Size</option>
+          <option value="" class="bg-[#212121] text-[rgba(255,255,255,0.5)]">Shorts size</option>
           {sizeOptions.map(size => (
             <option value={size} class="bg-[#212121] text-white">{size}</option>
           ))}
@@ -232,7 +266,7 @@ const sizeOptions = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
       <!-- Mobile Button Grid -->
       <div class="md:hidden flex flex-col gap-2 items-start w-full">
         <p class="font-roboto-condensed font-bold leading-normal relative shrink-0 text-[12px] text-white uppercase w-full whitespace-pre-wrap">
-          Bottom Size
+          Shorts size
         </p>
         <div class="flex gap-1 items-start w-full">
           {sizeOptions.map(size => (
@@ -361,7 +395,7 @@ const sizeOptions = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
           required
           class="flex-1 min-h-0 bg-transparent border-0 outline-0 font-roboto-condensed font-normal leading-normal text-[15px] text-[rgba(255,255,255,0.5)] appearance-none cursor-pointer"
         >
-          <option value="" class="bg-[#212121] text-[rgba(255,255,255,0.5)]">Shoe Size</option>
+          <option value="" class="bg-[#212121] text-[rgba(255,255,255,0.5)]">Shoe size (mens)</option>
           {shoeSizes.map(size => (
             <option value={size} class="bg-[#212121] text-white">{size}</option>
           ))}
@@ -373,7 +407,7 @@ const sizeOptions = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
       <!-- Mobile Button Grid (7 columns x 2 rows) -->
       <div class="md:hidden flex flex-col gap-2 items-start w-full">
         <p class="font-roboto-condensed font-bold leading-normal relative shrink-0 text-[12px] text-white uppercase w-full whitespace-pre-wrap">
-          Shoe Size
+          Shoe size (mens)
         </p>
         <div class="grid grid-cols-7 gap-1 h-[88px] w-full">
           {shoeSizes.map((size, index) => (
