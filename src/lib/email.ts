@@ -384,6 +384,120 @@ function createNonPlayerAdminEmailTemplate(submission: NonPlayerSubmission, tota
   `;
 }
 
+// Email template for player confirmation
+function createPlayerConfirmationTemplate(submission: Submission): string {
+  return `
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+      <h2 style="color: #333; border-bottom: 2px solid #ce1141; padding-bottom: 10px;">
+        RSVP Confirmed - Homegrown at Simeon
+      </h2>
+      
+      <p style="color: #666; font-size: 16px; margin-bottom: 20px;">
+        Hi ${submission.name},
+      </p>
+      
+      <p style="color: #666; font-size: 16px; margin-bottom: 20px;">
+        Thank you for your RSVP! We're excited to have you join us for the Homegrown at Simeon event.
+      </p>
+      
+      <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+        <h3 style="color: #333; margin-top: 0;">Your RSVP Details</h3>
+        <table style="width: 100%; border-collapse: collapse;">
+          <tr>
+            <td style="padding: 8px 0; border-bottom: 1px solid #eee;"><strong>Name:</strong></td>
+            <td style="padding: 8px 0; border-bottom: 1px solid #eee;">${submission.name}</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px 0; border-bottom: 1px solid #eee;"><strong>Email:</strong></td>
+            <td style="padding: 8px 0; border-bottom: 1px solid #eee;">${submission.email}</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px 0; border-bottom: 1px solid #eee;"><strong>Phone:</strong></td>
+            <td style="padding: 8px 0; border-bottom: 1px solid #eee;">${submission.phone}</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px 0; border-bottom: 1px solid #eee;"><strong>Jersey Size:</strong></td>
+            <td style="padding: 8px 0; border-bottom: 1px solid #eee;">${submission.top_size}</td>
+          </tr>
+          ${submission.jersey_number ? `
+          <tr>
+            <td style="padding: 8px 0; border-bottom: 1px solid #eee;"><strong>Jersey #:</strong></td>
+            <td style="padding: 8px 0; border-bottom: 1px solid #eee;">${submission.jersey_number}</td>
+          </tr>
+          ` : ''}
+          ${submission.preferred_jersey_number ? `
+          <tr>
+            <td style="padding: 8px 0; border-bottom: 1px solid #eee;"><strong>Preferred Jersey #:</strong></td>
+            <td style="padding: 8px 0; border-bottom: 1px solid #eee;">${submission.preferred_jersey_number}</td>
+          </tr>
+          ` : ''}
+        </table>
+      </div>
+      
+      <div style="background-color: #fff3cd; padding: 15px; border-radius: 8px; border-left: 4px solid #ffc107; margin-top: 20px;">
+        <p style="margin: 0; color: #856404; font-size: 14px;">
+          <strong>What's Next?</strong><br>
+          You'll receive additional details about the event as we get closer to the date. If you have any questions, please reach out to the contact information provided on the event page.
+        </p>
+      </div>
+      
+      <p style="color: #666; font-size: 14px; margin-top: 20px;">
+        Looking forward to seeing you there!<br>
+        <strong>The Homegrown Team</strong>
+      </p>
+    </div>
+  `;
+}
+
+// Send confirmation email to player
+export async function sendPlayerConfirmation(submission: Submission): Promise<void> {
+  try {
+    // Re-check configuration at runtime (important for serverless environments)
+    const runtimeApiKey = getApiKey();
+    const runtimeResend = runtimeApiKey ? new Resend(runtimeApiKey) : null;
+    
+    if (!runtimeResend) {
+      console.error('❌ Resend is not properly configured. Cannot send player confirmation email.');
+      return;
+    }
+    
+    console.log(`📧 Attempting to send confirmation email to player: ${submission.email}`);
+    
+    const emailHtml = createPlayerConfirmationTemplate(submission);
+    const senderEmail = getSenderEmail();
+    const senderName = import.meta.env.FROM_NAME || process.env.FROM_NAME || 'Homegrown at Simeon';
+    
+    console.log(`   Sender: ${senderName} <${senderEmail}>`);
+    console.log(`   Recipient: ${submission.email}`);
+    
+    const result = await sendEmailWithRetry(runtimeResend, {
+      from: `${senderName} <${senderEmail}>`,
+      to: [submission.email],
+      subject: `RSVP Confirmed - Homegrown at Simeon`,
+      html: emailHtml,
+    });
+    
+    if (result.success) {
+      console.log(`✅ Player confirmation email sent successfully to ${submission.email}`);
+    } else {
+      console.error(`❌ Failed to send player confirmation email to ${submission.email}`);
+      try {
+        console.error(`   Error details:`, JSON.stringify(result.error, Object.getOwnPropertyNames(result.error || {}), 2));
+      } catch (e) {
+        console.error(`   Error details (could not serialize):`, String(result.error));
+      }
+    }
+    
+  } catch (error) {
+    console.error('❌ Error sending player confirmation email:', error);
+    try {
+      console.error('   Error details:', JSON.stringify(error, Object.getOwnPropertyNames(error || {}), 2));
+    } catch (e) {
+      console.error('   Error details (could not serialize):', String(error));
+    }
+  }
+}
+
 // Send email notification to all admins for non-player submissions
 export async function sendNonPlayerAdminNotification(submission: NonPlayerSubmission): Promise<void> {
   try {

@@ -1,6 +1,6 @@
 import type { APIRoute } from 'astro';
 import { createSubmission, initializeDatabase } from '../../lib/database';
-import { sendAdminNotification } from '../../lib/email';
+import { sendAdminNotification, sendPlayerConfirmation } from '../../lib/email';
 
 export const POST: APIRoute = async ({ request }) => {
   try {
@@ -60,7 +60,12 @@ export const POST: APIRoute = async ({ request }) => {
     
     // Send email notifications
     console.log('New submission:', submission);
-    await sendAdminNotification(submission);
+    
+    // Send admin notification and player confirmation in parallel
+    await Promise.all([
+      sendAdminNotification(submission),
+      sendPlayerConfirmation(submission)
+    ]);
     
     return new Response(JSON.stringify({ success: true, id: submission.id }), {
       status: 200,
