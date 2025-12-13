@@ -159,6 +159,23 @@ async function sendEmailWithRetry(
       const result = await resend.emails.send(emailParams);
       
       if (result.error) {
+        // Log detailed error information
+        try {
+          console.error(`❌ Resend API error:`, {
+            statusCode: result.error.statusCode,
+            message: result.error.message,
+            name: result.error.name,
+            error: JSON.stringify(result.error, null, 2)
+          });
+        } catch (e) {
+          console.error(`❌ Resend API error (could not serialize):`, {
+            statusCode: result.error.statusCode,
+            message: result.error.message,
+            name: result.error.name,
+            toString: String(result.error)
+          });
+        }
+        
         // Check if it's a rate limit error (429)
         if (result.error.statusCode === 429) {
           const retryDelay = Math.min(1000 * Math.pow(2, attempt), 5000); // Exponential backoff, max 5s
@@ -176,6 +193,23 @@ async function sendEmailWithRetry(
       
       return { success: false, error: 'Unexpected response format' };
     } catch (emailError: any) {
+      // Log detailed error information
+      try {
+        console.error(`❌ Exception sending email:`, {
+          message: emailError?.message,
+          stack: emailError?.stack,
+          statusCode: emailError?.statusCode,
+          error: JSON.stringify(emailError, Object.getOwnPropertyNames(emailError || {}), 2)
+        });
+      } catch (e) {
+        console.error(`❌ Exception sending email (could not serialize):`, {
+          message: emailError?.message,
+          stack: emailError?.stack,
+          statusCode: emailError?.statusCode,
+          toString: String(emailError)
+        });
+      }
+      
       // Check if it's a rate limit error
       if (emailError?.statusCode === 429 || emailError?.message?.includes('rate limit')) {
         const retryDelay = Math.min(1000 * Math.pow(2, attempt), 5000);
@@ -194,22 +228,41 @@ async function sendEmailWithRetry(
 // Send email notification to all admins
 export async function sendAdminNotification(submission: Submission): Promise<void> {
   try {
-    if (!resend) {
-      console.error('Resend is not properly configured. Check RESEND_API_KEY environment variable.');
+    // Re-check configuration at runtime (important for serverless environments)
+    const runtimeApiKey = getApiKey();
+    const runtimeResend = runtimeApiKey ? new Resend(runtimeApiKey) : null;
+    const runtimeAdminEmails = getAdminEmails();
+    
+    if (!runtimeResend) {
+      console.error('❌ Resend is not properly configured. Check RESEND_API_KEY environment variable.');
+      console.error('   Environment check:', {
+        hasImportMetaEnv: typeof import.meta !== 'undefined' && !!import.meta.env?.RESEND_API_KEY,
+        hasProcessEnv: !!process.env.RESEND_API_KEY,
+        apiKeyPrefix: runtimeApiKey ? runtimeApiKey.substring(0, 10) + '...' : 'null'
+      });
       return;
     }
     
-    if (ADMIN_EMAILS.length === 0) {
-      console.error('No admin emails configured. Check ADMIN_EMAIL_1, ADMIN_EMAIL_2, ADMIN_EMAIL_3, ADMIN_EMAIL_4 environment variables.');
+    if (runtimeAdminEmails.length === 0) {
+      console.error('❌ No admin emails configured. Check ADMIN_EMAIL_1, ADMIN_EMAIL_2, ADMIN_EMAIL_3, ADMIN_EMAIL_4 environment variables.');
+      console.error('   Environment check:', {
+        email1: import.meta.env.ADMIN_EMAIL_1 || process.env.ADMIN_EMAIL_1 || 'not set',
+        email2: import.meta.env.ADMIN_EMAIL_2 || process.env.ADMIN_EMAIL_2 || 'not set',
+        email3: import.meta.env.ADMIN_EMAIL_3 || process.env.ADMIN_EMAIL_3 || 'not set',
+        email4: import.meta.env.ADMIN_EMAIL_4 || process.env.ADMIN_EMAIL_4 || 'not set'
+      });
       return;
     }
     
-    console.log(`Attempting to send admin notifications for submission ${submission.id} to ${ADMIN_EMAILS.length} admins`);
+    console.log(`📧 Attempting to send admin notifications for submission ${submission.id} to ${runtimeAdminEmails.length} admins`);
+    console.log(`   Admin emails: ${runtimeAdminEmails.join(', ')}`);
     
     const entryCounts = await getEntryCounts();
     const emailHtml = createAdminEmailTemplate(submission, entryCounts.total, entryCounts.player, entryCounts.nonPlayer);
     const senderEmail = getSenderEmail();
     const senderName = import.meta.env.FROM_NAME || process.env.FROM_NAME || 'Your Company';
+    
+    console.log(`   Sender: ${senderName} <${senderEmail}>`);
     
     let successCount = 0;
     let failureCount = 0;
@@ -218,10 +271,12 @@ export async function sendAdminNotification(submission: Submission): Promise<voi
     await new Promise(resolve => setTimeout(resolve, Math.random() * 200));
     
     // Send email to all admin addresses with rate limiting
-    for (let i = 0; i < ADMIN_EMAILS.length; i++) {
-      const adminEmail = ADMIN_EMAILS[i];
+    for (let i = 0; i < runtimeAdminEmails.length; i++) {
+      const adminEmail = runtimeAdminEmails[i];
       
-      const result = await sendEmailWithRetry(resend, {
+      console.log(`   Sending email ${i + 1}/${runtimeAdminEmails.length} to ${adminEmail}...`);
+      
+      const result = await sendEmailWithRetry(runtimeResend, {
         from: `${senderName} <${senderEmail}>`,
         to: [adminEmail],
         subject: `New Player Submission - ${submission.name}`,
@@ -232,12 +287,17 @@ export async function sendAdminNotification(submission: Submission): Promise<voi
         console.log(`✅ Admin notification sent successfully to ${adminEmail}`);
         successCount++;
       } else {
-        console.error(`❌ Failed to send admin notification to ${adminEmail}:`, result.error);
+        console.error(`❌ Failed to send admin notification to ${adminEmail}`);
+        try {
+          console.error(`   Error details:`, JSON.stringify(result.error, Object.getOwnPropertyNames(result.error || {}), 2));
+        } catch (e) {
+          console.error(`   Error details (could not serialize):`, String(result.error));
+        }
         failureCount++;
       }
       
       // Add delay between emails to respect rate limits (600ms = 1.67 req/s, well under 2 req/s)
-      if (i < ADMIN_EMAILS.length - 1) {
+      if (i < runtimeAdminEmails.length - 1) {
         await new Promise(resolve => setTimeout(resolve, 600));
       }
     }
@@ -249,10 +309,16 @@ export async function sendAdminNotification(submission: Submission): Promise<voi
       console.warn(`⚠️  Admin notification sent to ${successCount} admins, but ${failureCount} failed for submission ${submission.id}`);
     } else {
       console.error(`❌ Failed to send admin notification to any admins for submission ${submission.id}`);
+      console.error(`   Check Resend API key, admin email configuration, and sender email domain verification`);
     }
     
   } catch (error) {
     console.error('❌ Error sending admin notification:', error);
+    try {
+      console.error('   Error details:', JSON.stringify(error, Object.getOwnPropertyNames(error || {}), 2));
+    } catch (e) {
+      console.error('   Error details (could not serialize):', String(error));
+    }
   }
 }
 
@@ -321,22 +387,41 @@ function createNonPlayerAdminEmailTemplate(submission: NonPlayerSubmission, tota
 // Send email notification to all admins for non-player submissions
 export async function sendNonPlayerAdminNotification(submission: NonPlayerSubmission): Promise<void> {
   try {
-    if (!resend) {
-      console.error('Resend is not properly configured. Check RESEND_API_KEY environment variable.');
+    // Re-check configuration at runtime (important for serverless environments)
+    const runtimeApiKey = getApiKey();
+    const runtimeResend = runtimeApiKey ? new Resend(runtimeApiKey) : null;
+    const runtimeAdminEmails = getAdminEmails();
+    
+    if (!runtimeResend) {
+      console.error('❌ Resend is not properly configured. Check RESEND_API_KEY environment variable.');
+      console.error('   Environment check:', {
+        hasImportMetaEnv: typeof import.meta !== 'undefined' && !!import.meta.env?.RESEND_API_KEY,
+        hasProcessEnv: !!process.env.RESEND_API_KEY,
+        apiKeyPrefix: runtimeApiKey ? runtimeApiKey.substring(0, 10) + '...' : 'null'
+      });
       return;
     }
     
-    if (ADMIN_EMAILS.length === 0) {
-      console.error('No admin emails configured. Check ADMIN_EMAIL_1, ADMIN_EMAIL_2, ADMIN_EMAIL_3, ADMIN_EMAIL_4 environment variables.');
+    if (runtimeAdminEmails.length === 0) {
+      console.error('❌ No admin emails configured. Check ADMIN_EMAIL_1, ADMIN_EMAIL_2, ADMIN_EMAIL_3, ADMIN_EMAIL_4 environment variables.');
+      console.error('   Environment check:', {
+        email1: import.meta.env.ADMIN_EMAIL_1 || process.env.ADMIN_EMAIL_1 || 'not set',
+        email2: import.meta.env.ADMIN_EMAIL_2 || process.env.ADMIN_EMAIL_2 || 'not set',
+        email3: import.meta.env.ADMIN_EMAIL_3 || process.env.ADMIN_EMAIL_3 || 'not set',
+        email4: import.meta.env.ADMIN_EMAIL_4 || process.env.ADMIN_EMAIL_4 || 'not set'
+      });
       return;
     }
     
-    console.log(`Attempting to send admin notifications for non-player submission ${submission.id} to ${ADMIN_EMAILS.length} admins`);
+    console.log(`📧 Attempting to send admin notifications for non-player submission ${submission.id} to ${runtimeAdminEmails.length} admins`);
+    console.log(`   Admin emails: ${runtimeAdminEmails.join(', ')}`);
     
     const entryCounts = await getEntryCounts();
     const emailHtml = createNonPlayerAdminEmailTemplate(submission, entryCounts.total, entryCounts.player, entryCounts.nonPlayer);
     const senderEmail = getSenderEmail();
     const senderName = import.meta.env.FROM_NAME || process.env.FROM_NAME || 'Your Company';
+    
+    console.log(`   Sender: ${senderName} <${senderEmail}>`);
     
     let successCount = 0;
     let failureCount = 0;
@@ -345,10 +430,12 @@ export async function sendNonPlayerAdminNotification(submission: NonPlayerSubmis
     await new Promise(resolve => setTimeout(resolve, Math.random() * 200));
     
     // Send email to all admin addresses with rate limiting
-    for (let i = 0; i < ADMIN_EMAILS.length; i++) {
-      const adminEmail = ADMIN_EMAILS[i];
+    for (let i = 0; i < runtimeAdminEmails.length; i++) {
+      const adminEmail = runtimeAdminEmails[i];
       
-      const result = await sendEmailWithRetry(resend, {
+      console.log(`   Sending email ${i + 1}/${runtimeAdminEmails.length} to ${adminEmail}...`);
+      
+      const result = await sendEmailWithRetry(runtimeResend, {
         from: `${senderName} <${senderEmail}>`,
         to: [adminEmail],
         subject: `New Non-Player RSVP - ${submission.name} (${submission.ticket_count} ticket${submission.ticket_count > 1 ? 's' : ''})`,
@@ -359,12 +446,17 @@ export async function sendNonPlayerAdminNotification(submission: NonPlayerSubmis
         console.log(`✅ Admin notification sent successfully to ${adminEmail}`);
         successCount++;
       } else {
-        console.error(`❌ Failed to send admin notification to ${adminEmail}:`, result.error);
+        console.error(`❌ Failed to send admin notification to ${adminEmail}`);
+        try {
+          console.error(`   Error details:`, JSON.stringify(result.error, Object.getOwnPropertyNames(result.error || {}), 2));
+        } catch (e) {
+          console.error(`   Error details (could not serialize):`, String(result.error));
+        }
         failureCount++;
       }
       
       // Add delay between emails to respect rate limits (600ms = 1.67 req/s, well under 2 req/s)
-      if (i < ADMIN_EMAILS.length - 1) {
+      if (i < runtimeAdminEmails.length - 1) {
         await new Promise(resolve => setTimeout(resolve, 600));
       }
     }
@@ -376,9 +468,15 @@ export async function sendNonPlayerAdminNotification(submission: NonPlayerSubmis
       console.warn(`⚠️  Admin notification sent to ${successCount} admins, but ${failureCount} failed for non-player submission ${submission.id}`);
     } else {
       console.error(`❌ Failed to send admin notification to any admins for non-player submission ${submission.id}`);
+      console.error(`   Check Resend API key, admin email configuration, and sender email domain verification`);
     }
     
   } catch (error) {
     console.error('❌ Error sending admin notification:', error);
+    try {
+      console.error('   Error details:', JSON.stringify(error, Object.getOwnPropertyNames(error || {}), 2));
+    } catch (e) {
+      console.error('   Error details (could not serialize):', String(error));
+    }
   }
 }
