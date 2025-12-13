@@ -496,6 +496,47 @@ function createPlayerConfirmationTemplate(submission: Submission): string {
           </p>
         </div>
         
+        <!-- Submission Details Section -->
+        <div style="margin: 40px 0;">
+          <h2 style="color: #000000; font-size: 24px; font-weight: bold; text-transform: uppercase; letter-spacing: 2px; margin: 0 0 24px 0; padding-bottom: 12px; border-bottom: 2px solid #ce1141;">
+            Submission Details
+          </h2>
+          <table style="width: 100%; border-collapse: collapse;">
+            <tr>
+              <td style="padding: 12px 0; border-bottom: 1px solid #e5e5e5; color: #000000; font-size: 16px; font-weight: bold; text-transform: uppercase; width: 40%;">Jersey size:</td>
+              <td style="padding: 12px 0; border-bottom: 1px solid #e5e5e5; color: #000000; font-size: 16px;">${submission.top_size}</td>
+            </tr>
+            ${submission.jersey_number ? `
+            <tr>
+              <td style="padding: 12px 0; border-bottom: 1px solid #e5e5e5; color: #000000; font-size: 16px; font-weight: bold; text-transform: uppercase;">Jersey # (0-99):</td>
+              <td style="padding: 12px 0; border-bottom: 1px solid #e5e5e5; color: #000000; font-size: 16px;">${submission.jersey_number}</td>
+            </tr>
+            ` : ''}
+            <tr>
+              <td style="padding: 12px 0; border-bottom: 1px solid #e5e5e5; color: #000000; font-size: 16px; font-weight: bold; text-transform: uppercase;">Shorts size:</td>
+              <td style="padding: 12px 0; border-bottom: 1px solid #e5e5e5; color: #000000; font-size: 16px;">${submission.bottom_size}</td>
+            </tr>
+            <tr>
+              <td style="padding: 12px 0; border-bottom: 1px solid #e5e5e5; color: #000000; font-size: 16px; font-weight: bold; text-transform: uppercase;">Jacket/Hoodie Size:</td>
+              <td style="padding: 12px 0; border-bottom: 1px solid #e5e5e5; color: #000000; font-size: 16px;">${submission.jacket_size}</td>
+            </tr>
+            ${submission.sports_bra_size ? `
+            <tr>
+              <td style="padding: 12px 0; border-bottom: 1px solid #e5e5e5; color: #000000; font-size: 16px; font-weight: bold; text-transform: uppercase;">Sports Bra Size:</td>
+              <td style="padding: 12px 0; border-bottom: 1px solid #e5e5e5; color: #000000; font-size: 16px;">${submission.sports_bra_size}</td>
+            </tr>
+            ` : ''}
+            <tr>
+              <td style="padding: 12px 0; border-bottom: 1px solid #e5e5e5; color: #000000; font-size: 16px; font-weight: bold; text-transform: uppercase;">Tight Size:</td>
+              <td style="padding: 12px 0; border-bottom: 1px solid #e5e5e5; color: #000000; font-size: 16px;">${submission.tight_size}</td>
+            </tr>
+            <tr>
+              <td style="padding: 12px 0; border-bottom: 1px solid #e5e5e5; color: #000000; font-size: 16px; font-weight: bold; text-transform: uppercase;">Shoe size (mens):</td>
+              <td style="padding: 12px 0; border-bottom: 1px solid #e5e5e5; color: #000000; font-size: 16px;">${submission.shoe_size}</td>
+            </tr>
+          </table>
+        </div>
+        
         <p style="color: #000000; font-size: 16px; line-height: 24px; margin: 0 0 40px 0;">
           Additional info will be sent out as the date approaches.
         </p>
