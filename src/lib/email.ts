@@ -546,12 +546,12 @@ function createPlayerConfirmationTemplate(submission: Submission): string {
         </div>
       </div>
       
-      <!-- Footer -->
+      <!-- Footer 
       <div style="background-color: #000000; padding: 30px 20px; text-align: center;">
         <p style="color: #ce1141; font-size: 20px; font-weight: bold; letter-spacing: 3px; text-transform: uppercase; margin: 0;">
           Homegrown at Simeon
         </p>
-      </div>
+      </div>-->
     </div>
   `;
 }
