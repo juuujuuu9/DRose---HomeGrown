@@ -126,31 +126,27 @@ const sizeOptions = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
         </svg>
       </div>
-      <!-- Mobile Button Grid -->
+      <!-- Mobile Dropdown -->
       <div class="md:hidden flex flex-col gap-2 items-start w-full">
         <p class="font-roboto-condensed font-bold leading-normal relative shrink-0 text-[12px] text-white uppercase w-full whitespace-pre-wrap">
           Jersey Size
         </p>
-        <div class="flex gap-1 items-start w-full">
-          {sizeOptions.map(size => (
-            <button
-              type="button"
-              data-size-field="top_size"
-              data-size-value={size}
-              class="size-button bg-[#212121] border border-[rgba(255,255,255,0.5)] border-solid flex flex-col items-center justify-center overflow-clip rounded-[4px] shrink-0 w-[42px] h-[42px] cursor-pointer"
-            >
-              <p class="font-roboto-condensed font-normal leading-normal text-[15px] text-[rgba(255,255,255,0.5)] text-center">
-                {size}
-              </p>
-            </button>
-          ))}
+        <div class="bg-[#212121] border border-[rgba(255,255,255,0.5)] border-solid flex items-start justify-between overflow-clip px-4 py-3 rounded-[4px] w-full">
+          <select
+            id="top_size_mobile"
+            name="top_size"
+            required
+            class="flex-1 min-h-0 bg-transparent border-0 outline-0 font-roboto-condensed font-normal leading-normal text-[15px] text-[rgba(255,255,255,0.5)] appearance-none cursor-pointer"
+          >
+            <option value="" class="bg-[#212121] text-[rgba(255,255,255,0.5)]">Select Size</option>
+            {sizeOptions.map(size => (
+              <option value={size} class="bg-[#212121] text-white">{size}</option>
+            ))}
+          </select>
+          <svg class="w-4 h-4 text-white shrink-0 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+          </svg>
         </div>
-        <select id="top_size_mobile" name="top_size" class="hidden">
-          <option value=""></option>
-          {sizeOptions.map(size => (
-            <option value={size}>{size}</option>
-          ))}
-        </select>
       </div>
     </div>
 
@@ -189,31 +185,27 @@ const sizeOptions = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
         </svg>
       </div>
-      <!-- Mobile Button Grid -->
+      <!-- Mobile Dropdown -->
       <div class="md:hidden flex flex-col gap-2 items-start w-full">
         <p class="font-roboto-condensed font-bold leading-normal relative shrink-0 text-[12px] text-white uppercase w-full whitespace-pre-wrap">
           Shorts Size
         </p>
-        <div class="flex gap-1 items-start w-full">
-          {sizeOptions.map(size => (
-            <button
-              type="button"
-              data-size-field="bottom_size"
-              data-size-value={size}
-              class="size-button bg-[#212121] border border-[rgba(255,255,255,0.5)] border-solid flex flex-col items-center justify-center overflow-clip rounded-[4px] shrink-0 w-[42px] h-[42px] cursor-pointer"
-            >
-              <p class="font-roboto-condensed font-normal leading-normal text-[15px] text-[rgba(255,255,255,0.5)] text-center">
-                {size}
-              </p>
-            </button>
-          ))}
+        <div class="bg-[#212121] border border-[rgba(255,255,255,0.5)] border-solid flex items-start justify-between overflow-clip px-4 py-3 rounded-[4px] w-full">
+          <select
+            id="bottom_size_mobile"
+            name="bottom_size"
+            required
+            class="flex-1 min-h-0 bg-transparent border-0 outline-0 font-roboto-condensed font-normal leading-normal text-[15px] text-[rgba(255,255,255,0.5)] appearance-none cursor-pointer"
+          >
+            <option value="" class="bg-[#212121] text-[rgba(255,255,255,0.5)]">Select Size</option>
+            {sizeOptions.map(size => (
+              <option value={size} class="bg-[#212121] text-white">{size}</option>
+            ))}
+          </select>
+          <svg class="w-4 h-4 text-white shrink-0 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+          </svg>
         </div>
-        <select id="bottom_size_mobile" name="bottom_size" class="hidden">
-          <option value=""></option>
-          {sizeOptions.map(size => (
-            <option value={size}>{size}</option>
-          ))}
-        </select>
       </div>
     </div>
 
@@ -236,31 +228,27 @@ const sizeOptions = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
         </svg>
       </div>
-      <!-- Mobile Button Grid -->
+      <!-- Mobile Dropdown -->
       <div class="md:hidden flex flex-col gap-2 items-start w-full">
         <p class="font-roboto-condensed font-bold leading-normal relative shrink-0 text-[12px] text-white uppercase w-full whitespace-pre-wrap">
           Jacket/Hoodie Size
         </p>
-        <div class="flex gap-1 items-start w-full">
-          {sizeOptions.map(size => (
-            <button
-              type="button"
-              data-size-field="jacket_size"
-              data-size-value={size}
-              class="size-button bg-[#212121] border border-[rgba(255,255,255,0.5)] border-solid flex flex-col items-center justify-center overflow-clip rounded-[4px] shrink-0 w-[42px] h-[42px] cursor-pointer"
-            >
-              <p class="font-roboto-condensed font-normal leading-normal text-[15px] text-[rgba(255,255,255,0.5)] text-center">
-                {size}
-              </p>
-            </button>
-          ))}
+        <div class="bg-[#212121] border border-[rgba(255,255,255,0.5)] border-solid flex items-start justify-between overflow-clip px-4 py-3 rounded-[4px] w-full">
+          <select
+            id="jacket_size_mobile"
+            name="jacket_size"
+            required
+            class="flex-1 min-h-0 bg-transparent border-0 outline-0 font-roboto-condensed font-normal leading-normal text-[15px] text-[rgba(255,255,255,0.5)] appearance-none cursor-pointer"
+          >
+            <option value="" class="bg-[#212121] text-[rgba(255,255,255,0.5)]">Select Size</option>
+            {sizeOptions.map(size => (
+              <option value={size} class="bg-[#212121] text-white">{size}</option>
+            ))}
+          </select>
+          <svg class="w-4 h-4 text-white shrink-0 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+          </svg>
         </div>
-        <select id="jacket_size_mobile" name="jacket_size" class="hidden">
-          <option value=""></option>
-          {sizeOptions.map(size => (
-            <option value={size}>{size}</option>
-          ))}
-        </select>
       </div>
     </div>
 
@@ -282,31 +270,26 @@ const sizeOptions = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
         </svg>
       </div>
-      <!-- Mobile Button Grid -->
+      <!-- Mobile Dropdown -->
       <div class="md:hidden flex flex-col gap-2 items-start w-full">
         <p class="font-roboto-condensed font-bold leading-normal relative shrink-0 text-[12px] text-white uppercase w-full whitespace-pre-wrap">
           Sports Bra Size
         </p>
-        <div class="flex gap-1 items-start w-full">
-          {sizeOptions.map(size => (
-            <button
-              type="button"
-              data-size-field="sports_bra_size"
-              data-size-value={size}
-              class="size-button bg-[#212121] border border-[rgba(255,255,255,0.5)] border-solid flex flex-col items-center justify-center overflow-clip rounded-[4px] shrink-0 w-[42px] h-[42px] cursor-pointer"
-            >
-              <p class="font-roboto-condensed font-normal leading-normal text-[15px] text-[rgba(255,255,255,0.5)] text-center">
-                {size}
-              </p>
-            </button>
-          ))}
+        <div class="bg-[#212121] border border-[rgba(255,255,255,0.5)] border-solid flex items-start justify-between overflow-clip px-4 py-3 rounded-[4px] w-full">
+          <select
+            id="sports_bra_size_mobile"
+            name="sports_bra_size"
+            class="flex-1 min-h-0 bg-transparent border-0 outline-0 font-roboto-condensed font-normal leading-normal text-[15px] text-[rgba(255,255,255,0.5)] appearance-none cursor-pointer"
+          >
+            <option value="" class="bg-[#212121] text-[rgba(255,255,255,0.5)]">Select Size</option>
+            {sizeOptions.map(size => (
+              <option value={size} class="bg-[#212121] text-white">{size}</option>
+            ))}
+          </select>
+          <svg class="w-4 h-4 text-white shrink-0 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+          </svg>
         </div>
-        <select id="sports_bra_size_mobile" name="sports_bra_size" class="hidden">
-          <option value=""></option>
-          {sizeOptions.map(size => (
-            <option value={size}>{size}</option>
-          ))}
-        </select>
       </div>
     </div>
 
@@ -329,31 +312,27 @@ const sizeOptions = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
         </svg>
       </div>
-      <!-- Mobile Button Grid -->
+      <!-- Mobile Dropdown -->
       <div class="md:hidden flex flex-col gap-2 items-start w-full">
         <p class="font-roboto-condensed font-bold leading-normal relative shrink-0 text-[12px] text-white uppercase w-full whitespace-pre-wrap">
           Compression Tights Size
         </p>
-        <div class="flex gap-1 items-start w-full">
-          {sizeOptions.map(size => (
-            <button
-              type="button"
-              data-size-field="tight_size"
-              data-size-value={size}
-              class="size-button bg-[#212121] border border-[rgba(255,255,255,0.5)] border-solid flex flex-col items-center justify-center overflow-clip rounded-[4px] shrink-0 w-[42px] h-[42px] cursor-pointer"
-            >
-              <p class="font-roboto-condensed font-normal leading-normal text-[15px] text-[rgba(255,255,255,0.5)] text-center">
-                {size}
-              </p>
-            </button>
-          ))}
+        <div class="bg-[#212121] border border-[rgba(255,255,255,0.5)] border-solid flex items-start justify-between overflow-clip px-4 py-3 rounded-[4px] w-full">
+          <select
+            id="tight_size_mobile"
+            name="tight_size"
+            required
+            class="flex-1 min-h-0 bg-transparent border-0 outline-0 font-roboto-condensed font-normal leading-normal text-[15px] text-[rgba(255,255,255,0.5)] appearance-none cursor-pointer"
+          >
+            <option value="" class="bg-[#212121] text-[rgba(255,255,255,0.5)]">Select Size</option>
+            {sizeOptions.map(size => (
+              <option value={size} class="bg-[#212121] text-white">{size}</option>
+            ))}
+          </select>
+          <svg class="w-4 h-4 text-white shrink-0 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+          </svg>
         </div>
-        <select id="tight_size_mobile" name="tight_size" class="hidden">
-          <option value=""></option>
-          {sizeOptions.map(size => (
-            <option value={size}>{size}</option>
-          ))}
-        </select>
       </div>
     </div>
 
@@ -376,31 +355,27 @@ const sizeOptions = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
         </svg>
       </div>
-      <!-- Mobile Button Grid (7 columns x 2 rows) -->
+      <!-- Mobile Dropdown -->
       <div class="md:hidden flex flex-col gap-2 items-start w-full">
         <p class="font-roboto-condensed font-bold leading-normal relative shrink-0 text-[12px] text-white uppercase w-full whitespace-pre-wrap">
           Shoe Size (Mens)
         </p>
-        <div class="grid grid-cols-7 gap-1 h-[88px] w-full">
-          {shoeSizes.map((size, index) => (
-            <button
-              type="button"
-              data-size-field="shoe_size"
-              data-size-value={size}
-              class="size-button bg-[#212121] border border-[rgba(255,255,255,0.5)] border-solid flex flex-col items-center justify-center overflow-clip rounded-[4px] shrink-0 w-[42px] h-[42px] cursor-pointer"
-            >
-              <p class="font-roboto-condensed font-normal leading-normal text-[15px] text-[rgba(255,255,255,0.5)] text-center">
-                {size}
-              </p>
-            </button>
-          ))}
+        <div class="bg-[#212121] border border-[rgba(255,255,255,0.5)] border-solid flex items-start justify-between overflow-clip px-4 py-3 rounded-[4px] w-full">
+          <select
+            id="shoe_size_mobile"
+            name="shoe_size"
+            required
+            class="flex-1 min-h-0 bg-transparent border-0 outline-0 font-roboto-condensed font-normal leading-normal text-[15px] text-[rgba(255,255,255,0.5)] appearance-none cursor-pointer"
+          >
+            <option value="" class="bg-[#212121] text-[rgba(255,255,255,0.5)]">Select Size</option>
+            {shoeSizes.map(size => (
+              <option value={size} class="bg-[#212121] text-white">{size}</option>
+            ))}
+          </select>
+          <svg class="w-4 h-4 text-white shrink-0 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+          </svg>
         </div>
-        <select id="shoe_size_mobile" name="shoe_size" class="hidden">
-          <option value=""></option>
-          {shoeSizes.map(size => (
-            <option value={size}>{size}</option>
-          ))}
-        </select>
       </div>
     </div>
   </div>
@@ -472,53 +447,6 @@ const sizeOptions = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
 </form>
 
 <script>
-  // Mobile size button handler
-  document.querySelectorAll('.size-button').forEach(button => {
-    button.addEventListener('click', function(this: HTMLButtonElement) {
-      const fieldName = this.getAttribute('data-size-field');
-      const sizeValue = this.getAttribute('data-size-value');
-      
-      if (!fieldName || !sizeValue) return;
-      
-      // Try desktop select first, then mobile select
-      let selectElement = document.getElementById(fieldName) as HTMLSelectElement;
-      if (!selectElement) {
-        selectElement = document.getElementById(`${fieldName}_mobile`) as HTMLSelectElement;
-      }
-      
-      if (!selectElement) return;
-      
-      // Update select value
-      selectElement.value = sizeValue;
-      
-      // Update all buttons in this group
-      const allButtons = document.querySelectorAll(`[data-size-field="${fieldName}"]`);
-      allButtons.forEach(btn => {
-        const isSelected = btn === this;
-        const buttonElement = btn as HTMLButtonElement;
-        const textElement = buttonElement.querySelector('p');
-        
-        if (isSelected) {
-          // Selected: white background, dark text, dark border
-          buttonElement.classList.remove('bg-[#212121]', 'border-[rgba(255,255,255,0.5)]');
-          buttonElement.classList.add('bg-white', 'border-[#212121]');
-          if (textElement) {
-            textElement.classList.remove('text-[rgba(255,255,255,0.5)]');
-            textElement.classList.add('text-[#212121]');
-          }
-        } else {
-          // Unselected: dark background, white text, white border
-          buttonElement.classList.remove('bg-white', 'border-[#212121]');
-          buttonElement.classList.add('bg-[#212121]', 'border-[rgba(255,255,255,0.5)]');
-          if (textElement) {
-            textElement.classList.remove('text-[#212121]');
-            textElement.classList.add('text-[rgba(255,255,255,0.5)]');
-          }
-        }
-      });
-    });
-  });
-
   document.getElementById('registration-form')?.addEventListener('submit', async (e) => {
     e.preventDefault();
 
