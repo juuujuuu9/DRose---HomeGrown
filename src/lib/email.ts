@@ -416,12 +416,30 @@ function createPlayerConfirmationTemplate(submission: Submission): string {
             <td style="padding: 8px 0; border-bottom: 1px solid #eee;">${submission.phone}</td>
           </tr>
           <tr>
+            <td style="padding: 8px 0; border-bottom: 1px solid #eee;"><strong>Address:</strong></td>
+            <td style="padding: 8px 0; border-bottom: 1px solid #eee;">${submission.address}</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px 0; border-bottom: 1px solid #eee; vertical-align: top;"><strong>Alternative Contact:</strong></td>
+            <td style="padding: 8px 0; border-bottom: 1px solid #eee;">
+              ${submission.alternative_contact_name}<br>
+              ${submission.alternative_contact_phone}<br>
+              ${submission.alternative_contact_email}
+            </td>
+          </tr>
+        </table>
+      </div>
+      
+      <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+        <h3 style="color: #333; margin-top: 0;">Apparel Sizes</h3>
+        <table style="width: 100%; border-collapse: collapse;">
+          <tr>
             <td style="padding: 8px 0; border-bottom: 1px solid #eee;"><strong>Jersey Size:</strong></td>
             <td style="padding: 8px 0; border-bottom: 1px solid #eee;">${submission.top_size}</td>
           </tr>
           ${submission.jersey_number ? `
           <tr>
-            <td style="padding: 8px 0; border-bottom: 1px solid #eee;"><strong>Jersey #:</strong></td>
+            <td style="padding: 8px 0; border-bottom: 1px solid #eee;"><strong>Jersey # (0-99):</strong></td>
             <td style="padding: 8px 0; border-bottom: 1px solid #eee;">${submission.jersey_number}</td>
           </tr>
           ` : ''}
@@ -431,6 +449,28 @@ function createPlayerConfirmationTemplate(submission: Submission): string {
             <td style="padding: 8px 0; border-bottom: 1px solid #eee;">${submission.preferred_jersey_number}</td>
           </tr>
           ` : ''}
+          <tr>
+            <td style="padding: 8px 0; border-bottom: 1px solid #eee;"><strong>Shorts Size:</strong></td>
+            <td style="padding: 8px 0; border-bottom: 1px solid #eee;">${submission.bottom_size}</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px 0; border-bottom: 1px solid #eee;"><strong>Jacket/Hoodie Size:</strong></td>
+            <td style="padding: 8px 0; border-bottom: 1px solid #eee;">${submission.jacket_size}</td>
+          </tr>
+          ${submission.sports_bra_size ? `
+          <tr>
+            <td style="padding: 8px 0; border-bottom: 1px solid #eee;"><strong>Sports Bra Size:</strong></td>
+            <td style="padding: 8px 0; border-bottom: 1px solid #eee;">${submission.sports_bra_size}</td>
+          </tr>
+          ` : ''}
+          <tr>
+            <td style="padding: 8px 0; border-bottom: 1px solid #eee;"><strong>Tight Size:</strong></td>
+            <td style="padding: 8px 0; border-bottom: 1px solid #eee;">${submission.tight_size}</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px 0; border-bottom: 1px solid #eee;"><strong>Shoe Size (mens):</strong></td>
+            <td style="padding: 8px 0; border-bottom: 1px solid #eee;">${submission.shoe_size}</td>
+          </tr>
         </table>
       </div>
       
