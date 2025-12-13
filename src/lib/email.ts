@@ -386,105 +386,172 @@ function createNonPlayerAdminEmailTemplate(submission: NonPlayerSubmission, tota
 
 // Email template for player confirmation
 function createPlayerConfirmationTemplate(submission: Submission): string {
+  // Extract first name from full name
+  const firstName = submission.name.split(' ')[0];
+  
+  // Get site URL for logo image - ensure no trailing slash
+  const siteUrl = (import.meta.env.SITE_URL || import.meta.env.PUBLIC_SITE_URL || process.env.SITE_URL || '').replace(/\/$/, '');
+  
+  // Construct logo URL - prefer PNG for better email client compatibility
+  // Note: SVG images are not supported by many email clients (Outlook, Gmail, Apple Mail, etc.)
+  // Email clients that don't support SVG: Outlook (all versions), Gmail (web), Apple Mail (some versions)
+  // File name has a space, so we need to URL encode it as %20
+  const logoUrl = siteUrl ? `${siteUrl}/assets/Homegrown%20Cursive.png` : '';
+  
+  // Log the logo URL for debugging
+  if (!siteUrl) {
+    console.warn('⚠️  SITE_URL not set - logo image will not display in emails.');
+    console.warn('   Please set SITE_URL environment variable in Vercel dashboard to your production domain.');
+  } else {
+    console.log(`📧 Logo URL for email: ${logoUrl}`);
+    console.log(`   Note: If images don't show, ensure "Homegrown Cursive.png" exists in public/assets/`);
+    console.log(`   Many email clients block images by default - recipients may need to enable images.`);
+  }
+  
   return `
-    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
-      <h2 style="color: #333; border-bottom: 2px solid #ce1141; padding-bottom: 10px;">
-        RSVP Confirmed - Homegrown at Simeon
-      </h2>
+    <div style="font-family: 'Roboto', Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 0; background-color: #ffffff;">
+      ${logoUrl ? `
+      <!-- Logo Header -->
+      <div style="text-align: center; padding: 40px 20px 30px 20px; background-color: #ffffff;">
+        <img src="${logoUrl}" alt="Homegrown" width="400" height="auto" style="max-width: 400px; width: 100%; height: auto; display: block; margin: 0 auto; border: 0;" />
+      </div>
+      ` : ''}
       
-      <p style="color: #666; font-size: 16px; margin-bottom: 20px;">
-        Hi ${submission.name},
-      </p>
-      
-      <p style="color: #666; font-size: 16px; margin-bottom: 20px;">
-        Thank you for your RSVP! We're excited to have you join us for the Homegrown at Simeon event.
-      </p>
-      
-      <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
-        <h3 style="color: #333; margin-top: 0;">Your RSVP Details</h3>
-        <table style="width: 100%; border-collapse: collapse;">
-          <tr>
-            <td style="padding: 8px 0; border-bottom: 1px solid #eee;"><strong>Name:</strong></td>
-            <td style="padding: 8px 0; border-bottom: 1px solid #eee;">${submission.name}</td>
-          </tr>
-          <tr>
-            <td style="padding: 8px 0; border-bottom: 1px solid #eee;"><strong>Email:</strong></td>
-            <td style="padding: 8px 0; border-bottom: 1px solid #eee;">${submission.email}</td>
-          </tr>
-          <tr>
-            <td style="padding: 8px 0; border-bottom: 1px solid #eee;"><strong>Phone:</strong></td>
-            <td style="padding: 8px 0; border-bottom: 1px solid #eee;">${submission.phone}</td>
-          </tr>
-          <tr>
-            <td style="padding: 8px 0; border-bottom: 1px solid #eee;"><strong>Address:</strong></td>
-            <td style="padding: 8px 0; border-bottom: 1px solid #eee;">${submission.address}</td>
-          </tr>
-          <tr>
-            <td style="padding: 8px 0; border-bottom: 1px solid #eee; vertical-align: top;"><strong>Alternative Contact:</strong></td>
-            <td style="padding: 8px 0; border-bottom: 1px solid #eee;">
-              ${submission.alternative_contact_name}<br>
-              ${submission.alternative_contact_phone}<br>
-              ${submission.alternative_contact_email}
-            </td>
-          </tr>
-        </table>
+      <!-- Main Content -->
+      <div style="padding: 0 30px 40px 30px; background-color: #ffffff;">
+        <!-- Title
+        <h1 style="color: #000000; font-size: 28px; font-weight: bold; letter-spacing: 2px; margin: 0 0 32px 0; padding: 0;">
+          Your RSVP is confirmed
+        </h1> -->
+        <!-- Thank You Message -->
+        <p style="color: #000000; font-size: 18px; line-height: 28px; margin: 0 0 24px 0;">
+          ${firstName},
+        </p>
+        <p style="color: #000000; font-size: 18px; line-height: 28px; margin: 0 0 24px 0;">
+          Thank you for confirming. You're officially locked in for Homegrown at Simeon.
+        </p>
+        
+        <p style="color: #000000; font-size: 18px; line-height: 28px; margin: 0 0 40px 0;">
+          We're bringing the city together on the eve of Derrick's jersey retirement to celebrate Chicago basketball and everyone who built it.
+        </p>
+        
+        <!-- Event Details Section -->
+        <div style="margin: 40px 0;">
+          <h2 style="color: #000000; font-size: 24px; font-weight: bold; text-transform: uppercase; letter-spacing: 2px; margin: 0 0 24px 0; padding-bottom: 12px; border-bottom: 2px solid #ce1141;">
+            Event Details
+          </h2>
+          <table style="width: 100%; border-collapse: collapse;">
+            <tr>
+              <td style="padding: 12px 0; border-bottom: 1px solid #e5e5e5; color: #000000; font-size: 16px; font-weight: bold; text-transform: uppercase; width: 40%;">Date:</td>
+              <td style="padding: 12px 0; border-bottom: 1px solid #e5e5e5; color: #000000; font-size: 16px;">January 23, 2026</td>
+            </tr>
+            <tr>
+              <td style="padding: 12px 0; border-bottom: 1px solid #e5e5e5; color: #000000; font-size: 16px; font-weight: bold; text-transform: uppercase;">Location:</td>
+              <td style="padding: 12px 0; border-bottom: 1px solid #e5e5e5; color: #000000; font-size: 16px;">Simeon Career Academy</td>
+            </tr>
+            <tr>
+              <td style="padding: 12px 0; border-bottom: 1px solid #e5e5e5; color: #000000; font-size: 16px; font-weight: bold; text-transform: uppercase;">VIP Happy Hour:</td>
+              <td style="padding: 12px 0; border-bottom: 1px solid #e5e5e5; color: #000000; font-size: 16px;">5:00 PM</td>
+            </tr>
+            <tr>
+              <td style="padding: 12px 0; border-bottom: 1px solid #e5e5e5; color: #000000; font-size: 16px; font-weight: bold; text-transform: uppercase;">Players to Locker Room:</td>
+              <td style="padding: 12px 0; border-bottom: 1px solid #e5e5e5; color: #000000; font-size: 16px;">6:15 PM</td>
+            </tr>
+            <tr>
+              <td style="padding: 12px 0; border-bottom: 1px solid #e5e5e5; color: #000000; font-size: 16px; font-weight: bold; text-transform: uppercase;">Warm Up:</td>
+              <td style="padding: 12px 0; border-bottom: 1px solid #e5e5e5; color: #000000; font-size: 16px;">6:30 PM</td>
+            </tr>
+            <tr>
+              <td style="padding: 12px 0; border-bottom: 1px solid #e5e5e5; color: #000000; font-size: 16px; font-weight: bold; text-transform: uppercase;">Tip Off:</td>
+              <td style="padding: 12px 0; border-bottom: 1px solid #e5e5e5; color: #000000; font-size: 16px;">7:00 PM</td>
+            </tr>
+            <tr>
+              <td style="padding: 12px 0; border-bottom: 1px solid #e5e5e5; color: #000000; font-size: 16px; font-weight: bold; text-transform: uppercase;">Halftime Ceremony:</td>
+              <td style="padding: 12px 0; border-bottom: 1px solid #e5e5e5; color: #000000; font-size: 16px;">Honoring Derrick's Bulls teammates</td>
+            </tr>
+          </table>
+          <p style="color: #000000; font-size: 16px; margin: 16px 0 0 0;">
+            Trainer will be available on site.
+          </p>
+        </div>
+        
+        <!-- What You'll Receive Section -->
+        <div style="margin: 40px 0;">
+          <h2 style="color: #000000; font-size: 24px; font-weight: bold; text-transform: uppercase; letter-spacing: 2px; margin: 0 0 24px 0; padding-bottom: 12px; border-bottom: 2px solid #ce1141;">
+            What You'll Receive
+          </h2>
+          <ul style="margin: 0; padding-left: 24px; color: #000000; font-size: 16px; line-height: 28px;">
+            <li style="margin-bottom: 12px;">2 tickets to Bulls vs. Celtics</li>
+            <li style="margin-bottom: 12px;">5 tickets to the Homegrown game</li>
+            <li style="margin-bottom: 12px;">Exclusive merch</li>
+            <li style="margin-bottom: 12px;">A one-of-a-kind experience</li>
+          </ul>
+        </div>
+        
+        <!-- Hotel Section -->
+        <div style="margin: 40px 0; padding: 24px; background-color: #f5f5f5; border-left: 4px solid #ce1141;">
+          <p style="color: #000000; font-size: 16px; line-height: 24px; margin: 0 0 12px 0;">
+            If you need a hotel, we've arranged a Hoxton discount for the team using code 
+            <a href="https://bookings.travelclick.com/106942?userType=GRP#/guestsandrooms" style="color: #ce1141; text-decoration: underline;"><strong>DROSE26</strong></a>.
+          </p>
+        </div>
+        
+        <p style="color: #000000; font-size: 16px; line-height: 24px; margin: 0 0 40px 0;">
+          Additional info will be sent out as the date approaches.
+        </p>
+        
+        <!-- Contact Information -->
+        <div style="margin: 40px 0;">
+          <p style="color: #000000; font-size: 16px; line-height: 24px; margin: 0 0 24px 0;">
+            For questions or additional details, you can contact:
+          </p>
+          <div style="margin: 0 0 20px 0;">
+            <p style="color: #000000; font-size: 16px; font-weight: bold; margin: 0 0 4px 0; text-transform: uppercase;">
+              Art Bashkin
+            </p>
+            <p style="color: #000000; font-size: 16px; margin: 0;">
+              <a href="tel:2244429680" style="color: #ce1141; text-decoration: none;">224.442.9680</a> <br>
+              <a href="mailto:Art@dmr-ventures.com" style="color: #ce1141; text-decoration: none;">Art@dmr-ventures.com</a>
+            </p>
+          </div>
+          <div style="margin: 0 0 20px 0;">
+            <p style="color: #000000; font-size: 16px; font-weight: bold; margin: 0 0 4px 0; text-transform: uppercase;">
+              Randall Hampton
+            </p>
+            <p style="color: #000000; font-size: 16px; margin: 0;">
+              <a href="tel:8476915913" style="color: #ce1141; text-decoration: none;">847.691.5913</a> <br>
+              <a href="mailto:Randall@dmr-ventures.com" style="color: #ce1141; text-decoration: none;">Randall@dmr-ventures.com</a>
+            </p>
+          </div>
+          <div style="margin: 0;">
+            <p style="color: #000000; font-size: 16px; font-weight: bold; margin: 0 0 4px 0; text-transform: uppercase;">
+              Madison Ornstil
+            </p>
+            <p style="color: #000000; font-size: 16px; margin: 0;">
+              <a href="tel:9713033068" style="color: #ce1141; text-decoration: none;">971.303.3068</a> <br>
+              <a href="mailto:Madison@dmr-ventures.com" style="color: #ce1141; text-decoration: none;">Madison@dmr-ventures.com</a>
+            </p>
+          </div>
+        </div>
+        
+        <!-- Closing -->
+        <div style="margin: 40px 0 0 0; padding-top: 24px; border-top: 1px solid #e5e5e5;">
+          <p style="color: #000000; font-size: 18px; line-height: 28px; margin: 0 0 16px 0;">
+            We'll see you on the court.
+          </p>
+          <p style="color: #000000; font-size: 18px; line-height: 28px; margin: 0;">
+            Peace and Love,<br>
+            <strong style="text-transform: uppercase;">Pooh</strong>
+          </p>
+        </div>
       </div>
       
-      <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
-        <h3 style="color: #333; margin-top: 0;">Apparel Sizes</h3>
-        <table style="width: 100%; border-collapse: collapse;">
-          <tr>
-            <td style="padding: 8px 0; border-bottom: 1px solid #eee;"><strong>Jersey Size:</strong></td>
-            <td style="padding: 8px 0; border-bottom: 1px solid #eee;">${submission.top_size}</td>
-          </tr>
-          ${submission.jersey_number ? `
-          <tr>
-            <td style="padding: 8px 0; border-bottom: 1px solid #eee;"><strong>Jersey # (0-99):</strong></td>
-            <td style="padding: 8px 0; border-bottom: 1px solid #eee;">${submission.jersey_number}</td>
-          </tr>
-          ` : ''}
-          ${submission.preferred_jersey_number ? `
-          <tr>
-            <td style="padding: 8px 0; border-bottom: 1px solid #eee;"><strong>Preferred Jersey #:</strong></td>
-            <td style="padding: 8px 0; border-bottom: 1px solid #eee;">${submission.preferred_jersey_number}</td>
-          </tr>
-          ` : ''}
-          <tr>
-            <td style="padding: 8px 0; border-bottom: 1px solid #eee;"><strong>Shorts Size:</strong></td>
-            <td style="padding: 8px 0; border-bottom: 1px solid #eee;">${submission.bottom_size}</td>
-          </tr>
-          <tr>
-            <td style="padding: 8px 0; border-bottom: 1px solid #eee;"><strong>Jacket/Hoodie Size:</strong></td>
-            <td style="padding: 8px 0; border-bottom: 1px solid #eee;">${submission.jacket_size}</td>
-          </tr>
-          ${submission.sports_bra_size ? `
-          <tr>
-            <td style="padding: 8px 0; border-bottom: 1px solid #eee;"><strong>Sports Bra Size:</strong></td>
-            <td style="padding: 8px 0; border-bottom: 1px solid #eee;">${submission.sports_bra_size}</td>
-          </tr>
-          ` : ''}
-          <tr>
-            <td style="padding: 8px 0; border-bottom: 1px solid #eee;"><strong>Tight Size:</strong></td>
-            <td style="padding: 8px 0; border-bottom: 1px solid #eee;">${submission.tight_size}</td>
-          </tr>
-          <tr>
-            <td style="padding: 8px 0; border-bottom: 1px solid #eee;"><strong>Shoe Size (mens):</strong></td>
-            <td style="padding: 8px 0; border-bottom: 1px solid #eee;">${submission.shoe_size}</td>
-          </tr>
-        </table>
-      </div>
-      
-      <div style="background-color: #fff3cd; padding: 15px; border-radius: 8px; border-left: 4px solid #ffc107; margin-top: 20px;">
-        <p style="margin: 0; color: #856404; font-size: 14px;">
-          <strong>What's Next?</strong><br>
-          You'll receive additional details about the event as we get closer to the date. If you have any questions, please reach out to the contact information provided on the event page.
+      <!-- Footer -->
+      <div style="background-color: #000000; padding: 30px 20px; text-align: center;">
+        <p style="color: #ce1141; font-size: 20px; font-weight: bold; letter-spacing: 3px; text-transform: uppercase; margin: 0;">
+          Homegrown at Simeon
         </p>
       </div>
-      
-      <p style="color: #666; font-size: 14px; margin-top: 20px;">
-        Looking forward to seeing you there!<br>
-        <strong>The Homegrown Team</strong>
-      </p>
     </div>
   `;
 }
@@ -513,7 +580,7 @@ export async function sendPlayerConfirmation(submission: Submission): Promise<vo
     const result = await sendEmailWithRetry(runtimeResend, {
       from: `${senderName} <${senderEmail}>`,
       to: [submission.email],
-      subject: `RSVP Confirmed - Homegrown at Simeon`,
+      subject: `Your RSVP is confirmed`,
       html: emailHtml,
     });
     
