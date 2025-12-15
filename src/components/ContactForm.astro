@@ -1,6 +1,9 @@
 ---
 // Registration form component
-const shoeSizes = Array.from({ length: 11 }, (_, i) => (i + 5).toString());
+const shoeSizes = Array.from({ length: 11 }, (_, i) => {
+  const wholeSize = i + 5;
+  return [wholeSize.toString(), `${wholeSize}.5`];
+}).flat();
 const jerseyNumberMin = 0;
 const jerseyNumberMax = 99;
 const sizeOptions = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
