@@ -1,5 +1,5 @@
 import type { APIRoute } from 'astro';
-import { createSubmission, initializeDatabase } from '../../lib/database';
+import { createSubmission, initializeDatabase, isJerseyNumberTaken } from '../../lib/database';
 import { sendAdminNotification, sendPlayerConfirmation } from '../../lib/email';
 
 export const POST: APIRoute = async ({ request }) => {
@@ -37,6 +37,33 @@ export const POST: APIRoute = async ({ request }) => {
         status: 400,
         headers: { 'Content-Type': 'application/json' }
       });
+    }
+    
+    // Validate jersey number if provided
+    if (data.jersey_number) {
+      const jerseyNum = data.jersey_number.toString().trim();
+      
+      // Check if it's a valid number (0-99)
+      const numValue = parseInt(jerseyNum, 10);
+      if (isNaN(numValue) || numValue < 0 || numValue > 99 || jerseyNum.length > 2) {
+        return new Response(JSON.stringify({ 
+          error: 'Jersey number must be between 0 and 99'
+        }), {
+          status: 400,
+          headers: { 'Content-Type': 'application/json' }
+        });
+      }
+      
+      // Check if jersey number is already taken
+      const isTaken = await isJerseyNumberTaken(jerseyNum);
+      if (isTaken) {
+        return new Response(JSON.stringify({ 
+          error: 'This jersey number has already been chosen. Please select a different number.'
+        }), {
+          status: 409,
+          headers: { 'Content-Type': 'application/json' }
+        });
+      }
     }
     
     // Create submission

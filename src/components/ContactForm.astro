@@ -155,18 +155,19 @@ const sizeOptions = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
 
     <!-- Jersey # (0-99) -->
     <div class="flex flex-col gap-2 items-start w-full">
-      <div class="bg-[#212121] border border-[rgba(255,255,255,0.5)] border-solid flex flex-col items-center overflow-clip px-4 md:px-[16px] py-3 md:py-[12px] rounded-[4px] w-full">
+      <div id="jersey-number-container" class="bg-[#212121] border border-[rgba(255,255,255,0.5)] border-solid flex flex-col items-center overflow-clip px-4 md:px-[16px] py-3 md:py-[12px] rounded-[4px] w-full">
         <input
-          type="number"
+          type="text"
           id="jersey_number"
           name="jersey_number"
-          min={jerseyNumberMin}
-          max={jerseyNumberMax}
           inputmode="numeric"
+          pattern="[0-9]{1,2}"
+          maxlength="2"
           class="w-full bg-transparent border-0 outline-0 font-roboto-condensed font-normal leading-normal text-[15px] text-white placeholder:text-[rgba(255,255,255,0.5)]"
           placeholder="Preferred Jersey # (0-99)"
         />
       </div>
+      <div id="jersey-number-error" class="hidden text-red-400 text-[14px] font-roboto-condensed px-2"></div>
     </div> 
 
     <!-- Bottom Size -->
@@ -450,6 +451,74 @@ const sizeOptions = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
 </form>
 
 <script>
+  // Jersey number validation
+  const jerseyNumberInput = document.getElementById('jersey_number') as HTMLInputElement;
+  const jerseyNumberContainer = document.getElementById('jersey-number-container');
+  const jerseyNumberError = document.getElementById('jersey-number-error');
+  
+  if (jerseyNumberInput && jerseyNumberError && jerseyNumberContainer) {
+    // Restrict input to only numbers and limit to 2 digits
+    jerseyNumberInput.addEventListener('input', (e) => {
+      const input = e.target as HTMLInputElement;
+      // Remove any non-numeric characters
+      let value = input.value.replace(/[^0-9]/g, '');
+      // Limit to 2 digits
+      if (value.length > 2) {
+        value = value.slice(0, 2);
+      }
+      // Validate range (0-99)
+      const numValue = parseInt(value, 10);
+      if (value && (numValue < 0 || numValue > 99)) {
+        value = '';
+      }
+      input.value = value;
+      
+      // Clear error when user starts typing
+      if (jerseyNumberError.textContent) {
+        jerseyNumberError.textContent = '';
+        jerseyNumberError.classList.add('hidden');
+        jerseyNumberContainer.classList.remove('border-red-400');
+        jerseyNumberContainer.classList.add('border-[rgba(255,255,255,0.5)]');
+      }
+    });
+    
+    // Check for duplicate jersey number on blur
+    jerseyNumberInput.addEventListener('blur', async () => {
+      const value = jerseyNumberInput.value.trim();
+      
+      if (!value) {
+        // Clear error if field is empty
+        jerseyNumberError.textContent = '';
+        jerseyNumberError.classList.add('hidden');
+        jerseyNumberContainer.classList.remove('border-red-400');
+        jerseyNumberContainer.classList.add('border-[rgba(255,255,255,0.5)]');
+        return;
+      }
+      
+      try {
+        // Check if number is already taken
+        const response = await fetch(`/api/check-jersey?number=${encodeURIComponent(value)}`);
+        const data = await response.json();
+        
+        if (response.ok && data.taken) {
+          // Jersey number is taken
+          jerseyNumberError.textContent = 'This number is already taken. Please choose a different number.';
+          jerseyNumberError.classList.remove('hidden');
+          jerseyNumberContainer.classList.add('border-red-400');
+          jerseyNumberContainer.classList.remove('border-[rgba(255,255,255,0.5)]');
+        } else {
+          // Jersey number is available
+          jerseyNumberError.textContent = '';
+          jerseyNumberError.classList.add('hidden');
+          jerseyNumberContainer.classList.remove('border-red-400');
+          jerseyNumberContainer.classList.add('border-[rgba(255,255,255,0.5)]');
+        }
+      } catch (error) {
+        console.error('Error checking jersey number:', error);
+      }
+    });
+  }
+
   document.getElementById('registration-form')?.addEventListener('submit', async (e) => {
     e.preventDefault();
 
@@ -650,6 +719,42 @@ const sizeOptions = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
         errorContainer.classList.remove('hidden');
       }
       return;
+    }
+    
+    // Validate jersey number if provided
+    if (data.jersey_number) {
+      try {
+        const jerseyCheckResponse = await fetch(`/api/check-jersey?number=${encodeURIComponent(data.jersey_number)}`);
+        const jerseyCheckData = await jerseyCheckResponse.json();
+        
+        if (jerseyCheckResponse.ok && jerseyCheckData.taken) {
+          // Reset button state
+          if (submitButtonWrapper && isSubmitting) {
+            submitButtonWrapper.disabled = false;
+            submitButtonWrapper.removeAttribute('aria-busy');
+            submitButtonWrapper.style.opacity = '1';
+            submitButtonWrapper.style.cursor = 'pointer';
+            if (submitButtonText && originalButtonHTML !== null) {
+              submitButtonText.innerHTML = originalButtonHTML;
+            }
+          }
+          if (errorContainer) {
+            errorContainer.textContent = 'This jersey number is already taken. Please choose a different number.';
+            errorContainer.classList.remove('hidden');
+          }
+          // Also show error on jersey number field
+          if (jerseyNumberError && jerseyNumberContainer) {
+            jerseyNumberError.textContent = 'This number is already taken. Please choose a different number.';
+            jerseyNumberError.classList.remove('hidden');
+            jerseyNumberContainer.classList.add('border-red-400');
+            jerseyNumberContainer.classList.remove('border-[rgba(255,255,255,0.5)]');
+          }
+          return;
+        }
+      } catch (error) {
+        console.error('Error validating jersey number:', error);
+        // Continue with submission if validation check fails
+      }
     }
 
     try {

@@ -224,11 +224,12 @@ const imgHomegrownCursiveMobile = "/assets/Homegrown%20Cursive.svg";
                   <th class="px-2 py-2 text-left text-sm font-roboto-condensed font-bold text-white uppercase tracking-wide no-wrap whitespace-nowrap border-b-2 border-[rgba(255,255,255,0.3)] border-l border-[rgba(255,255,255,0.2)]">Name</th>
                   <th class="px-2 py-2 text-left text-sm font-roboto-condensed font-bold text-white uppercase tracking-wide no-wrap whitespace-nowrap border-b-2 border-[rgba(255,255,255,0.3)] border-l border-[rgba(255,255,255,0.2)]">Email</th>
                   <th class="px-2 py-2 text-left text-sm font-roboto-condensed font-bold text-white uppercase tracking-wide no-wrap whitespace-nowrap border-b-2 border-[rgba(255,255,255,0.3)] border-l border-[rgba(255,255,255,0.2)]">Phone</th>
+                  <th class="px-2 py-2 text-left text-sm font-roboto-condensed font-bold text-white uppercase tracking-wide no-wrap whitespace-nowrap border-b-2 border-[rgba(255,255,255,0.3)] border-l border-[rgba(255,255,255,0.2)]">Address</th>
+                  <th class="px-2 py-2 text-left text-sm font-roboto-condensed font-bold text-white uppercase tracking-wide no-wrap whitespace-nowrap border-b-2 border-[rgba(255,255,255,0.3)] border-l border-[rgba(255,255,255,0.2)]">Sizes</th>
+                  <th class="px-2 py-2 text-left text-sm font-roboto-condensed font-bold text-white uppercase tracking-wide no-wrap whitespace-nowrap border-b-2 border-[rgba(255,255,255,0.3)] border-l border-[rgba(255,255,255,0.2)]">Jersey Number</th>
                   <th class="px-2 py-2 text-left text-sm font-roboto-condensed font-bold text-white uppercase tracking-wide no-wrap whitespace-nowrap border-b-2 border-[rgba(255,255,255,0.3)] border-l border-[rgba(255,255,255,0.2)]">Alt. Contact Name</th>
                   <th class="px-2 py-2 text-left text-sm font-roboto-condensed font-bold text-white uppercase tracking-wide no-wrap whitespace-nowrap border-b-2 border-[rgba(255,255,255,0.3)] border-l border-[rgba(255,255,255,0.2)]">Alt. Contact Phone</th>
                   <th class="px-2 py-2 text-left text-sm font-roboto-condensed font-bold text-white uppercase tracking-wide no-wrap whitespace-nowrap border-b-2 border-[rgba(255,255,255,0.3)] border-l border-[rgba(255,255,255,0.2)]">Alt. Contact Email</th>
-                  <th class="px-2 py-2 text-left text-sm font-roboto-condensed font-bold text-white uppercase tracking-wide no-wrap whitespace-nowrap border-b-2 border-[rgba(255,255,255,0.3)] border-l border-[rgba(255,255,255,0.2)]">Address</th>
-                  <th class="px-2 py-2 text-left text-sm font-roboto-condensed font-bold text-white uppercase tracking-wide no-wrap whitespace-nowrap border-b-2 border-[rgba(255,255,255,0.3)] border-l border-[rgba(255,255,255,0.2)]">Sizes</th>
                   <th class="px-2 py-2 text-center text-sm font-roboto-condensed font-bold text-white uppercase tracking-wide no-wrap whitespace-nowrap border-b-2 border-[rgba(255,255,255,0.3)] border-l border-[rgba(255,255,255,0.2)]">Actions</th>
                 </tr>
               </thead>
@@ -244,13 +245,16 @@ const imgHomegrownCursiveMobile = "/assets/Homegrown%20Cursive.svg";
                   : (entry.created_at as Date).toISOString();
                 const sizes = [
                   entry.top_size ? `Jersey: ${entry.top_size}` : null,
-                  entry.jersey_number ? `Jersey #: ${entry.jersey_number}` : null,
-                  entry.preferred_jersey_number ? `Preferred jersey #: ${entry.preferred_jersey_number}` : null,
                   entry.bottom_size ? `Shorts: ${entry.bottom_size}` : null,
                   entry.jacket_size ? `Jacket: ${entry.jacket_size}` : null,
                   entry.sports_bra_size ? `Sports Bra: ${entry.sports_bra_size}` : null,
                   entry.tight_size ? `Tight: ${entry.tight_size}` : null,
                   entry.shoe_size ? `Shoe (mens): ${entry.shoe_size}` : null
+                ].filter(Boolean).join(', ') || '—';
+                
+                const jerseyNumber = [
+                  entry.jersey_number ? `${entry.jersey_number}` : null,
+                  entry.preferred_jersey_number ? `Preferred: ${entry.preferred_jersey_number}` : null
                 ].filter(Boolean).join(', ') || '—';
                 
                 return (
@@ -284,11 +288,12 @@ const imgHomegrownCursiveMobile = "/assets/Homegrown%20Cursive.svg";
                     <td class="px-2 py-2 text-md font-roboto-condensed font-semibold text-white capitalize border-l border-[rgba(255,255,255,0.1)] whitespace-nowrap">{entry.name || '—'}</td>
                     <td class="px-2 py-2 text-md font-roboto-condensed font-semibold text-white border-l border-[rgba(255,255,255,0.1)] whitespace-nowrap">{entry.email}</td>
                     <td class="px-2 py-2 text-md font-roboto-condensed font-semibold text-white border-l border-[rgba(255,255,255,0.1)] whitespace-nowrap">{entry.phone || '—'}</td>
+                    <td class="px-2 py-2 text-md font-roboto-condensed font-semibold text-white border-l border-[rgba(255,255,255,0.1)] whitespace-nowrap">{entry.address || '—'}</td>
+                    <td class="px-2 py-2 text-md font-roboto-condensed font-semibold text-white border-l border-[rgba(255,255,255,0.1)] whitespace-nowrap">{sizes}</td>
+                    <td class="px-2 py-2 text-md font-roboto-condensed font-semibold text-white border-l border-[rgba(255,255,255,0.1)] whitespace-nowrap">{jerseyNumber}</td>
                     <td class="px-2 py-2 text-md font-roboto-condensed font-semibold text-white border-l border-[rgba(255,255,255,0.1)] whitespace-nowrap">{entry.alternative_contact_name || '—'}</td>
                     <td class="px-2 py-2 text-md font-roboto-condensed font-semibold text-white border-l border-[rgba(255,255,255,0.1)] whitespace-nowrap">{entry.alternative_contact_phone || '—'}</td>
                     <td class="px-2 py-2 text-md font-roboto-condensed font-semibold text-white border-l border-[rgba(255,255,255,0.1)] whitespace-nowrap">{entry.alternative_contact_email || '—'}</td>
-                    <td class="px-2 py-2 text-md font-roboto-condensed font-semibold text-white border-l border-[rgba(255,255,255,0.1)] whitespace-nowrap">{entry.address || '—'}</td>
-                    <td class="px-2 py-2 text-md font-roboto-condensed font-semibold text-white border-l border-[rgba(255,255,255,0.1)] whitespace-nowrap">{sizes}</td>
                     <td class="px-2 py-2 text-center border-l border-[rgba(255,255,255,0.1)] whitespace-nowrap">
                       <button
                         class="delete-entry-btn px-3 py-1.5 bg-[#ce1141] text-white rounded-[4px] hover:bg-[#b01038] transition-colors text-sm font-roboto-condensed font-semibold uppercase flex items-center gap-2 mx-auto"
@@ -436,15 +441,17 @@ const imgHomegrownCursiveMobile = "/assets/Homegrown%20Cursive.svg";
           const name = entry.querySelector('td:nth-child(2)')?.textContent?.toLowerCase() || '';
           const email = entry.querySelector('td:nth-child(3)')?.textContent?.toLowerCase() || '';
           const phone = entry.querySelector('td:nth-child(4)')?.textContent?.toLowerCase() || '';
-          const alternativeContact = entry.querySelector('td:nth-child(5)')?.textContent?.toLowerCase() || '';
-          const address = entry.querySelector('td:nth-child(6)')?.textContent?.toLowerCase() || '';
+          const address = entry.querySelector('td:nth-child(5)')?.textContent?.toLowerCase() || '';
+          const jerseyNumber = entry.querySelector('td:nth-child(7)')?.textContent?.toLowerCase() || '';
+          const alternativeContact = entry.querySelector('td:nth-child(8)')?.textContent?.toLowerCase() || '';
           
           const matches = firstName.includes(lowerQuery) || 
             name.includes(lowerQuery) || 
             email.includes(lowerQuery) ||
             phone.includes(lowerQuery) ||
             alternativeContact.includes(lowerQuery) ||
-            address.includes(lowerQuery);
+            address.includes(lowerQuery) ||
+            jerseyNumber.includes(lowerQuery);
           
           (entry as HTMLElement).style.display = matches ? '' : 'none';
         });

@@ -176,6 +176,25 @@ export async function initializeDatabase(): Promise<void> {
   }
 }
 
+// Check if a jersey number is already taken
+export async function isJerseyNumberTaken(jerseyNumber: string): Promise<boolean> {
+  const client = await pool.connect();
+  try {
+    const result = await client.query(`
+      SELECT id FROM submissions 
+      WHERE jersey_number = $1
+      LIMIT 1
+    `, [jerseyNumber]);
+    
+    return result.rows.length > 0;
+  } catch (error) {
+    console.error('Error checking jersey number:', error);
+    throw error;
+  } finally {
+    client.release();
+  }
+}
+
 // Create a new submission
 export async function createSubmission(data: {
   name: string;
