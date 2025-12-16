@@ -28,6 +28,16 @@ export const GET: APIRoute = async ({ url }) => {
       });
     }
     
+    // Number 25 is reserved/unavailable
+    if (numValue === 25) {
+      return new Response(JSON.stringify({ 
+        taken: true
+      }), {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
+    
     const isTaken = await isJerseyNumberTaken(jerseyNumber);
     
     return new Response(JSON.stringify({ 

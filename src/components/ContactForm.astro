@@ -466,7 +466,7 @@ const sizeOptions = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
       if (value.length > 2) {
         value = value.slice(0, 2);
       }
-      // Validate range (0-99)
+      // Validate range (0-99) - allow 25 to be typed, will be validated on blur
       const numValue = parseInt(value, 10);
       if (value && (numValue < 0 || numValue > 99)) {
         value = '';
@@ -492,6 +492,16 @@ const sizeOptions = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
         jerseyNumberError.classList.add('hidden');
         jerseyNumberContainer.classList.remove('border-red-400');
         jerseyNumberContainer.classList.add('border-[rgba(255,255,255,0.5)]');
+        return;
+      }
+      
+      // Check if number is 25 (reserved)
+      const numValue = parseInt(value, 10);
+      if (numValue === 25) {
+        jerseyNumberError.textContent = 'This number is unavailable. Please choose a different number.';
+        jerseyNumberError.classList.remove('hidden');
+        jerseyNumberContainer.classList.add('border-red-400');
+        jerseyNumberContainer.classList.remove('border-[rgba(255,255,255,0.5)]');
         return;
       }
       
@@ -723,6 +733,34 @@ const sizeOptions = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
     
     // Validate jersey number if provided
     if (data.jersey_number) {
+      const jerseyNumValue = parseInt(data.jersey_number, 10);
+      
+      // Check if number is 25 (reserved)
+      if (jerseyNumValue === 25) {
+        // Reset button state
+        if (submitButtonWrapper && isSubmitting) {
+          submitButtonWrapper.disabled = false;
+          submitButtonWrapper.removeAttribute('aria-busy');
+          submitButtonWrapper.style.opacity = '1';
+          submitButtonWrapper.style.cursor = 'pointer';
+          if (submitButtonText && originalButtonHTML !== null) {
+            submitButtonText.innerHTML = originalButtonHTML;
+          }
+        }
+        if (errorContainer) {
+          errorContainer.textContent = 'This jersey number is unavailable. Please choose a different number.';
+          errorContainer.classList.remove('hidden');
+        }
+        // Also show error on jersey number field
+        if (jerseyNumberError && jerseyNumberContainer) {
+          jerseyNumberError.textContent = 'This number is unavailable. Please choose a different number.';
+          jerseyNumberError.classList.remove('hidden');
+          jerseyNumberContainer.classList.add('border-red-400');
+          jerseyNumberContainer.classList.remove('border-[rgba(255,255,255,0.5)]');
+        }
+        return;
+      }
+      
       try {
         const jerseyCheckResponse = await fetch(`/api/check-jersey?number=${encodeURIComponent(data.jersey_number)}`);
         const jerseyCheckData = await jerseyCheckResponse.json();

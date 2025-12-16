@@ -54,6 +54,16 @@ export const POST: APIRoute = async ({ request }) => {
         });
       }
       
+      // Number 25 is reserved/unavailable
+      if (numValue === 25) {
+        return new Response(JSON.stringify({ 
+          error: 'This jersey number is unavailable. Please select a different number.'
+        }), {
+          status: 400,
+          headers: { 'Content-Type': 'application/json' }
+        });
+      }
+      
       // Check if jersey number is already taken
       const isTaken = await isJerseyNumberTaken(jerseyNum);
       if (isTaken) {
