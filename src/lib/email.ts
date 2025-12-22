@@ -494,6 +494,9 @@ function createPlayerConfirmationTemplate(submission: Submission): string {
             If you need a hotel, we've arranged a Hoxton discount for the team using code 
             <a href="https://bookings.travelclick.com/106942?userType=GRP#/guestsandrooms" style="color: #ce1141; text-decoration: underline;"><strong>DROSE26</strong></a>.
           </p>
+          <p style="color: #000000; font-size: 16px; line-height: 24px; margin: 0;">
+            Parking is limited at the venue. Rideshare is strongly encouraged for arrival.
+          </p>
         </div>
         
         <!-- Submission Details Section -->
