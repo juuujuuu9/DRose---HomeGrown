@@ -1,5 +1,5 @@
 import type { APIRoute } from 'astro';
-import { createSubmission, initializeDatabase, isJerseyNumberTaken } from '../../lib/database';
+import { createSubmission, initializeDatabase } from '../../lib/database';
 import { sendAdminNotification, sendPlayerConfirmation } from '../../lib/email';
 
 export const POST: APIRoute = async ({ request }) => {
@@ -39,7 +39,7 @@ export const POST: APIRoute = async ({ request }) => {
       });
     }
     
-    // Validate jersey number if provided
+    // Validate jersey number format if provided (allow any number 0-99, even if already selected)
     if (data.jersey_number) {
       const jerseyNum = data.jersey_number.toString().trim();
       
@@ -53,27 +53,7 @@ export const POST: APIRoute = async ({ request }) => {
           headers: { 'Content-Type': 'application/json' }
         });
       }
-      
-      // Number 25 is reserved/unavailable
-      if (numValue === 25) {
-        return new Response(JSON.stringify({ 
-          error: 'This jersey number is unavailable. Please select a different number.'
-        }), {
-          status: 400,
-          headers: { 'Content-Type': 'application/json' }
-        });
-      }
-      
-      // Check if jersey number is already taken
-      const isTaken = await isJerseyNumberTaken(jerseyNum);
-      if (isTaken) {
-        return new Response(JSON.stringify({ 
-          error: 'This jersey number has already been chosen. Please select a different number.'
-        }), {
-          status: 409,
-          headers: { 'Content-Type': 'application/json' }
-        });
-      }
+      // No longer checking if number is taken - players can select any number
     }
     
     // Create submission
