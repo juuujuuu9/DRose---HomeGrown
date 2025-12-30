@@ -41,8 +41,11 @@ const imgHomegrownCursiveMobile = "/assets/Homegrown%20Cursive.svg";
           </div>
         </div>
 
-        <!-- Form -->
-        <form id="non-player-form" class="flex flex-col gap-6 flex-1 px-12">
+        <!-- Form Container - Centers form vertically -->
+        <div class="flex-1 flex items-center justify-center">
+          <form id="non-player-form" class="flex flex-col gap-6 w-full px-12">
+
+
           <!-- Name Field -->
           <div class="flex flex-col gap-2">
             <input
@@ -52,18 +55,6 @@ const imgHomegrownCursiveMobile = "/assets/Homegrown%20Cursive.svg";
               required
               class="w-full bg-white border border-gray-300 rounded px-4 py-3 text-gray-900 placeholder:text-gray-400 font-roboto-condensed text-[15px] outline-none focus:border-[#CE1141] focus:ring-1 focus:ring-[#CE1141]"
               placeholder="Name (First and Last)"
-            />
-          </div>
-
-          <!-- Email Field -->
-          <div class="flex flex-col gap-2">
-            <input
-              type="email"
-              id="email"
-              name="email"
-              required
-              class="w-full bg-white border border-gray-300 rounded px-4 py-3 text-gray-900 placeholder:text-gray-400 font-roboto-condensed text-[15px] outline-none focus:border-[#CE1141] focus:ring-1 focus:ring-[#CE1141]"
-              placeholder="Email"
             />
           </div>
 
@@ -79,45 +70,30 @@ const imgHomegrownCursiveMobile = "/assets/Homegrown%20Cursive.svg";
             />
           </div>
 
-          <!-- Guests Section -->
-          <div class=" flex flex-col gap-4">
-            <div class="border border-[#212121] rounded p-4">
-            <label class="text-gray-700 font-roboto-condensed text-[14px] font-semibold uppercase">
-              Guests (Up to 4)
-            </label>
-            
-            <!-- Guest 1 -->
-            <div id="guests-container" class="flex flex-col gap-4">
-              <div class="guest-group" data-guest-index="1">
-                <label class="text-gray-700 font-roboto-condensed text-[12px] font-semibold uppercase mb-2 block">
-                  GUEST 1
-                </label>
-                <div class="flex gap-3">
-                  <input
-                    type="text"
-                    name="guest_1_first"
-                    placeholder="First Name"
-                    class="flex-1 bg-white border border-gray-300 rounded px-4 py-3 text-gray-900 placeholder:text-gray-400 font-roboto-condensed text-[15px] outline-none focus:border-[#CE1141] focus:ring-1 focus:ring-[#CE1141]"
-                  />
-                  <input
-                    type="text"
-                    name="guest_1_last"
-                    placeholder="Last Name"
-                    class="flex-1 bg-white border border-gray-300 rounded px-4 py-3 text-gray-900 placeholder:text-gray-400 font-roboto-condensed text-[15px] outline-none focus:border-[#CE1141] focus:ring-1 focus:ring-[#CE1141]"
-                  />
-                </div>
-              </div>
-            </div>
-
-            <!-- Add Guest Button -->
-            <button
-              type="button"
-              id="add-guest-btn"
-              class="bg-[#CE1141] hover:bg-[#a00d33] text-white px-4 py-2 rounded text-[14px] mt-4 font-roboto-condensed font-semibold uppercase transition-colors duration-200 self-start"
-            >
-              + Add Guest
-            </button>
+          <!-- Email Field -->
+          <div class="flex flex-col gap-2">
+            <input
+              type="email"
+              id="email"
+              name="email"
+              required
+              class="w-full bg-white border border-gray-300 rounded px-4 py-3 text-gray-900 placeholder:text-gray-400 font-roboto-condensed text-[15px] outline-none focus:border-[#CE1141] focus:ring-1 focus:ring-[#CE1141]"
+              placeholder="Email"
+            />
           </div>
+
+          <!-- Checkbox for updates -->
+          <div class="flex items-center gap-2">
+            <input
+              type="checkbox"
+              id="updates-checkbox"
+              name="updates"
+              checked
+              class="w-4 h-4 accent-[#CE1141] border-gray-300 rounded focus:ring-[#CE1141] cursor-pointer"
+            />
+            <label for="updates-checkbox" class="text-gray-900 text-[14px] font-roboto-condensed cursor-pointer">
+              Check to get updates from Derrick Rose
+            </label>
           </div>
 
           <!-- Submit Button / Inline Confirmation Area -->
@@ -143,7 +119,8 @@ const imgHomegrownCursiveMobile = "/assets/Homegrown%20Cursive.svg";
             class="hidden mt-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg text-[15px] text-center font-roboto-condensed"
             aria-live="polite"
           ></div>
-        </form>
+          </form>
+        </div>
 
         <!-- Footer -->
         <div class="flex items-center justify-between py-6 mt-auto">
@@ -169,7 +146,7 @@ const imgHomegrownCursiveMobile = "/assets/Homegrown%20Cursive.svg";
 
   <!-- Mobile Layout -->
   <main class="lg:hidden min-h-screen bg-black flex items-center justify-center">
-    <div class="w-full max-w-md bg-[#F5F5F5] rounded-2xl overflow-hidden animate-fade-in">
+    <div class="w-full max-w-md bg-[#F5F5F5] rounded-2xl overflow-hidden animate-fade-in flex flex-col">
       <!-- Logo Section -->
       <div class="flex flex-col items-center gap-[10px] pt-8 pb-6">
         <div class="h-[60px] w-[61.535px] relative">
@@ -189,8 +166,16 @@ const imgHomegrownCursiveMobile = "/assets/Homegrown%20Cursive.svg";
         />
       </div>
 
-      <!-- Form -->
-      <form id="non-player-form-mobile" class="flex flex-col gap-4 pb-4">
+      <!-- Form Container -->
+      <div class="flex flex-col">
+        <form id="non-player-form-mobile" class="flex flex-col gap-4 pb-4 w-full">
+        <!-- Intro Text -->
+        <div class="text-center mb-2 px-6">
+          <p class="text-gray-900 text-[14px] font-roboto-condensed leading-relaxed">
+            Join us as we celebrate the history and legacy of <strong class="text-[#CE1141] font-bold">Chicago basketball</strong>. On the eve of Derrick Rose's jersey retirement.
+          </p>
+        </div>
+
         <!-- Name Fields - Side by Side -->
         <div class="flex gap-3 w-full px-6">
           <input
@@ -211,16 +196,6 @@ const imgHomegrownCursiveMobile = "/assets/Homegrown%20Cursive.svg";
           />
         </div>
         <div class="flex flex-col px-6 gap-3">
-          <!-- Email Field -->
-          <input
-            type="email"
-            id="email-mobile"
-            name="email"
-            required
-            class="w-full bg-white border border-gray-300 rounded px-4 py-3 text-gray-900 placeholder:text-gray-400 font-roboto-condensed text-[15px] outline-none focus:border-[#CE1141] focus:ring-1 focus:ring-[#CE1141]"
-            placeholder="Email"
-          />
-      
           <!-- Phone Number Field -->
           <input
             type="tel"
@@ -230,45 +205,30 @@ const imgHomegrownCursiveMobile = "/assets/Homegrown%20Cursive.svg";
             class="w-full bg-white border border-gray-300 rounded px-4 py-3 text-gray-900 placeholder:text-gray-400 font-roboto-condensed text-[15px] outline-none focus:border-[#CE1141] focus:ring-1 focus:ring-[#CE1141]"
             placeholder="Phone Number"
           />
-        <!-- Guests Section -->
-        <div class="border border-[#212121] rounded p-4 flex flex-col gap-4">
-          <label class="text-gray-700 font-roboto-condensed text-[14px] font-semibold uppercase">
-            Guests (Up to 4)
-          </label>
-          
-          <!-- Guest 1 -->
-          <div id="guests-container-mobile" class="flex flex-col gap-4">
-            <div class="guest-group" data-guest-index="1">
-              <label class="text-gray-700 font-roboto-condensed text-[12px] font-semibold uppercase mb-2 block">
-                GUEST 1
-              </label>
-              <div class="flex gap-3 w-full">
-                <input
-                  type="text"
-                  name="guest_1_first"
-                  placeholder="First Name"
-                  class="w-1/2 min-w-0 bg-white border border-gray-300 rounded px-4 py-3 text-gray-900 placeholder:text-gray-400 font-roboto-condensed text-[15px] outline-none focus:border-[#CE1141] focus:ring-1 focus:ring-[#CE1141]"
-                />
-                <input
-                  type="text"
-                  name="guest_1_last"
-                  placeholder="Last Name"
-                  class="w-1/2 min-w-0 bg-white border border-gray-300 rounded px-4 py-3 text-gray-900 placeholder:text-gray-400 font-roboto-condensed text-[15px] outline-none focus:border-[#CE1141] focus:ring-1 focus:ring-[#CE1141]"
-                />
-              </div>
-            </div>
-          </div>
+      
+          <!-- Email Field -->
+          <input
+            type="email"
+            id="email-mobile"
+            name="email"
+            required
+            class="w-full bg-white border border-gray-300 rounded px-4 py-3 text-gray-900 placeholder:text-gray-400 font-roboto-condensed text-[15px] outline-none focus:border-[#CE1141] focus:ring-1 focus:ring-[#CE1141]"
+            placeholder="Email"
+          />
         </div>
 
-
-          <!-- Add Guest Button -->
-          <button
-            type="button"
-            id="add-guest-btn-mobile"
-            class="bg-[#CE1141] hover:bg-[#a00d33] text-white px-4 py-2 rounded text-[14px] font-roboto-condensed font-semibold uppercase transition-colors duration-200 self-start"
-          >
-            + Add Guest
-          </button>
+        <!-- Checkbox for updates -->
+        <div class="flex items-center gap-2 px-6">
+          <input
+            type="checkbox"
+            id="updates-checkbox-mobile"
+            name="updates"
+            checked
+            class="w-4 h-4 accent-[#CE1141] border-gray-300 rounded focus:ring-[#CE1141] cursor-pointer"
+          />
+          <label for="updates-checkbox-mobile" class="text-gray-900 text-[14px] font-roboto-condensed cursor-pointer">
+            Check to get updates from Derrick Rose
+          </label>
         </div>
 
         <!-- Submit Button / Inline Confirmation Area -->
@@ -295,7 +255,8 @@ const imgHomegrownCursiveMobile = "/assets/Homegrown%20Cursive.svg";
           class="hidden mt-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg text-[15px] text-center font-roboto-condensed"
           aria-live="polite"
         ></div>
-      </form>
+        </form>
+      </div>
 
       <!-- Footer -->
       <div class="flex items-center justify-between px-6 py-6">
@@ -319,97 +280,6 @@ const imgHomegrownCursiveMobile = "/assets/Homegrown%20Cursive.svg";
 </Layout>
 
 <script>
-  // Guest management for desktop
-  let guestCount = 1;
-  const maxGuests = 4;
-  const addGuestBtn = document.getElementById('add-guest-btn') as HTMLButtonElement | null;
-  const guestsContainer = document.getElementById('guests-container');
-
-  addGuestBtn?.addEventListener('click', () => {
-    if (guestCount >= maxGuests) {
-      if (addGuestBtn) {
-        addGuestBtn.disabled = true;
-        addGuestBtn.classList.add('opacity-50', 'cursor-not-allowed');
-      }
-      return;
-    }
-
-    guestCount++;
-    const guestGroup = document.createElement('div');
-    guestGroup.className = 'guest-group';
-    guestGroup.setAttribute('data-guest-index', guestCount.toString());
-    guestGroup.innerHTML = `
-      <label class="text-gray-700 font-roboto-condensed text-[12px] font-semibold uppercase mb-2 block">
-        GUEST ${guestCount}
-      </label>
-      <div class="flex gap-3">
-        <input
-          type="text"
-          name="guest_${guestCount}_first"
-          placeholder="First Name"
-          class="flex-1 bg-white border border-gray-300 rounded px-4 py-3 text-gray-900 placeholder:text-gray-400 font-roboto-condensed text-[15px] outline-none focus:border-[#CE1141] focus:ring-1 focus:ring-[#CE1141]"
-        />
-        <input
-          type="text"
-          name="guest_${guestCount}_last"
-          placeholder="Last Name"
-          class="flex-1 bg-white border border-gray-300 rounded px-4 py-3 text-gray-900 placeholder:text-gray-400 font-roboto-condensed text-[15px] outline-none focus:border-[#CE1141] focus:ring-1 focus:ring-[#CE1141]"
-        />
-      </div>
-    `;
-    guestsContainer?.appendChild(guestGroup);
-
-    if (guestCount >= maxGuests && addGuestBtn) {
-      addGuestBtn.disabled = true;
-      addGuestBtn.classList.add('opacity-50', 'cursor-not-allowed');
-    }
-  });
-
-  // Guest management for mobile
-  let guestCountMobile = 1;
-  const addGuestBtnMobile = document.getElementById('add-guest-btn-mobile') as HTMLButtonElement | null;
-  const guestsContainerMobile = document.getElementById('guests-container-mobile');
-
-  addGuestBtnMobile?.addEventListener('click', () => {
-    if (guestCountMobile >= maxGuests) {
-      if (addGuestBtnMobile) {
-        addGuestBtnMobile.disabled = true;
-        addGuestBtnMobile.classList.add('opacity-50', 'cursor-not-allowed');
-      }
-      return;
-    }
-
-    guestCountMobile++;
-    const guestGroup = document.createElement('div');
-    guestGroup.className = 'guest-group';
-    guestGroup.setAttribute('data-guest-index', guestCountMobile.toString());
-    guestGroup.innerHTML = `
-      <label class="text-gray-700 font-roboto-condensed text-[12px] font-semibold uppercase mb-2 block">
-        GUEST ${guestCountMobile}
-      </label>
-      <div class="flex gap-3 w-full">
-        <input
-          type="text"
-          name="guest_${guestCountMobile}_first"
-          placeholder="First Name"
-          class="w-1/2 min-w-0 bg-white border border-gray-300 rounded px-4 py-3 text-gray-900 placeholder:text-gray-400 font-roboto-condensed text-[15px] outline-none focus:border-[#CE1141] focus:ring-1 focus:ring-[#CE1141]"
-        />
-        <input
-          type="text"
-          name="guest_${guestCountMobile}_last"
-          placeholder="Last Name"
-          class="w-1/2 min-w-0 bg-white border border-gray-300 rounded px-4 py-3 text-gray-900 placeholder:text-gray-400 font-roboto-condensed text-[15px] outline-none focus:border-[#CE1141] focus:ring-1 focus:ring-[#CE1141]"
-        />
-      </div>
-    `;
-    guestsContainerMobile?.appendChild(guestGroup);
-
-    if (guestCountMobile >= maxGuests && addGuestBtnMobile) {
-      addGuestBtnMobile.disabled = true;
-      addGuestBtnMobile.classList.add('opacity-50', 'cursor-not-allowed');
-    }
-  });
-
   // Form submission handler for desktop
   document.getElementById('non-player-form')?.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -441,30 +311,15 @@ const imgHomegrownCursiveMobile = "/assets/Homegrown%20Cursive.svg";
       fullName = '';
     }
 
-    // Collect guest information and convert to API format
-    const additionalTickets: Array<{ name: string; email: string; phone: string }> = [];
-    for (let i = 1; i <= maxGuests; i++) {
-      const first = (data[`guest_${i}_first`] as string)?.trim();
-      const last = (data[`guest_${i}_last`] as string)?.trim();
-      if (first && last) {
-        // Use main contact's email/phone for guests (as per mockup, guests only have names)
-        additionalTickets.push({
-          name: `${first} ${last}`,
-          email: (data.email as string) || '',
-          phone: (data.phone as string) || ''
-        });
-      }
-    }
-
-    // Calculate ticket count (main person + guests)
-    const ticketCount = 1 + additionalTickets.length;
-
+    const updatesValue = typeof data.updates === 'string' ? data.updates === 'on' : !!data.updates;
+    
     const payload = {
       name: fullName,
       email: data.email,
       phone: data.phone,
-      ticket_count: ticketCount,
-      additional_tickets: additionalTickets
+      ticket_count: 1,
+      additional_tickets: [],
+      updates: updatesValue
     };
 
     const actionContainer = document.getElementById(actionContainerId);
@@ -555,5 +410,15 @@ const imgHomegrownCursiveMobile = "/assets/Homegrown%20Cursive.svg";
 
   .animate-fade-in {
     animation: fadeIn 0.6s ease-out forwards;
+  }
+
+  /* Checkbox styling to match button red color */
+  input[type="checkbox"] {
+    accent-color: #CE1141;
+  }
+
+  input[type="checkbox"]:checked {
+    background-color: #CE1141;
+    border-color: #CE1141;
   }
 </style>
