@@ -11,7 +11,8 @@
     "preview": "astro preview",
     "astro": "astro",
     "setup": "node scripts/setup.js",
-    "init-db": "node scripts/init-db.js"
+    "init-db": "node scripts/init-db.js",
+    "setup-admin": "node scripts/setup-admin.js"
   },
   "dependencies": {
     "@astrojs/tailwind": "^6.0.2",
