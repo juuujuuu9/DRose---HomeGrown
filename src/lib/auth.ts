@@ -1,4 +1,6 @@
 import type { Cookies } from 'astro';
+import { getAdminByUsername } from './database';
+import bcrypt from 'bcryptjs';
 
 const SESSION_COOKIE_NAME = 'admin_session';
 const SESSION_SECRET = import.meta.env.SESSION_SECRET || process.env.SESSION_SECRET || 'change-this-in-production';
@@ -45,36 +47,51 @@ export async function verifyAdminCredentials(
   username: string,
   password: string
 ): Promise<boolean> {
-  const adminUsername = import.meta.env.ADMIN_USERNAME || process.env.ADMIN_USERNAME;
-  const adminPassword = import.meta.env.ADMIN_PASSWORD || process.env.ADMIN_PASSWORD;
+  try {
+    // First, try to find admin in database
+    const admin = await getAdminByUsername(username);
+    
+    if (admin) {
+      // Admin exists in database, verify password hash
+      const bcryptModule = await import('bcryptjs');
+      const isValid = await bcryptModule.default.compare(password, admin.password_hash);
+      
+      if (!isValid) {
+        console.log('[AUTH] Password mismatch for database admin');
+      }
+      
+      return isValid;
+    }
+    
+    // Fallback to environment variables for backward compatibility
+    const adminUsername = import.meta.env.ADMIN_USERNAME || process.env.ADMIN_USERNAME;
+    const adminPassword = import.meta.env.ADMIN_PASSWORD || process.env.ADMIN_PASSWORD;
 
-  if (!adminUsername || !adminPassword) {
-    console.error('[AUTH] Admin credentials not configured:', {
-      hasUsername: !!adminUsername,
-      hasPassword: !!adminPassword,
-      envSource: import.meta.env.ADMIN_USERNAME ? 'import.meta.env' : 'process.env',
-    });
+    if (adminUsername && adminPassword) {
+      if (username !== adminUsername) {
+        console.log('[AUTH] Username mismatch:', {
+          provided: username,
+          expected: adminUsername,
+          match: false,
+        });
+        return false;
+      }
+
+      const passwordMatch = password === adminPassword;
+      
+      if (!passwordMatch) {
+        console.log('[AUTH] Password mismatch for env admin');
+      }
+      
+      return passwordMatch;
+    }
+
+    console.error('[AUTH] Admin credentials not found in database or environment variables');
+    return false;
+  } catch (error) {
+    console.error('[AUTH] Error verifying credentials:', error);
     return false;
   }
-
-  if (username !== adminUsername) {
-    console.log('[AUTH] Username mismatch:', {
-      provided: username,
-      expected: adminUsername,
-      match: false,
-    });
-    return false;
-  }
-
-  // Simple direct comparison since password is stored in environment variable
-  // In production with a database, you'd hash passwords and use bcrypt.compare()
-  const passwordMatch = password === adminPassword;
-  
-  if (!passwordMatch) {
-    console.log('[AUTH] Password mismatch');
-  }
-  
-  return passwordMatch;
 }
 
 // Check if user is authenticated

@@ -324,16 +324,6 @@ export async function sendAdminNotification(submission: Submission): Promise<voi
 
 // Email template for non-player admin notifications
 function createNonPlayerAdminEmailTemplate(submission: NonPlayerSubmission, totalEntries: number, playerCount: number, nonPlayerCount: number): string {
-  const additionalTicketsList = submission.additional_tickets.length > 0
-    ? submission.additional_tickets.map((ticket, index) => 
-        `<li style="margin-bottom: 10px;">
-          <strong>${ticket.name}</strong><br>
-          Email: ${ticket.email}<br>
-          Phone: ${ticket.phone}
-        </li>`
-      ).join('')
-    : '<li>None</li>';
-  
   return `
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
       <h2 style="color: #333; border-bottom: 2px solid #007bff; padding-bottom: 10px;">
@@ -362,14 +352,6 @@ function createNonPlayerAdminEmailTemplate(submission: NonPlayerSubmission, tota
           <tr>
             <td style="padding: 8px 0; border-bottom: 1px solid #eee;"><strong>Number of Tickets:</strong></td>
             <td style="padding: 8px 0; border-bottom: 1px solid #eee;">${submission.ticket_count}</td>
-          </tr>
-          <tr>
-            <td style="padding: 8px 0; border-bottom: 1px solid #eee; vertical-align: top;"><strong>Additional Tickets:</strong></td>
-            <td style="padding: 8px 0; border-bottom: 1px solid #eee;">
-              <ul style="margin: 0; padding-left: 20px;">
-                ${additionalTicketsList}
-              </ul>
-            </td>
           </tr>
         </table>
       </div>

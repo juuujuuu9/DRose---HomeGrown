@@ -2,13 +2,42 @@
 
 import { readFileSync, writeFileSync, existsSync } from 'fs';
 import { join } from 'path';
+import { randomBytes } from 'crypto';
+import { config } from 'dotenv';
+import { Pool } from 'pg';
 
-const username = 'derrick';
-const password = 'monaco64mo';
+// Load environment variables
+const envPath = join(process.cwd(), '.env');
+if (existsSync(envPath)) {
+  config({ path: envPath });
+}
+
+// Generate secure random credentials
+const generateSecurePassword = (length = 16) => {
+  return randomBytes(length).toString('base64').slice(0, length);
+};
+
+// Use command line arguments first, then environment variables, then defaults
+const username = process.argv[2] || process.env.ADMIN_USERNAME || 'admin';
+const password = process.argv[3] || process.env.ADMIN_PASSWORD || generateSecurePassword(16);
 
 console.log('🔐 Setting up admin credentials...\n');
 
-const envPath = join(process.cwd(), '.env');
+// Database connection
+const connectionString = process.env.DATABASE_URL;
+if (!connectionString) {
+  console.error('❌ DATABASE_URL is not set in environment variables');
+  console.error('   Please set DATABASE_URL in your .env file');
+  process.exit(1);
+}
+
+const pool = new Pool({
+  connectionString: connectionString,
+  ssl: {
+    rejectUnauthorized: false
+  },
+});
+
 const envExamplePath = join(process.cwd(), 'env.example');
 
 let envContent = '';
@@ -73,13 +102,61 @@ if (envContent.includes('ADMIN_PASSWORD=')) {
 // Write the updated .env file
 writeFileSync(envPath, envContent, 'utf-8');
 
-console.log('\n✅ Admin credentials configured successfully!');
-console.log(`\n📋 Login credentials:`);
-console.log(`   Username: ${username}`);
-console.log(`   Password: ${password}`);
-console.log('\n⚠️  Important:');
-console.log('   - Make sure to set other environment variables in .env');
-console.log('   - For production (Vercel), set these in your Vercel dashboard');
-console.log('   - Never commit .env file to version control');
-console.log('\n🚀 You can now log in at /login with these credentials');
+// Add admin to database
+async function addAdminToDatabase() {
+  const client = await pool.connect();
+  try {
+    // Initialize admin table
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS admins (
+        id SERIAL PRIMARY KEY,
+        username VARCHAR(255) NOT NULL UNIQUE,
+        password_hash VARCHAR(255) NOT NULL,
+        created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
+
+    // Hash password
+    const bcryptModule = await import('bcryptjs');
+    const passwordHash = await bcryptModule.default.hash(password, 10);
+
+    // Insert or update admin
+    const result = await client.query(`
+      INSERT INTO admins (username, password_hash)
+      VALUES ($1, $2)
+      ON CONFLICT (username) DO UPDATE SET password_hash = EXCLUDED.password_hash
+      RETURNING id, username, created_at
+    `, [username, passwordHash]);
+
+    console.log('\n✅ Admin added to database successfully!');
+    console.log(`   Admin ID: ${result.rows[0].id}`);
+    console.log(`   Username: ${result.rows[0].username}`);
+    console.log(`   Created: ${result.rows[0].created_at}`);
+  } catch (error) {
+    console.error('❌ Error adding admin to database:', error);
+    throw error;
+  } finally {
+    client.release();
+    await pool.end();
+  }
+}
+
+// Run the database setup
+addAdminToDatabase()
+  .then(() => {
+    console.log('\n✅ Admin credentials configured successfully!');
+    console.log(`\n📋 Login credentials:`);
+    console.log(`   Username: ${username}`);
+    console.log(`   Password: ${password}`);
+    console.log('\n⚠️  Important:');
+    console.log('   - Admin is stored in the database (password is hashed)');
+    console.log('   - Make sure to set other environment variables in .env');
+    console.log('   - For production (Vercel), set DATABASE_URL in your Vercel dashboard');
+    console.log('   - Never commit .env file to version control');
+    console.log('\n🚀 You can now log in at /login with these credentials');
+  })
+  .catch((error) => {
+    console.error('❌ Failed to set up admin:', error);
+    process.exit(1);
+  });
 

@@ -1,8 +1,12 @@
 import type { APIRoute } from 'astro';
 import { verifyAdminCredentials, setSessionCookie, generateSessionToken } from '../../lib/auth';
+import { initializeAdminDatabase } from '../../lib/database';
 
 export const POST: APIRoute = async ({ request, cookies }) => {
   try {
+    // Ensure admin database is initialized
+    await initializeAdminDatabase();
+    
     const data = await request.json();
     const { username, password } = data;
 

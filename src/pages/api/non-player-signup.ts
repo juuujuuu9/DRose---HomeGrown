@@ -75,13 +75,30 @@ export const POST: APIRoute = async ({ request }) => {
     }
     
     // Create submission
+    // Handle updates field - can be boolean true/false or string 'on' from form
+    // The form sends updates as a boolean (true/false), but we also handle string 'on' for compatibility
+    const allowContact = data.updates === true || 
+                        data.updates === 'on' || 
+                        data.allow_contact_from_derrick_rose === true ||
+                        (typeof data.updates === 'string' && data.updates.toLowerCase() === 'true');
+    
+    // Debug: Log what we received and what we're saving
+    console.log('=== Non-Player Signup Debug ===');
+    console.log('data.updates:', data.updates, 'type:', typeof data.updates);
+    console.log('data.allow_contact_from_derrick_rose:', data.allow_contact_from_derrick_rose);
+    console.log('Calculated allowContact:', allowContact);
+    
     const submission = await createNonPlayerSubmission({
       name: data.name,
       email: data.email,
       phone: data.phone,
       ticket_count: ticketCount,
-      additional_tickets: additionalTickets
+      additional_tickets: additionalTickets,
+      allow_contact_from_derrick_rose: allowContact
     });
+    
+    console.log('Saved submission allow_contact_from_derrick_rose:', submission.allow_contact_from_derrick_rose);
+    console.log('=== End Debug ===');
     
     // Send email notifications
     console.log('New non-player submission:', submission);

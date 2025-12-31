@@ -5,7 +5,8 @@ import {
   getAllSubmissions, 
   getAllNonPlayerSubmissions, 
   initializeDatabase,
-  initializeNonPlayerDatabase 
+  initializeNonPlayerDatabase,
+  initializeAdminDatabase
 } from '../lib/database';
 import type { Submission, NonPlayerSubmission } from '../lib/database';
 
@@ -18,6 +19,7 @@ if (!isAuthenticated(Astro.cookies)) {
 try {
   await initializeDatabase();
   await initializeNonPlayerDatabase();
+  await initializeAdminDatabase();
 } catch (error) {
   console.error('Error initializing database:', error);
   console.error('Error details:', error instanceof Error ? error.message : String(error));
@@ -331,7 +333,7 @@ const imgHomegrownCursiveMobile = "/assets/Homegrown%20Cursive.svg";
                   <th class="px-2 py-2 text-left text-sm font-roboto-condensed font-bold text-white uppercase tracking-wide no-wrap whitespace-nowrap border-b-2 border-[rgba(255,255,255,0.3)] border-l border-[rgba(255,255,255,0.2)]">Email</th>
                   <th class="px-2 py-2 text-left text-sm font-roboto-condensed font-bold text-white uppercase tracking-wide no-wrap whitespace-nowrap border-b-2 border-[rgba(255,255,255,0.3)] border-l border-[rgba(255,255,255,0.2)]">Phone</th>
                   <th class="px-2 py-2 text-left text-sm font-roboto-condensed font-bold text-white uppercase tracking-wide no-wrap whitespace-nowrap border-b-2 border-[rgba(255,255,255,0.3)] border-l border-[rgba(255,255,255,0.2)]">Ticket Count</th>
-                  <th class="px-2 py-2 text-left text-sm font-roboto-condensed font-bold text-white uppercase tracking-wide no-wrap whitespace-nowrap border-b-2 border-[rgba(255,255,255,0.3)] border-l border-[rgba(255,255,255,0.2)]">Additional Tickets</th>
+                  <th class="px-2 py-2 text-center text-sm font-roboto-condensed font-bold text-white uppercase tracking-wide no-wrap whitespace-nowrap border-b-2 border-[rgba(255,255,255,0.3)] border-l border-[rgba(255,255,255,0.2)]">Allow Contact from Derrick Rose</th>
                   <th class="px-2 py-2 text-center text-sm font-roboto-condensed font-bold text-white uppercase tracking-wide no-wrap whitespace-nowrap border-b-2 border-[rgba(255,255,255,0.3)] border-l border-[rgba(255,255,255,0.2)]">Actions</th>
                 </tr>
               </thead>
@@ -341,11 +343,6 @@ const imgHomegrownCursiveMobile = "/assets/Homegrown%20Cursive.svg";
                 const dateValue = typeof entry.created_at === 'string' 
                   ? new Date(entry.created_at).toISOString()
                   : (entry.created_at as Date).toISOString();
-                const additionalTickets = entry.additional_tickets && entry.additional_tickets.length > 0
-                  ? entry.additional_tickets
-                    .map((ticket: { name: string; email: string; phone: string }) => `${ticket.name} (${ticket.email}, ${ticket.phone})`)
-                    .join(', ')
-                  : '—';
                 
                 return (
                   <tr 
@@ -358,7 +355,11 @@ const imgHomegrownCursiveMobile = "/assets/Homegrown%20Cursive.svg";
                     <td class="px-2 py-2 text-md font-roboto-condensed font-semibold text-white border-l border-[rgba(255,255,255,0.1)] whitespace-nowrap">{entry.email}</td>
                     <td class="px-2 py-2 text-md font-roboto-condensed font-semibold text-white border-l border-[rgba(255,255,255,0.1)] whitespace-nowrap">{entry.phone || '—'}</td>
                     <td class="px-2 py-2 text-md font-roboto-condensed font-semibold text-white border-l border-[rgba(255,255,255,0.1)] whitespace-nowrap">{entry.ticket_count}</td>
-                    <td class="px-2 py-2 text-md font-roboto-condensed font-semibold text-white border-l border-[rgba(255,255,255,0.1)] whitespace-nowrap">{additionalTickets}</td>
+                    <td class="px-2 py-2 text-center border-l border-[rgba(255,255,255,0.1)] whitespace-nowrap">
+                      <span class={`font-roboto-condensed font-semibold ${entry.allow_contact_from_derrick_rose ? 'text-green-400' : 'text-red-400'}`}>
+                        {entry.allow_contact_from_derrick_rose ? 'YES' : 'NO'}
+                      </span>
+                    </td>
                     <td class="px-2 py-2 text-center border-l border-[rgba(255,255,255,0.1)] whitespace-nowrap">
                       <button
                         class="delete-non-player-entry-btn px-3 py-1.5 bg-[#ce1141] text-white rounded-[4px] hover:bg-[#b01038] transition-colors text-sm font-roboto-condensed font-semibold uppercase flex items-center gap-2 mx-auto"
@@ -473,13 +474,11 @@ const imgHomegrownCursiveMobile = "/assets/Homegrown%20Cursive.svg";
           const name = entry.querySelector('td:nth-child(1)')?.textContent?.toLowerCase() || '';
           const email = entry.querySelector('td:nth-child(2)')?.textContent?.toLowerCase() || '';
           const phone = entry.querySelector('td:nth-child(3)')?.textContent?.toLowerCase() || '';
-          const additionalTickets = entry.querySelector('td:nth-child(5)')?.textContent?.toLowerCase() || '';
           
           const matches = firstName.includes(lowerQuery) || 
             name.includes(lowerQuery) || 
             email.includes(lowerQuery) ||
-            phone.includes(lowerQuery) ||
-            additionalTickets.includes(lowerQuery);
+            phone.includes(lowerQuery);
           
           (entry as HTMLElement).style.display = matches ? '' : 'none';
         });
@@ -580,6 +579,9 @@ const imgHomegrownCursiveMobile = "/assets/Homegrown%20Cursive.svg";
 
   // Switch tabs
   function switchTab(tabName: string): void {
+    // Save active tab to localStorage
+    localStorage.setItem('admin-active-tab', tabName);
+    
     // Update tab buttons - switch style
     document.querySelectorAll('.tab-btn').forEach(btn => {
       btn.classList.remove('bg-[#ce1141]', 'text-white');
@@ -789,8 +791,10 @@ const imgHomegrownCursiveMobile = "/assets/Homegrown%20Cursive.svg";
       });
     });
 
-    // Set initial active tab
-    switchTab('players');
+    // Set initial active tab - restore from localStorage if available
+    const savedTab = localStorage.getItem('admin-active-tab');
+    const initialTab = (savedTab === 'players' || savedTab === 'non-players') ? savedTab : 'players';
+    switchTab(initialTab);
 
     // Search input
     const searchInput = document.getElementById('search-input');

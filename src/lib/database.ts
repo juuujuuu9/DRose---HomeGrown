@@ -56,6 +56,7 @@ export interface NonPlayerSubmission {
   phone: string;
   ticket_count: number;
   additional_tickets: Array<{ name: string; email: string; phone: string }>;
+  allow_contact_from_derrick_rose?: boolean;
 }
 
 // Initialize database schema
@@ -328,8 +329,15 @@ export async function initializeNonPlayerDatabase(): Promise<void> {
         email VARCHAR(255) NOT NULL,
         phone VARCHAR(50) NOT NULL,
         ticket_count INTEGER NOT NULL CHECK (ticket_count >= 1 AND ticket_count <= 5),
-        additional_tickets JSONB DEFAULT '[]'::jsonb
+        additional_tickets JSONB DEFAULT '[]'::jsonb,
+        allow_contact_from_derrick_rose BOOLEAN DEFAULT false
       )
+    `);
+    
+    // Add column if it doesn't exist (for existing databases)
+    await client.query(`
+      ALTER TABLE non_player_submissions 
+      ADD COLUMN IF NOT EXISTS allow_contact_from_derrick_rose BOOLEAN DEFAULT false
     `);
     
     console.log('Non-player database schema initialized successfully');
@@ -348,23 +356,25 @@ export async function createNonPlayerSubmission(data: {
   phone: string;
   ticket_count: number;
   additional_tickets: Array<{ name: string; email: string; phone: string }>;
+  allow_contact_from_derrick_rose?: boolean;
 }): Promise<NonPlayerSubmission> {
   const client = await pool.connect();
   try {
     const result = await client.query(`
       INSERT INTO non_player_submissions (
-        name, email, phone, ticket_count, additional_tickets
+        name, email, phone, ticket_count, additional_tickets, allow_contact_from_derrick_rose
       )
-      VALUES ($1, $2, $3, $4, $5::jsonb)
+      VALUES ($1, $2, $3, $4, $5::jsonb, $6)
       RETURNING 
         id::text, created_at::text, name, email, phone,
-        ticket_count, additional_tickets::text
+        ticket_count, additional_tickets::text, allow_contact_from_derrick_rose
     `, [
       data.name,
       data.email,
       data.phone,
       data.ticket_count,
-      JSON.stringify(data.additional_tickets)
+      JSON.stringify(data.additional_tickets),
+      data.allow_contact_from_derrick_rose ?? false
     ]);
     
     const row = result.rows[0];
@@ -375,7 +385,8 @@ export async function createNonPlayerSubmission(data: {
       email: row.email,
       phone: row.phone,
       ticket_count: row.ticket_count,
-      additional_tickets: JSON.parse(row.additional_tickets)
+      additional_tickets: JSON.parse(row.additional_tickets),
+      allow_contact_from_derrick_rose: row.allow_contact_from_derrick_rose ?? false
     };
   } catch (error) {
     console.error('Error creating non-player submission:', error);
@@ -392,7 +403,7 @@ export async function getAllNonPlayerSubmissions(): Promise<NonPlayerSubmission[
     const result = await client.query(`
       SELECT 
         id::text, created_at::text, name, email, phone,
-        ticket_count, additional_tickets::text
+        ticket_count, additional_tickets::text, allow_contact_from_derrick_rose
       FROM non_player_submissions 
       ORDER BY created_at DESC
     `);
@@ -404,7 +415,8 @@ export async function getAllNonPlayerSubmissions(): Promise<NonPlayerSubmission[
       email: row.email,
       phone: row.phone,
       ticket_count: row.ticket_count,
-      additional_tickets: JSON.parse(row.additional_tickets)
+      additional_tickets: JSON.parse(row.additional_tickets),
+      allow_contact_from_derrick_rose: row.allow_contact_from_derrick_rose ?? false
     }));
   } catch (error) {
     console.error('Error fetching non-player submissions:', error);
@@ -458,6 +470,121 @@ export async function getEntryCounts(): Promise<{ player: number; nonPlayer: num
     };
   } catch (error) {
     console.error('Error counting entries:', error);
+    throw error;
+  } finally {
+    client.release();
+  }
+}
+
+// Admin interface
+export interface Admin {
+  id: string;
+  username: string;
+  created_at: string;
+}
+
+// Initialize admin database schema
+export async function initializeAdminDatabase(): Promise<void> {
+  const client = await pool.connect();
+  try {
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS admins (
+        id SERIAL PRIMARY KEY,
+        username VARCHAR(255) NOT NULL UNIQUE,
+        password_hash VARCHAR(255) NOT NULL,
+        created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
+    
+    console.log('Admin database schema initialized successfully');
+  } catch (error) {
+    console.error('Error initializing admin database:', error);
+    throw error;
+  } finally {
+    client.release();
+  }
+}
+
+// Get admin by username
+export async function getAdminByUsername(username: string): Promise<{ id: string; username: string; password_hash: string } | null> {
+  const client = await pool.connect();
+  try {
+    const result = await client.query(`
+      SELECT id::text, username, password_hash
+      FROM admins
+      WHERE username = $1
+      LIMIT 1
+    `, [username]);
+    
+    if (result.rows.length === 0) {
+      return null;
+    }
+    
+    return result.rows[0];
+  } catch (error) {
+    console.error('Error fetching admin:', error);
+    throw error;
+  } finally {
+    client.release();
+  }
+}
+
+// Create a new admin
+export async function createAdmin(username: string, passwordHash: string): Promise<Admin> {
+  const client = await pool.connect();
+  try {
+    const result = await client.query(`
+      INSERT INTO admins (username, password_hash)
+      VALUES ($1, $2)
+      ON CONFLICT (username) DO UPDATE SET password_hash = EXCLUDED.password_hash
+      RETURNING id::text, username, created_at::text
+    `, [username, passwordHash]);
+    
+    return {
+      id: result.rows[0].id,
+      username: result.rows[0].username,
+      created_at: result.rows[0].created_at
+    };
+  } catch (error) {
+    console.error('Error creating admin:', error);
+    throw error;
+  } finally {
+    client.release();
+  }
+}
+
+// Get all admins (for management)
+export async function getAllAdmins(): Promise<Admin[]> {
+  const client = await pool.connect();
+  try {
+    const result = await client.query(`
+      SELECT id::text, username, created_at::text
+      FROM admins
+      ORDER BY created_at DESC
+    `);
+    
+    return result.rows;
+  } catch (error) {
+    console.error('Error fetching admins:', error);
+    throw error;
+  } finally {
+    client.release();
+  }
+}
+
+// Delete an admin
+export async function deleteAdmin(id: string): Promise<boolean> {
+  const client = await pool.connect();
+  try {
+    const result = await client.query(`
+      DELETE FROM admins
+      WHERE id = $1
+      RETURNING id
+    `, [id]);
+    
+    return result.rows.length > 0;
+  } catch (error) {
+    console.error('Error deleting admin:', error);
     throw error;
   } finally {
     client.release();
