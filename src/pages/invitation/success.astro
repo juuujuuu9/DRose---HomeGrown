@@ -103,7 +103,11 @@ const imgHomegrownCursiveMobile = "/assets/Homegrown%20Cursive.svg";
       <!-- Success Message -->
       <div class="px-6 pt-8 pb-4">
         <h1 class="font-roboto-condensed text-[#CE1141] text-[28px] font-bold uppercase leading-[32px] break-words text-center mb-4">
-          YOUR SUBMISSION HAS BEEN RECEIVED!
+          <span class="inline-block text-grow-word mr-1.5">YOUR</span>
+          <span class="inline-block text-grow-word mr-1.5">SUBMISSION</span>
+          <span class="inline-block text-grow-word mr-1.5">HAS</span>
+          <span class="inline-block text-grow-word mr-1.5">BEEN</span>
+          <span class="inline-block text-grow-word">RECEIVED!</span>
         </h1>
 
         <!-- Disclaimer -->
@@ -173,4 +177,26 @@ const imgHomegrownCursiveMobile = "/assets/Homegrown%20Cursive.svg";
   .animate-fade-in {
     animation: fadeIn 0.6s ease-out forwards;
   }
+
+  @keyframes textGrow {
+    0% {
+      transform: scale(0.8);
+      opacity: 0;
+    }
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+
+  .text-grow-word {
+    animation: textGrow 0.5s ease-out forwards;
+    opacity: 0;
+  }
+
+  .text-grow-word:nth-child(1) { animation-delay: 0.1s; }
+  .text-grow-word:nth-child(2) { animation-delay: 0.2s; }
+  .text-grow-word:nth-child(3) { animation-delay: 0.3s; }
+  .text-grow-word:nth-child(4) { animation-delay: 0.4s; }
+  .text-grow-word:nth-child(5) { animation-delay: 0.5s; }
 </style>
