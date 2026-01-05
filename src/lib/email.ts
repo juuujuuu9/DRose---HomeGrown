@@ -24,7 +24,8 @@ const apiKey = getApiKey();
 const resend = apiKey ? new Resend(apiKey) : null;
 
 // Admin email addresses from environment variables
-const getAdminEmails = () => {
+// These admins receive ALL notifications (both player and non-player)
+const getAllAdminEmails = () => {
   const emails = [
     import.meta.env.ADMIN_EMAIL_1 || process.env.ADMIN_EMAIL_1,
     import.meta.env.ADMIN_EMAIL_2 || process.env.ADMIN_EMAIL_2,
@@ -32,16 +33,69 @@ const getAdminEmails = () => {
     import.meta.env.ADMIN_EMAIL_4 || process.env.ADMIN_EMAIL_4
   ].filter(email => email && email.trim() !== '');
   
-  if (emails.length === 0) {
-    console.error('❌ No admin emails configured');
-    console.error('   Please set ADMIN_EMAIL_1, ADMIN_EMAIL_2, etc. in your .env file');
-  } else {
-    console.log(`✅ Found ${emails.length} admin emails configured:`, emails);
+  if (emails.length > 0) {
+    console.log(`✅ Found ${emails.length} general admin emails configured:`, emails);
   }
   return emails;
 };
 
-const ADMIN_EMAILS = getAdminEmails();
+// Player-only admin emails - these admins ONLY receive player submission notifications
+const getPlayerOnlyAdminEmails = () => {
+  const emails = [
+    import.meta.env.ADMIN_EMAIL_PLAYER_1 || process.env.ADMIN_EMAIL_PLAYER_1,
+    import.meta.env.ADMIN_EMAIL_PLAYER_2 || process.env.ADMIN_EMAIL_PLAYER_2,
+    import.meta.env.ADMIN_EMAIL_PLAYER_3 || process.env.ADMIN_EMAIL_PLAYER_3,
+    import.meta.env.ADMIN_EMAIL_PLAYER_4 || process.env.ADMIN_EMAIL_PLAYER_4
+  ].filter(email => email && email.trim() !== '');
+  
+  if (emails.length > 0) {
+    console.log(`✅ Found ${emails.length} player-only admin emails configured:`, emails);
+  }
+  return emails;
+};
+
+// Non-player-only admin emails - these admins ONLY receive non-player submission notifications
+const getNonPlayerOnlyAdminEmails = () => {
+  const emails = [
+    import.meta.env.ADMIN_EMAIL_NON_PLAYER_1 || process.env.ADMIN_EMAIL_NON_PLAYER_1,
+    import.meta.env.ADMIN_EMAIL_NON_PLAYER_2 || process.env.ADMIN_EMAIL_NON_PLAYER_2,
+    import.meta.env.ADMIN_EMAIL_NON_PLAYER_3 || process.env.ADMIN_EMAIL_NON_PLAYER_3,
+    import.meta.env.ADMIN_EMAIL_NON_PLAYER_4 || process.env.ADMIN_EMAIL_NON_PLAYER_4
+  ].filter(email => email && email.trim() !== '');
+  
+  if (emails.length > 0) {
+    console.log(`✅ Found ${emails.length} non-player-only admin emails configured:`, emails);
+  }
+  return emails;
+};
+
+// Get all admin emails for player notifications (general admins + player-only admins)
+const getAdminEmailsForPlayers = () => {
+  const allAdmins = getAllAdminEmails();
+  const playerOnlyAdmins = getPlayerOnlyAdminEmails();
+  const combined = [...allAdmins, ...playerOnlyAdmins];
+  
+  if (combined.length === 0) {
+    console.warn('⚠️  No admin emails configured for player notifications');
+    console.warn('   Please set ADMIN_EMAIL_1-4 (for all notifications) or ADMIN_EMAIL_PLAYER_1-4 (for player-only)');
+  }
+  
+  return combined;
+};
+
+// Get all admin emails for non-player notifications (general admins + non-player-only admins)
+const getAdminEmailsForNonPlayers = () => {
+  const allAdmins = getAllAdminEmails();
+  const nonPlayerOnlyAdmins = getNonPlayerOnlyAdminEmails();
+  const combined = [...allAdmins, ...nonPlayerOnlyAdmins];
+  
+  if (combined.length === 0) {
+    console.warn('⚠️  No admin emails configured for non-player notifications');
+    console.warn('   Please set ADMIN_EMAIL_1-4 (for all notifications) or ADMIN_EMAIL_NON_PLAYER_1-4 (for non-player-only)');
+  }
+  
+  return combined;
+};
 
 // Email template for admin notifications
 function createAdminEmailTemplate(submission: Submission, totalEntries: number, playerCount: number, nonPlayerCount: number): string {
@@ -231,7 +285,7 @@ export async function sendAdminNotification(submission: Submission): Promise<voi
     // Re-check configuration at runtime (important for serverless environments)
     const runtimeApiKey = getApiKey();
     const runtimeResend = runtimeApiKey ? new Resend(runtimeApiKey) : null;
-    const runtimeAdminEmails = getAdminEmails();
+    const runtimeAdminEmails = getAdminEmailsForPlayers();
     
     if (!runtimeResend) {
       console.error('❌ Resend is not properly configured. Check RESEND_API_KEY environment variable.');
@@ -244,13 +298,8 @@ export async function sendAdminNotification(submission: Submission): Promise<voi
     }
     
     if (runtimeAdminEmails.length === 0) {
-      console.error('❌ No admin emails configured. Check ADMIN_EMAIL_1, ADMIN_EMAIL_2, ADMIN_EMAIL_3, ADMIN_EMAIL_4 environment variables.');
-      console.error('   Environment check:', {
-        email1: import.meta.env.ADMIN_EMAIL_1 || process.env.ADMIN_EMAIL_1 || 'not set',
-        email2: import.meta.env.ADMIN_EMAIL_2 || process.env.ADMIN_EMAIL_2 || 'not set',
-        email3: import.meta.env.ADMIN_EMAIL_3 || process.env.ADMIN_EMAIL_3 || 'not set',
-        email4: import.meta.env.ADMIN_EMAIL_4 || process.env.ADMIN_EMAIL_4 || 'not set'
-      });
+      console.error('❌ No admin emails configured for player notifications.');
+      console.error('   Set ADMIN_EMAIL_1-4 (for all notifications) or ADMIN_EMAIL_PLAYER_1-4 (for player-only)');
       return;
     }
     
@@ -637,7 +686,7 @@ export async function sendNonPlayerAdminNotification(submission: NonPlayerSubmis
     // Re-check configuration at runtime (important for serverless environments)
     const runtimeApiKey = getApiKey();
     const runtimeResend = runtimeApiKey ? new Resend(runtimeApiKey) : null;
-    const runtimeAdminEmails = getAdminEmails();
+    const runtimeAdminEmails = getAdminEmailsForNonPlayers();
     
     if (!runtimeResend) {
       console.error('❌ Resend is not properly configured. Check RESEND_API_KEY environment variable.');
@@ -650,13 +699,8 @@ export async function sendNonPlayerAdminNotification(submission: NonPlayerSubmis
     }
     
     if (runtimeAdminEmails.length === 0) {
-      console.error('❌ No admin emails configured. Check ADMIN_EMAIL_1, ADMIN_EMAIL_2, ADMIN_EMAIL_3, ADMIN_EMAIL_4 environment variables.');
-      console.error('   Environment check:', {
-        email1: import.meta.env.ADMIN_EMAIL_1 || process.env.ADMIN_EMAIL_1 || 'not set',
-        email2: import.meta.env.ADMIN_EMAIL_2 || process.env.ADMIN_EMAIL_2 || 'not set',
-        email3: import.meta.env.ADMIN_EMAIL_3 || process.env.ADMIN_EMAIL_3 || 'not set',
-        email4: import.meta.env.ADMIN_EMAIL_4 || process.env.ADMIN_EMAIL_4 || 'not set'
-      });
+      console.error('❌ No admin emails configured for non-player notifications.');
+      console.error('   Set ADMIN_EMAIL_1-4 (for all notifications) or ADMIN_EMAIL_NON_PLAYER_1-4 (for non-player-only)');
       return;
     }
     
