@@ -83,8 +83,16 @@ async function main() {
         email VARCHAR(255) NOT NULL,
         phone VARCHAR(50) NOT NULL,
         ticket_count INTEGER NOT NULL CHECK (ticket_count >= 1 AND ticket_count <= 5),
-        additional_tickets JSONB DEFAULT '[]'::jsonb
+        additional_tickets JSONB DEFAULT '[]'::jsonb,
+        checked_in BOOLEAN DEFAULT FALSE
       )
+    `);
+    
+    // Add checked_in column if it doesn't exist (migration for existing databases)
+    console.log('   🔄 Checking for checked_in column...');
+    await client.query(`
+      ALTER TABLE non_player_submissions 
+      ADD COLUMN IF NOT EXISTS checked_in BOOLEAN DEFAULT FALSE
     `);
     console.log('   ✅ Non-player submissions table ready\n');
 

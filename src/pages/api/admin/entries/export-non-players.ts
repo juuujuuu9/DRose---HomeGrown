@@ -24,6 +24,7 @@ export const GET: APIRoute = async ({ cookies }) => {
       'Phone',
       'Ticket Count',
       'Allow Contact from Derrick Rose',
+      'Checked In',
       'Created At'
     ];
 
@@ -35,6 +36,7 @@ export const GET: APIRoute = async ({ cookies }) => {
         sub.phone,
         sub.ticket_count,
         sub.allow_contact_from_derrick_rose ? 'Yes' : 'No',
+        sub.checked_in ? 'Yes' : 'No',
         sub.created_at
       ];
     });

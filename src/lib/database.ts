@@ -57,6 +57,7 @@ export interface NonPlayerSubmission {
   ticket_count: number;
   additional_tickets: Array<{ name: string; email: string; phone: string }>;
   allow_contact_from_derrick_rose?: boolean;
+  checked_in?: boolean;
 }
 
 // Initialize database schema
@@ -298,6 +299,26 @@ export async function updateCheckInStatus(id: string, checkedIn: boolean): Promi
   }
 }
 
+// Update check-in status for a non-player submission
+export async function updateNonPlayerCheckInStatus(id: string, checkedIn: boolean): Promise<boolean> {
+  const client = await pool.connect();
+  try {
+    const result = await client.query(`
+      UPDATE non_player_submissions 
+      SET checked_in = $1 
+      WHERE id = $2
+      RETURNING id
+    `, [checkedIn, id]);
+    
+    return result.rows.length > 0;
+  } catch (error) {
+    console.error('Error updating non-player check-in status:', error);
+    throw error;
+  } finally {
+    client.release();
+  }
+}
+
 // Delete a submission
 export async function deleteSubmission(id: string): Promise<boolean> {
   const client = await pool.connect();
@@ -330,14 +351,20 @@ export async function initializeNonPlayerDatabase(): Promise<void> {
         phone VARCHAR(50) NOT NULL,
         ticket_count INTEGER NOT NULL CHECK (ticket_count >= 1 AND ticket_count <= 5),
         additional_tickets JSONB DEFAULT '[]'::jsonb,
-        allow_contact_from_derrick_rose BOOLEAN DEFAULT false
+        allow_contact_from_derrick_rose BOOLEAN DEFAULT false,
+        checked_in BOOLEAN DEFAULT FALSE
       )
     `);
     
-    // Add column if it doesn't exist (for existing databases)
+    // Add columns if they don't exist (for existing databases)
     await client.query(`
       ALTER TABLE non_player_submissions 
       ADD COLUMN IF NOT EXISTS allow_contact_from_derrick_rose BOOLEAN DEFAULT false
+    `);
+    
+    await client.query(`
+      ALTER TABLE non_player_submissions 
+      ADD COLUMN IF NOT EXISTS checked_in BOOLEAN DEFAULT FALSE
     `);
     
     console.log('Non-player database schema initialized successfully');
@@ -403,7 +430,8 @@ export async function getAllNonPlayerSubmissions(): Promise<NonPlayerSubmission[
     const result = await client.query(`
       SELECT 
         id::text, created_at::text, name, email, phone,
-        ticket_count, additional_tickets::text, allow_contact_from_derrick_rose
+        ticket_count, additional_tickets::text, allow_contact_from_derrick_rose,
+        COALESCE(checked_in, false) as checked_in
       FROM non_player_submissions 
       ORDER BY created_at DESC
     `);
@@ -416,7 +444,8 @@ export async function getAllNonPlayerSubmissions(): Promise<NonPlayerSubmission[
       phone: row.phone,
       ticket_count: row.ticket_count,
       additional_tickets: JSON.parse(row.additional_tickets),
-      allow_contact_from_derrick_rose: row.allow_contact_from_derrick_rose ?? false
+      allow_contact_from_derrick_rose: row.allow_contact_from_derrick_rose ?? false,
+      checked_in: row.checked_in ?? false
     }));
   } catch (error) {
     console.error('Error fetching non-player submissions:', error);

@@ -32,6 +32,15 @@ let nonPlayerEntries: NonPlayerSubmission[] = [];
 
 try {
   entries = await getAllSubmissions();
+  // Sort by last name initially
+  entries.sort((a, b) => {
+    const lastNameA = getLastName(a.name || '');
+    const lastNameB = getLastName(b.name || '');
+    if (lastNameA === lastNameB) {
+      return (a.name || '').localeCompare(b.name || '');
+    }
+    return lastNameA.localeCompare(lastNameB);
+  });
 } catch (error) {
   console.error('Error fetching player submissions:', error);
   console.error('Error details:', error instanceof Error ? error.message : String(error));
@@ -40,19 +49,52 @@ try {
 
 try {
   nonPlayerEntries = await getAllNonPlayerSubmissions();
+  // Sort by last name initially
+  nonPlayerEntries.sort((a, b) => {
+    const lastNameA = getLastName(a.name || '');
+    const lastNameB = getLastName(b.name || '');
+    if (lastNameA === lastNameB) {
+      return (a.name || '').localeCompare(b.name || '');
+    }
+    return lastNameA.localeCompare(lastNameB);
+  });
 } catch (error) {
   console.error('Error fetching non-player submissions:', error);
   console.error('Error details:', error instanceof Error ? error.message : String(error));
   // Continue with empty array to prevent page crash
 }
 
-// Helper function to split name
-function splitName(name: string): { firstName: string; lastName: string } {
-  const parts = name.trim().split(/\s+/);
+// Helper function to split name and extract last name
+function splitName(name: string): { firstName: string; lastName: string; firstMiddle: string } {
+  const parts = name.trim().split(/\s+/).filter(p => p.length > 0);
+  if (parts.length === 0) {
+    return { firstName: '', lastName: '', firstMiddle: '' };
+  }
+  if (parts.length === 1) {
+    return { firstName: parts[0], lastName: '', firstMiddle: parts[0] };
+  }
+  // Last word is last name, everything before is first/middle
+  const lastName = parts[parts.length - 1];
+  const firstMiddle = parts.slice(0, -1).join(' ');
   return {
-    firstName: parts[0] || '',
-    lastName: parts.slice(1).join(' ') || ''
+    firstName: parts[0],
+    lastName: lastName,
+    firstMiddle: firstMiddle
   };
+}
+
+// Format name as "Last, First Middle"
+function formatName(name: string): string {
+  if (!name || !name.trim()) return '—';
+  const { lastName, firstMiddle } = splitName(name);
+  if (!lastName) return name; // If no last name, return original
+  return `${lastName}, ${firstMiddle}`;
+}
+
+// Extract last name for sorting
+function getLastName(name: string): string {
+  const { lastName } = splitName(name);
+  return lastName || name; // Fallback to full name if no last name
 }
 
 // Background image - local file
@@ -241,7 +283,8 @@ const imgHomegrownCursiveMobile = "/assets/Homegrown%20Cursive.svg";
                 const checkInColor = entry.checked_in 
                   ? 'bg-green-600 text-white border border-green-500' 
                   : 'bg-[#ce1141] text-white border border-[#b01038]';
-                const { firstName } = splitName(entry.name || '');
+                const { lastName } = splitName(entry.name || '');
+                const formattedName = formatName(entry.name || '');
                 const dateValue = typeof entry.created_at === 'string' 
                   ? new Date(entry.created_at).toISOString()
                   : (entry.created_at as Date).toISOString();
@@ -263,7 +306,8 @@ const imgHomegrownCursiveMobile = "/assets/Homegrown%20Cursive.svg";
                   <tr 
                     class="hover:bg-[#2a2a2a] transition-colors" 
                     data-entry-id={entry.id}
-                    data-first-name={firstName.toLowerCase()}
+                    data-last-name={lastName.toLowerCase()}
+                    data-full-name={(entry.name || '').toLowerCase()}
                     data-created-at={dateValue}
                   >
                     <td class="w-auto px-2 py-2 whitespace-nowrap">
@@ -287,7 +331,7 @@ const imgHomegrownCursiveMobile = "/assets/Homegrown%20Cursive.svg";
                         </span>
                       </label>
                     </td>
-                    <td class="px-2 py-2 text-md font-roboto-condensed font-semibold text-white capitalize border-l border-[rgba(255,255,255,0.1)] whitespace-nowrap">{entry.name || '—'}</td>
+                    <td class="px-2 py-2 text-md font-roboto-condensed font-semibold text-white border-l border-[rgba(255,255,255,0.1)] whitespace-nowrap">{formattedName}</td>
                     <td class="px-2 py-2 text-md font-roboto-condensed font-semibold text-white border-l border-[rgba(255,255,255,0.1)] whitespace-nowrap">{entry.email}</td>
                     <td class="px-2 py-2 text-md font-roboto-condensed font-semibold text-white border-l border-[rgba(255,255,255,0.1)] whitespace-nowrap">{entry.phone || '—'}</td>
                     <td class="px-2 py-2 text-md font-roboto-condensed font-semibold text-white border-l border-[rgba(255,255,255,0.1)] whitespace-nowrap">{entry.address || '—'}</td>
@@ -329,7 +373,8 @@ const imgHomegrownCursiveMobile = "/assets/Homegrown%20Cursive.svg";
             <table class="w-full border-collapse min-w-full">
               <thead>
                 <tr class="bg-[#212121]">
-                  <th class="px-2 py-2 text-left text-sm font-roboto-condensed font-bold text-white uppercase tracking-wide no-wrap whitespace-nowrap border-b-2 border-[rgba(255,255,255,0.3)]">Name</th>
+                  <th class="w-auto px-2 py-2 text-left text-sm font-roboto-condensed font-bold text-white uppercase tracking-wide no-wrap whitespace-nowrap border-b-2 border-[rgba(255,255,255,0.3)]">Check-In</th>
+                  <th class="px-2 py-2 text-left text-sm font-roboto-condensed font-bold text-white uppercase tracking-wide no-wrap whitespace-nowrap border-b-2 border-[rgba(255,255,255,0.3)] border-l border-[rgba(255,255,255,0.2)]">Name</th>
                   <th class="px-2 py-2 text-left text-sm font-roboto-condensed font-bold text-white uppercase tracking-wide no-wrap whitespace-nowrap border-b-2 border-[rgba(255,255,255,0.3)] border-l border-[rgba(255,255,255,0.2)]">Email</th>
                   <th class="px-2 py-2 text-left text-sm font-roboto-condensed font-bold text-white uppercase tracking-wide no-wrap whitespace-nowrap border-b-2 border-[rgba(255,255,255,0.3)] border-l border-[rgba(255,255,255,0.2)]">Phone</th>
                   <th class="px-2 py-2 text-left text-sm font-roboto-condensed font-bold text-white uppercase tracking-wide no-wrap whitespace-nowrap border-b-2 border-[rgba(255,255,255,0.3)] border-l border-[rgba(255,255,255,0.2)]">Ticket Count</th>
@@ -339,7 +384,12 @@ const imgHomegrownCursiveMobile = "/assets/Homegrown%20Cursive.svg";
               </thead>
               <tbody id="non-player-entries-tbody" class="divide-y divide-[rgba(255,255,255,0.1)]">
                 {nonPlayerEntries.map((entry) => {
-                const { firstName } = splitName(entry.name || '');
+                const checkInStatus = entry.checked_in ? 'ATTENDING' : 'CHECK-IN';
+                const checkInColor = entry.checked_in 
+                  ? 'bg-green-600 text-white border border-green-500' 
+                  : 'bg-[#ce1141] text-white border border-[#b01038]';
+                const { lastName } = splitName(entry.name || '');
+                const formattedName = formatName(entry.name || '');
                 const dateValue = typeof entry.created_at === 'string' 
                   ? new Date(entry.created_at).toISOString()
                   : (entry.created_at as Date).toISOString();
@@ -348,10 +398,32 @@ const imgHomegrownCursiveMobile = "/assets/Homegrown%20Cursive.svg";
                   <tr 
                     class="hover:bg-[#2a2a2a] transition-colors" 
                     data-entry-id={entry.id}
-                    data-first-name={firstName.toLowerCase()}
+                    data-last-name={lastName.toLowerCase()}
+                    data-full-name={(entry.name || '').toLowerCase()}
                     data-created-at={dateValue}
                   >
-                    <td class="px-2 py-2 text-md font-roboto-condensed font-semibold text-white capitalize whitespace-nowrap">{entry.name || '—'}</td>
+                    <td class="w-auto px-2 py-2 whitespace-nowrap">
+                      <label class="cursor-pointer inline-flex items-center justify-center">
+                        <input
+                          type="checkbox"
+                          class="sr-only check-in-checkbox-non-player"
+                          data-entry-id={entry.id}
+                          checked={entry.checked_in || false}
+                        />
+                        <span class={`inline-flex items-center justify-center w-8 h-8 rounded-full text-xs font-roboto-condensed font-bold uppercase tracking-wide ${checkInColor}`}>
+                          {entry.checked_in ? (
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
+                            </svg>
+                          ) : (
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <circle cx="12" cy="12" r="9" stroke-width="2" />
+                            </svg>
+                          )}
+                        </span>
+                      </label>
+                    </td>
+                    <td class="px-2 py-2 text-md font-roboto-condensed font-semibold text-white border-l border-[rgba(255,255,255,0.1)] whitespace-nowrap">{formattedName}</td>
                     <td class="px-2 py-2 text-md font-roboto-condensed font-semibold text-white border-l border-[rgba(255,255,255,0.1)] whitespace-nowrap">{entry.email}</td>
                     <td class="px-2 py-2 text-md font-roboto-condensed font-semibold text-white border-l border-[rgba(255,255,255,0.1)] whitespace-nowrap">{entry.phone || '—'}</td>
                     <td class="px-2 py-2 text-md font-roboto-condensed font-semibold text-white border-l border-[rgba(255,255,255,0.1)] whitespace-nowrap">{entry.ticket_count}</td>
@@ -401,13 +473,37 @@ const imgHomegrownCursiveMobile = "/assets/Homegrown%20Cursive.svg";
 </style>
 
 <script>
-  // Helper function to split name
-  function splitName(name: string): { firstName: string; lastName: string } {
-    const parts = name.trim().split(/\s+/);
+  // Helper function to split name and extract last name
+  function splitName(name: string): { firstName: string; lastName: string; firstMiddle: string } {
+    const parts = name.trim().split(/\s+/).filter(p => p.length > 0);
+    if (parts.length === 0) {
+      return { firstName: '', lastName: '', firstMiddle: '' };
+    }
+    if (parts.length === 1) {
+      return { firstName: parts[0], lastName: '', firstMiddle: parts[0] };
+    }
+    // Last word is last name, everything before is first/middle
+    const lastName = parts[parts.length - 1];
+    const firstMiddle = parts.slice(0, -1).join(' ');
     return {
-      firstName: parts[0] || '',
-      lastName: parts.slice(1).join(' ') || ''
+      firstName: parts[0],
+      lastName: lastName,
+      firstMiddle: firstMiddle
     };
+  }
+
+  // Format name as "Last, First Middle"
+  function formatName(name: string): string {
+    if (!name || !name.trim()) return '—';
+    const { lastName, firstMiddle } = splitName(name);
+    if (!lastName) return name; // If no last name, return original
+    return `${lastName}, ${firstMiddle}`;
+  }
+
+  // Extract last name for sorting
+  function getLastName(name: string): string {
+    const { lastName } = splitName(name);
+    return lastName || name; // Fallback to full name if no last name
   }
 
   // Get current active tab
@@ -438,7 +534,8 @@ const imgHomegrownCursiveMobile = "/assets/Homegrown%20Cursive.svg";
         });
       } else {
         playerEntries.forEach(entry => {
-          const firstName = entry.getAttribute('data-first-name') || '';
+          const fullName = entry.getAttribute('data-full-name') || '';
+          const lastName = entry.getAttribute('data-last-name') || '';
           const name = entry.querySelector('td:nth-child(2)')?.textContent?.toLowerCase() || '';
           const email = entry.querySelector('td:nth-child(3)')?.textContent?.toLowerCase() || '';
           const phone = entry.querySelector('td:nth-child(4)')?.textContent?.toLowerCase() || '';
@@ -446,7 +543,8 @@ const imgHomegrownCursiveMobile = "/assets/Homegrown%20Cursive.svg";
           const jerseyNumber = entry.querySelector('td:nth-child(7)')?.textContent?.toLowerCase() || '';
           const alternativeContact = entry.querySelector('td:nth-child(8)')?.textContent?.toLowerCase() || '';
           
-          const matches = firstName.includes(lowerQuery) || 
+          const matches = fullName.includes(lowerQuery) || 
+            lastName.includes(lowerQuery) ||
             name.includes(lowerQuery) || 
             email.includes(lowerQuery) ||
             phone.includes(lowerQuery) ||
@@ -470,12 +568,14 @@ const imgHomegrownCursiveMobile = "/assets/Homegrown%20Cursive.svg";
         });
       } else {
         nonPlayerEntries.forEach(entry => {
-          const firstName = entry.getAttribute('data-first-name') || '';
-          const name = entry.querySelector('td:nth-child(1)')?.textContent?.toLowerCase() || '';
-          const email = entry.querySelector('td:nth-child(2)')?.textContent?.toLowerCase() || '';
-          const phone = entry.querySelector('td:nth-child(3)')?.textContent?.toLowerCase() || '';
+          const fullName = entry.getAttribute('data-full-name') || '';
+          const lastName = entry.getAttribute('data-last-name') || '';
+          const name = entry.querySelector('td:nth-child(2)')?.textContent?.toLowerCase() || '';
+          const email = entry.querySelector('td:nth-child(3)')?.textContent?.toLowerCase() || '';
+          const phone = entry.querySelector('td:nth-child(4)')?.textContent?.toLowerCase() || '';
           
-          const matches = firstName.includes(lowerQuery) || 
+          const matches = fullName.includes(lowerQuery) || 
+            lastName.includes(lowerQuery) ||
             name.includes(lowerQuery) || 
             email.includes(lowerQuery) ||
             phone.includes(lowerQuery);
@@ -536,18 +636,30 @@ const imgHomegrownCursiveMobile = "/assets/Homegrown%20Cursive.svg";
     if (!tbody) return;
     
     const entries = Array.from(tbody.querySelectorAll('tr'));
-    // For players: name is 2nd column (after check-in), for non-players: name is 1st column
-    const nameCol = activeTab === 'players' ? 2 : 1;
     
     entries.sort((a, b) => {
       if (sortType === 'name-asc') {
-        const nameA = (a.querySelector(`td:nth-child(${nameCol})`)?.textContent || '').toLowerCase();
-        const nameB = (b.querySelector(`td:nth-child(${nameCol})`)?.textContent || '').toLowerCase();
-        return nameA.localeCompare(nameB);
+        // Sort by last name (from data attribute)
+        const lastNameA = (a.getAttribute('data-last-name') || '').toLowerCase();
+        const lastNameB = (b.getAttribute('data-last-name') || '').toLowerCase();
+        // If last names are equal, sort by full name
+        if (lastNameA === lastNameB) {
+          const fullNameA = (a.getAttribute('data-full-name') || '').toLowerCase();
+          const fullNameB = (b.getAttribute('data-full-name') || '').toLowerCase();
+          return fullNameA.localeCompare(fullNameB);
+        }
+        return lastNameA.localeCompare(lastNameB);
       } else if (sortType === 'name-desc') {
-        const nameA = (a.querySelector(`td:nth-child(${nameCol})`)?.textContent || '').toLowerCase();
-        const nameB = (b.querySelector(`td:nth-child(${nameCol})`)?.textContent || '').toLowerCase();
-        return nameB.localeCompare(nameA);
+        // Sort by last name descending
+        const lastNameA = (a.getAttribute('data-last-name') || '').toLowerCase();
+        const lastNameB = (b.getAttribute('data-last-name') || '').toLowerCase();
+        // If last names are equal, sort by full name
+        if (lastNameA === lastNameB) {
+          const fullNameA = (a.getAttribute('data-full-name') || '').toLowerCase();
+          const fullNameB = (b.getAttribute('data-full-name') || '').toLowerCase();
+          return fullNameB.localeCompare(fullNameA);
+        }
+        return lastNameB.localeCompare(lastNameA);
       } else if (sortType === 'date') {
         const dateA = new Date(a.getAttribute('data-created-at') || '').getTime();
         const dateB = new Date(b.getAttribute('data-created-at') || '').getTime();
@@ -693,6 +805,41 @@ const imgHomegrownCursiveMobile = "/assets/Homegrown%20Cursive.svg";
       }
     } catch (error) {
       console.error('Error updating check-in:', error);
+      alert('Failed to update check-in status. Please try again.');
+    }
+  }
+
+  // Update non-player check-in status
+  async function updateNonPlayerCheckIn(entryId: string, checkedIn: boolean): Promise<void> {
+    try {
+      const response = await fetch(`/api/admin/non-player-entries/${entryId}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ checked_in: checkedIn })
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to update check-in status');
+      }
+      
+      // Update UI
+      const row = document.querySelector(`tr[data-entry-id="${entryId}"]`);
+      if (row) {
+        const checkbox = row.querySelector('.check-in-checkbox-non-player') as HTMLInputElement;
+        const statusSpan = row.querySelector('td:first-child span');
+        
+        if (checkbox) checkbox.checked = checkedIn;
+        if (statusSpan) {
+          statusSpan.className = checkedIn
+            ? 'inline-flex items-center justify-center w-8 h-8 rounded-full text-xs font-roboto-condensed font-bold uppercase tracking-wide bg-green-600 text-white border border-green-500'
+            : 'inline-flex items-center justify-center w-8 h-8 rounded-full text-xs font-roboto-condensed font-bold uppercase tracking-wide bg-[#ce1141] text-white border border-[#b01038]';
+          statusSpan.innerHTML = checkedIn
+            ? `<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" /></svg>`
+            : `<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" stroke-width="2" /></svg>`;
+        }
+      }
+    } catch (error) {
+      console.error('Error updating non-player check-in:', error);
       alert('Failed to update check-in status. Please try again.');
     }
   }
@@ -844,6 +991,17 @@ const imgHomegrownCursiveMobile = "/assets/Homegrown%20Cursive.svg";
         const entryId = target.getAttribute('data-entry-id');
         if (entryId) {
           updateCheckIn(entryId, target.checked);
+        }
+      });
+    });
+
+    // Non-player check-in checkboxes
+    document.querySelectorAll('.check-in-checkbox-non-player').forEach(checkbox => {
+      checkbox.addEventListener('change', (e) => {
+        const target = e.target as HTMLInputElement;
+        const entryId = target.getAttribute('data-entry-id');
+        if (entryId) {
+          updateNonPlayerCheckIn(entryId, target.checked);
         }
       });
     });
