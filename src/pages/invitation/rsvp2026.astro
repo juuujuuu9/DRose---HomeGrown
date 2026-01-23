@@ -41,85 +41,16 @@ const imgHomegrownCursiveMobile = "/assets/Homegrown%20Cursive.svg";
           </div>
         </div>
 
-        <!-- Form Container - Centers form vertically -->
+        <!-- RSVP Closed Message -->
         <div class="flex-1 flex items-center justify-center">
-          <form id="non-player-form" class="flex flex-col gap-6 w-full px-12">
-
-
-          <!-- Name Field -->
-          <div class="flex flex-col gap-2">
-            <input
-              type="text"
-              id="name"
-              name="name"
-              required
-              class="w-full bg-white border border-gray-300 rounded px-4 py-3 text-gray-900 placeholder:text-gray-400 font-roboto-condensed text-[15px] outline-none focus:border-[#CE1141] focus:ring-1 focus:ring-[#CE1141]"
-              placeholder="Name (First and Last)"
-            />
+          <div class="flex flex-col gap-6 w-full px-12 text-center">
+            <h2 class="text-3xl font-bold text-gray-900 font-roboto-condensed uppercase">
+              RSVPs Are Now Closed
+            </h2>
+            <p class="text-lg text-gray-700 font-roboto-condensed leading-relaxed max-w-[500px] mx-auto">
+              Thank you for your interest. Registration for this event has closed. We look forward to seeing you at the event!
+            </p>
           </div>
-
-          <!-- Phone Number Field -->
-          <div class="flex flex-col gap-2">
-            <input
-              type="tel"
-              id="phone"
-              name="phone"
-              required
-              class="w-full bg-white border border-gray-300 rounded px-4 py-3 text-gray-900 placeholder:text-gray-400 font-roboto-condensed text-[15px] outline-none focus:border-[#CE1141] focus:ring-1 focus:ring-[#CE1141]"
-              placeholder="Phone Number"
-            />
-          </div>
-
-          <!-- Email Field -->
-          <div class="flex flex-col gap-2">
-            <input
-              type="email"
-              id="email"
-              name="email"
-              required
-              class="w-full bg-white border border-gray-300 rounded px-4 py-3 text-gray-900 placeholder:text-gray-400 font-roboto-condensed text-[15px] outline-none focus:border-[#CE1141] focus:ring-1 focus:ring-[#CE1141]"
-              placeholder="Email"
-            />
-          </div>
-
-          <!-- Checkbox for updates -->
-          <div class="flex items-center justify-center gap-2">
-            <input
-              type="checkbox"
-              id="updates-checkbox"
-              name="updates"
-              checked
-              class="w-4 h-4 accent-[#CE1141] border-gray-300 rounded focus:ring-[#CE1141] cursor-pointer"
-            />
-            <label for="updates-checkbox" class="text-gray-900 text-[14px] font-roboto-condensed cursor-pointer">
-              Check to get updates from Derrick Rose
-            </label>
-          </div>
-
-          <!-- Submit Button / Inline Confirmation Area -->
-          <div id="registration-action" class="text-center pt-4" aria-live="polite">
-            <button
-              id="register-button"
-              type="submit"
-              class="w-full bg-[#CE1141] hover:bg-[#a00d33] text-white py-4 px-8 rounded-none text-[18px] font-prohibition font-bold uppercase tracking-wider transition-colors duration-200"
-            >
-              SUBMIT
-            </button>
-          </div>
-
-          <!-- Disclaimer -->
-          <div class="pt-2 px-12 mx-auto">
-            <p class="text-gray-600 text-[13px] text-center font-roboto-condensed leading-relaxed max-w-[500px]">
-              <strong>Please note:</strong> Registration does not guarantee entry. All attendees will be confirmed at the door, and ticketing details will be communicated as the event approaches.            </p>
-          </div>
-
-          <!-- Inline error box (hidden by default) -->
-          <div
-            id="registration-error"
-            class="hidden mt-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg text-[15px] text-center font-roboto-condensed"
-            aria-live="polite"
-          ></div>
-          </form>
         </div>
 
         <!-- Footer -->
@@ -166,96 +97,16 @@ const imgHomegrownCursiveMobile = "/assets/Homegrown%20Cursive.svg";
         />
       </div>
 
-      <!-- Form Container -->
-      <div class="flex flex-col">
-        <form id="non-player-form-mobile" class="flex flex-col gap-4 pb-4 w-full">
-        <!-- Intro Text -->
-        <div class="text-center mb-2 px-6">
-          <p class="text-gray-900 text-[14px] font-roboto-condensed leading-relaxed">
-            Join us as we celebrate the history and legacy of <strong class="text-[#CE1141] font-bold">Chicago basketball</strong>. On the eve of Derrick Rose's jersey retirement.
+      <!-- RSVP Closed Message -->
+      <div class="flex flex-col px-6 pb-6">
+        <div class="text-center">
+          <h2 class="text-2xl font-bold text-gray-900 font-roboto-condensed uppercase mb-4">
+            RSVPs Are Now Closed
+          </h2>
+          <p class="text-base text-gray-700 font-roboto-condensed leading-relaxed">
+            Thank you for your interest. Registration for this event has closed.
           </p>
         </div>
-
-        <!-- Name Fields - Side by Side -->
-        <div class="flex gap-3 w-full px-6">
-          <input
-            type="text"
-            id="first-name-mobile"
-            name="first_name"
-            required
-            class="w-1/2 min-w-0 bg-white border border-gray-300 rounded px-4 py-3 text-gray-900 placeholder:text-gray-400 font-roboto-condensed text-[15px] outline-none focus:border-[#CE1141] focus:ring-1 focus:ring-[#CE1141]"
-            placeholder="First Name"
-          />
-          <input
-            type="text"
-            id="last-name-mobile"
-            name="last_name"
-            required
-            class="w-1/2 min-w-0 bg-white border border-gray-300 rounded px-4 py-3 text-gray-900 placeholder:text-gray-400 font-roboto-condensed text-[15px] outline-none focus:border-[#CE1141] focus:ring-1 focus:ring-[#CE1141]"
-            placeholder="Last Name"
-          />
-        </div>
-        <div class="flex flex-col px-6 gap-3">
-          <!-- Phone Number Field -->
-          <input
-            type="tel"
-            id="phone-mobile"
-            name="phone"
-            required
-            class="w-full bg-white border border-gray-300 rounded px-4 py-3 text-gray-900 placeholder:text-gray-400 font-roboto-condensed text-[15px] outline-none focus:border-[#CE1141] focus:ring-1 focus:ring-[#CE1141]"
-            placeholder="Phone Number"
-          />
-      
-          <!-- Email Field -->
-          <input
-            type="email"
-            id="email-mobile"
-            name="email"
-            required
-            class="w-full bg-white border border-gray-300 rounded px-4 py-3 text-gray-900 placeholder:text-gray-400 font-roboto-condensed text-[15px] outline-none focus:border-[#CE1141] focus:ring-1 focus:ring-[#CE1141]"
-            placeholder="Email"
-          />
-        </div>
-
-        <!-- Checkbox for updates -->
-        <div class="flex items-center justify-center gap-2 px-6">
-          <input
-            type="checkbox"
-            id="updates-checkbox-mobile"
-            name="updates"
-            checked
-            class="w-4 h-4 accent-[#CE1141] border-gray-300 rounded focus:ring-[#CE1141] cursor-pointer"
-          />
-          <label for="updates-checkbox-mobile" class="text-gray-900 text-[14px] font-roboto-condensed cursor-pointer">
-            Check to get updates from Derrick Rose
-          </label>
-        </div>
-
-        <!-- Submit Button / Inline Confirmation Area -->
-        <div id="registration-action-mobile" class="text-center" aria-live="polite">
-          <button
-            id="register-button-mobile"
-            type="submit"
-            class="w-full bg-[#CE1141] hover:bg-[#a00d33] text-white py-4 px-8 rounded-none text-[24px] font-prohibition font-bold uppercase tracking-wider transition-colors duration-200"
-          >
-            SUBMIT
-          </button>
-        </div>
-
-        <!-- Disclaimer -->
-        <div class="pt-0 px-6">
-          <p class="text-gray-600 text-[13px] font-roboto-condensed leading-relaxed">
-            <strong>Please note:</strong> Registration does not guarantee entry. All attendees will be confirmed at the door, and ticketing details will be communicated as the event approaches.            </p>
-          </p>
-        </div>
-
-        <!-- Inline error box (hidden by default) -->
-        <div
-          id="registration-error-mobile"
-          class="hidden mt-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg text-[15px] text-center font-roboto-condensed"
-          aria-live="polite"
-        ></div>
-        </form>
       </div>
 
       <!-- Footer -->
@@ -279,116 +130,6 @@ const imgHomegrownCursiveMobile = "/assets/Homegrown%20Cursive.svg";
   </main>
 </Layout>
 
-<script>
-  // Form submission handler for desktop
-  document.getElementById('non-player-form')?.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    await handleFormSubmit(e.target as HTMLFormElement, 'registration-action', 'registration-error', 'register-button');
-  });
-
-  // Form submission handler for mobile
-  document.getElementById('non-player-form-mobile')?.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    await handleFormSubmit(e.target as HTMLFormElement, 'registration-action-mobile', 'registration-error-mobile', 'register-button-mobile');
-  });
-
-  async function handleFormSubmit(
-    form: HTMLFormElement,
-    actionContainerId: string,
-    errorContainerId: string,
-    buttonId: string
-  ) {
-    const formData = new FormData(form);
-    const data = Object.fromEntries(formData.entries());
-
-    // Handle name field - could be single "name" (desktop) or separate "first_name"/"last_name" (mobile)
-    let fullName: string;
-    if (data.name) {
-      fullName = data.name as string;
-    } else if (data.first_name && data.last_name) {
-      fullName = `${data.first_name} ${data.last_name}`;
-    } else {
-      fullName = '';
-    }
-
-    const updatesValue = typeof data.updates === 'string' ? data.updates === 'on' : !!data.updates;
-    
-    const payload = {
-      name: fullName,
-      email: data.email,
-      phone: data.phone,
-      ticket_count: 1,
-      additional_tickets: [],
-      updates: updatesValue
-    };
-
-    const actionContainer = document.getElementById(actionContainerId);
-    const errorContainer = document.getElementById(errorContainerId);
-    const registerButton = document.getElementById(buttonId);
-
-    // Clear previous error
-    if (errorContainer) {
-      errorContainer.textContent = '';
-      errorContainer.classList.add('hidden');
-    }
-
-    // Loading state
-    let originalButtonHTML = null;
-    if (registerButton) {
-      originalButtonHTML = registerButton.innerHTML;
-      registerButton.setAttribute('disabled', 'true');
-      registerButton.classList.add('opacity-60', 'cursor-not-allowed');
-      registerButton.setAttribute('aria-busy', 'true');
-      registerButton.innerHTML = `
-        <span class="inline-flex items-center gap-3">
-          <svg class="animate-spin h-5 w-5 text-white" viewBox="0 0 24 24" fill="none">
-            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
-          </svg>
-          Submitting...
-        </span>
-      `;
-    }
-
-    try {
-      const response = await fetch('/api/non-player-signup', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      });
-
-      if (response.ok) {
-        // Redirect to success page
-        window.location.href = '/invitation/success';
-      } else {
-        const errorData = await response.json().catch(() => ({}));
-        console.error('Server error:', errorData);
-        if (errorContainer) {
-          errorContainer.textContent = 'Something went wrong. Please try again.';
-          errorContainer.classList.remove('hidden');
-        }
-        if (registerButton && originalButtonHTML !== null) {
-          registerButton.removeAttribute('disabled');
-          registerButton.classList.remove('opacity-60', 'cursor-not-allowed');
-          registerButton.removeAttribute('aria-busy');
-          registerButton.innerHTML = originalButtonHTML;
-        }
-      }
-    } catch (error) {
-      console.error('Form submission error:', error);
-      if (errorContainer) {
-        errorContainer.textContent = 'Something went wrong. Please try again.';
-        errorContainer.classList.remove('hidden');
-      }
-      if (registerButton && originalButtonHTML !== null) {
-        registerButton.removeAttribute('disabled');
-        registerButton.classList.remove('opacity-60', 'cursor-not-allowed');
-        registerButton.removeAttribute('aria-busy');
-        registerButton.innerHTML = originalButtonHTML;
-      }
-    }
-  }
-</script>
 
 <style>
   /* Apply Roboto Condensed to all text on this page, except Prohibition font */
