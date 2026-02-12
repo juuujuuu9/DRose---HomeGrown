@@ -1,13 +1,6 @@
 # Homegrown at Simeon
 
-**Event RSVP & registration platform** featuring dual-flow guest management, a secure admin dashboard, and automated transactional emails. Built for real-world events with production deployment on Vercel.
-
----
-
-## For Recruiters & Potential Clients
-
-### One-Liner
-Event RSVP and registration platform featuring dual-flow guest management (players vs. non-players), a secure admin dashboard, and automated transactional emails.
+Event RSVP and registration platform featuring dual-flow guest management (players vs. non-players), a secure admin dashboard, and automated transactional emails. Built for real-world events with production deployment on Vercel.
 
 ### What This Project Demonstrates
 - **Full-stack development** — End-to-end TypeScript, from frontend forms to database writes
